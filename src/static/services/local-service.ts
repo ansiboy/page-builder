@@ -76,8 +76,8 @@ export class LocalService extends Service {
 
         let load: (id: string, url: string) => void = context.load;
         context.load = function (id: string, url: string) {
-            if (url[0] == "/" && !url.endsWith(".js"))
-                url = url + ".js";
+            // if (url[0] == "/" && !url.endsWith(".js"))
+            //     url = url + ".js";
 
             load.apply(this, [id, url]);
         }

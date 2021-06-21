@@ -10,5 +10,4 @@ export function createComponentLoadFail(error: any, reload: () => void) {
             </div>
         }
     }
-
 }

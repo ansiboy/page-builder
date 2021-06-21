@@ -7,6 +7,7 @@ import "css!devices"
 import { contextData } from "maishu-nws-mvc";
 import { Application } from "maishu-chitu-react";
 import { IService, Service, ServiceConstructor } from "maishu-chitu-service";
+import { createRuntimeContext } from "share/app";
 
 export type ContextArguments = { page: DesignPage, designer: PageDesigner, pageData: PageData, componentPanel: ComponentPanel };
 export let DesignPageContext = React.createContext<ContextArguments>({ page: null, designer: null, pageData: null, componentPanel: null });
@@ -74,7 +75,7 @@ export class DesignPage extends React.Component<{ pageData: PageData, componentP
                     page: this, designer: args.designer, pageData: this.props.pageData,
                     componentPanel: this.props.componentPanel
                 };
-                let pageData: PageData = this.props.pageData;//JSON.parse(JSON.stringify(this.props.pageData));
+                let pageData: PageData = this.props.pageData;
                 let children = pageData.children || [];
                 for (let i = 0; i < children.length; i++) {
                     let props: ComponentProps = children[i].props = children[i].props || {};
@@ -92,27 +93,4 @@ export class DesignPage extends React.Component<{ pageData: PageData, componentP
 
 DesignPage.contextType = DesignerContext;
 registerComponent(Page.typeName, DesignPage);
-
-function createRuntimeContext(app: Application): RuntimeContext {
-    let ctx: RuntimeContext = {
-        createService<T extends IService>(type?: ServiceConstructor<T>): T {
-            let service = app.createService<T>(type as any) as T;
-            if (localStorage.getItem("user_info")) {
-                let userInfo = JSON.parse(localStorage.getItem("user_info")) as { id: string };
-                console.assert(userInfo != null);
-                service.headers["user-id"] = userInfo.id;
-            }
-
-            let appId = window["application-id"] || window["applicationId"];
-            if (appId) {
-                service.headers["application-id"] = appId;
-            }
-
-            return service;
-        },
-        token: localStorage.getItem("token")
-    }
-
-    return ctx;
-}
 

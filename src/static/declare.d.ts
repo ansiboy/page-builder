@@ -15,4 +15,6 @@ declare module "website-config" {
     export = a;
 }
 
-
+declare module "share/app" {
+    export let createRuntimeContext: (app: import("maishu-chitu").Application) => RuntimeContext
+}

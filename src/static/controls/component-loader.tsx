@@ -180,6 +180,7 @@ async function loadComponentEditor(componentInfo: ComponentInfo): Promise<any> {
         return Promise.resolve();
 
     return new Promise((resolve, reject) => {
+        console.log(`Load component editor ${componentInfo.editor}.`)
         localRequirejs([`${componentInfo.editor}`], (mod) => {
             resolve(mod);
         }, err => {

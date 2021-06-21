@@ -2,10 +2,25 @@ import { Application } from "maishu-admin-scaffold/static/application";
 import { PageRecord } from "../entities";
 import { errors } from "./errors";
 import { LocalService } from "./services";
+import { ImageService } from "maishu-image-components";
+import { IService, ServiceConstructor } from "maishu-chitu-service";
+
+ImageService.serviceHost = "imageHost";
+ImageService.headers["application-id"] = window["application-id"] || localStorage.getItem("application-id");
 
 type MenuItem = Application["mainMaster"]["menuItems"][0];
 
 export default function (app: Application) {
+
+    let createService = app.createService;
+    app.createService = function <T extends IService>(type?: ServiceConstructor<T>): T {
+        let s: T = createService.apply(this, [type]);
+        if (!s.headers["application-id"] && window["application-id"])
+            s.headers["application-id"] = window["application-id"];
+
+        return s;
+    }
+
     updateMenuItems(app);
     LocalService.themeChanged.add(args => {
         updateMenuItems(app);

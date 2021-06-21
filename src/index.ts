@@ -58,6 +58,7 @@ export async function start(settings: Settings) {
     }
 
     proxy[`^/share/(\\S*)`] = `${websiteConfig.componentShare}/$1`;
+    proxy[`^/image/(\\S*)`] = `${imageHost}/$1`;
 
     let mvcSettings: MVCSettings = {
         port,

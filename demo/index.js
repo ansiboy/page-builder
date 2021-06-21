@@ -2,7 +2,7 @@ const { start } = require("../out");
 
 start({
     port: 5217,
-    imageHost: "haoyi100.cn/auth/image",
+    imageHost: "http://image.finememo.com",
     messageHost: "119.29.102.254:6247",
     db: {
         type: "mysql", username: "root", password: "81263", name: "taro-builder",

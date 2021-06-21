@@ -72,25 +72,5 @@ export class HomeController {
     }
 
 
-    // /** 处理 html 请求 */
-    // @action("*.html")
-    // async html(@serverContext ctx: ServerContext) {
-
-
-    //     let modulePath = ctx.virtualPath.substr(0, ctx.virtualPath.length - ".html".length);
-    //     modulePath = path.join("../pages", modulePath);
-
-    //     let mod = require(modulePath);
-    //     if (mod == null)
-    //         throw errors.loadModuleFail(modulePath);
-
-    //     if (mod.default == null) {
-    //         throw errors.moduleNotExport(modulePath, "default");
-    //     }
-
-    //     let element = React.createElement(mod.default, {});
-    //     let r = renderToString(element);
-    //     return new ContentResult(r, { "content-type": "text/html" });
-    // }
 
 }

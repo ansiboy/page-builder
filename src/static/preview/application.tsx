@@ -4,6 +4,8 @@ import React = require("react");
 import { routers } from "../routers";
 import ReactDOM = require("react-dom");
 import strings from "../strings";
+import { IService, ServiceConstructor } from "maishu-chitu-service";
+import { types } from "@babel/core";
 
 
 class MyApplication extends Application {
@@ -84,12 +86,34 @@ class MyApplication extends Application {
         return { pageName: "page", values };
     }
 
-
 }
 
 
 export function run(config: any, req) {
-    window["app"] = window["app"] || new MyApplication(config, req)
+    window["app"] = window["app"] || new MyApplication(config, req);
+
+    let app: Application = window["app"];
+    let createService = app.createService;
+    app.createService = function <T extends IService>(type?: ServiceConstructor<T>): T {
+        let s: T = createService.apply(this, [type]);
+        if (!s.headers["application-id"] && window["application-id"])
+            s.headers["application-id"] = window["application-id"];
+
+        debugger;
+
+        return s;
+    }
+    // createService<T extends IService>(type?: ServiceConstructor<T>): T {
+    //     let s = super.createService(type);
+    //     s.headers["application-id"] = window["application-id"];
+    //     let token = localStorage["token"];
+    //     if (token) {
+    //         s.headers["token"] = token;
+    //     }
+    //     return s;
+    // }
+
+
     return window["app"];
 }
 

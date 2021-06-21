@@ -27,5 +27,6 @@ declare interface RequirejsContext {
 
 type RuntimeContext = Pick<import("maishu-chitu").Application, "createService"> & {
     readonly token: string;
-
+    readonly id: string;
+    redirect(url: string): void;
 };

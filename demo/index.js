@@ -1,14 +1,15 @@
 const { start } = require("../out");
 
 start({
-    port: 5217,
+    port: 5227,
     imageHost: "http://image.finememo.com",
-    messageHost: "119.29.102.254:6247",
+    messageHost: "finememo.com:6247",
     db: {
         type: "mysql", username: "root", password: "81263", name: "taro-builder",
         database: "taro-builder", entities: ["../out/entities.js"],
         synchronize: false,
-        host: "192.168.2.94", port: 43306
+        // host: "192.168.2.94", port: 43306
+        host: "finememo.com", port: 3306
     },
     menuItems: [
         {

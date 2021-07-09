@@ -133,11 +133,28 @@ button.btn {
         display       : flex;
         flex-direction: row;
         flex-wrap     : wrap;
+        max-height    : 200px;
+        overflow-y    : auto;
 
         li {
             padding      : unset;
             padding-top  : 10px;
             margin-bottom: 6px;
+        }
+
+        /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        /*定义滑块 内阴影+圆角*/
+        &::-webkit-scrollbar-thumb {
+            background-color: #777777;
+        }
+
+        /*定义滚动条轨道 内阴影+圆角*/
+        &::-webkit-scrollbar-track {
+            background-color: #cccccc;
         }
     }
 

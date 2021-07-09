@@ -38,12 +38,13 @@ interface Props extends PageProps {
     data: { id?: string, name?: string },
 }
 
-let localService = new LocalService();
 export default class PCPageEdit extends React.Component<Props, State> {
     // componentPanel: ComponentPanel;
     editorPanel: EditorPanel;
     validator: FormValidator;
     pageDesigner: PageDesigner;
+    private localService;
+
     // themeName: string;
 
     constructor(props) {
@@ -53,7 +54,8 @@ export default class PCPageEdit extends React.Component<Props, State> {
             pageRecord: this.props.pageRecord
         };
 
-        localService.templateList().then(r => {
+        this.localService = this.props.app.createService(LocalService);
+        this.localService.templateList().then(r => {
             this.setState({ templateList: r })
         });
 
@@ -65,7 +67,7 @@ export default class PCPageEdit extends React.Component<Props, State> {
         console.assert(fileName.endsWith("-page-edit"));
         let themeName = fileName.substr(0, fileName.length - "-page-edit".length);
         if (themeName == "pc")
-            themeName = await localService.getTheme();
+            themeName = await this.localService.getTheme();
 
         return themeName;
     }
@@ -89,7 +91,7 @@ export default class PCPageEdit extends React.Component<Props, State> {
 
 
         let themeName = await this.getThemeName();
-        localService.componentStationConfig("designtime", themeName).then(c => {
+        this.localService.componentStationConfig("designtime", themeName).then(c => {
             let componentInfos = c.components;
             if (c.components != null) {
                 componentInfos = componentInfos.filter(o => o.displayName != null);
@@ -108,12 +110,12 @@ export default class PCPageEdit extends React.Component<Props, State> {
         let templateRecord: PageRecord;
         this.getPageRecord().then(async pageRecord => {
             if (pageRecord?.templateName) {
-                templateRecord = await localService.getPageDataByName(pageRecord.templateName);
+                templateRecord = await this.localService.getPageDataByName(pageRecord.templateName);
             }
 
             this.getPageRecord().then(async pageRecord => {
                 if (pageRecord?.templateName) {
-                    templateRecord = await localService.getPageDataByName(pageRecord.templateName);
+                    templateRecord = await this.localService.getPageDataByName(pageRecord.templateName);
                 }
                 this.setState({ pageRecord, templateRecord });
             })
@@ -150,7 +152,7 @@ export default class PCPageEdit extends React.Component<Props, State> {
     }
 
     private async getPageRecord() {
-        let s = localService;
+        let s = this.localService;
         let pageRecord: PageRecord;
         if (this.props.data.id) {
             pageRecord = await s.getPageRecord(this.props.data.id as string);
@@ -243,13 +245,13 @@ export default class PCPageEdit extends React.Component<Props, State> {
             this.setState({ templateRecord: null, pageRecord });
             return;
         }
-        localService.getPageDataByName(templateName).then(r => {
+        this.localService.getPageDataByName(templateName).then(r => {
             this.setState({ templateRecord: r });
         });
     }
 
     async preview(pageRecord: PageRecord) {
-        let domain = await localService.defaultStoreDomain();
+        let domain = await this.localService.defaultStoreDomain();
         let url: string;
         if (websiteConfig.storePort == 80) {
             url = `${location.protocol}//${domain}/${pageRecord.name}`;
@@ -318,7 +320,7 @@ export default class PCPageEdit extends React.Component<Props, State> {
             <div className="component-property-panel">
                 <div className="component-property-panel-inner" ref={e => this.panelInnerRef(e)}>
                     <ComponentPanel ref={e => this.componentRef(e, componentInfos)} />
-                    <PageSettingsPenel parent={this} />
+                    <PageSettingsPenel parent={this} localService={this.localService} />
                     <EditorPanel className="well" customRender={(editComponents, propEditors) => {
                         let typeName = editComponents[0].type;
                         let componentEditorCustomRender = getComponentRender(typeName);
@@ -335,7 +337,8 @@ export default class PCPageEdit extends React.Component<Props, State> {
     }
 }
 
-class PageSettingsPenel extends React.Component<{ parent: PCPageEdit }, { parent: PCPageEdit }>{
+class PageSettingsPenel extends React.Component<{ parent: PCPageEdit, localService: LocalService; }, { parent: PCPageEdit }>{
+
 
     constructor(props: PageSettingsPenel["props"]) {
         super(props);
@@ -343,6 +346,7 @@ class PageSettingsPenel extends React.Component<{ parent: PCPageEdit }, { parent
         this.state = {
             parent: props.parent
         };
+
     }
 
     UNSAFE_componentWillReceiveProps(props: PageSettingsPenel["props"]) {
@@ -360,7 +364,7 @@ class PageSettingsPenel extends React.Component<{ parent: PCPageEdit }, { parent
             this.props.parent.setState({ templateRecord: null, pageRecord });
             return;
         }
-        localService.getPageDataByName(templateName).then(r => {
+        this.props.localService.getPageDataByName(templateName).then(r => {
             this.props.parent.setState({ templateRecord: r });
         });
     }

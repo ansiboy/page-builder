@@ -136,7 +136,7 @@ export class ComponentLoader {
 
 
 async function loadComponentType(typeName: string, isDesignMode: boolean, themeName: string) {
-    let componentInfos = await localService.componentInfos(isDesignMode ? "designtime" : "runtime", themeName);
+    let componentInfos = await localService.componentInfos(themeName);
     let componentInfo = componentInfos.filter(o => o.type == typeName)[0];
     if (componentInfo == null) {
         let error = errors.canntFindComponentInfo(typeName);;

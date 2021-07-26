@@ -2,7 +2,7 @@ import { WebsiteConfig } from "maishu-admin-scaffold/static/website-config";
 
 //==========================================================================
 // 常用配置
-export let themeHost = "finememo.com/themes";//"127.0.0.1:6839";
+export let themeHost = "127.0.0.1:6839";//"finememo.com/themes";//
 let storePort = 5218;
 //==========================================================================
 
@@ -17,10 +17,10 @@ let websiteConfig: MyWebsiteConfig = {
     //===================================================
     // 组件站点配置
     componentStations: {
-        aixpi: `http://${themeHost}/aixpi`,
-        flone: `http://${themeHost}/flone`,
-        generic: `http://${themeHost}/generic`,
-        "gemwon-pc": `http://${themeHost}/gemwon-pc`,
+        aixpi: `http://${themeHost}/designer/aixpi`,
+        flone: `http://${themeHost}/designer/flone`,
+        generic: `http://${themeHost}/designer/generic`,
+        "gemwon-pc": `http://${themeHost}/designer/gemwon-pc`,
     },
     componentShare: `http://${themeHost}/share`,
     //===================================================
@@ -33,26 +33,26 @@ let websiteConfig: MyWebsiteConfig = {
             "node_modules/bootstrap/dist/js/bootstrap": { deps: ["jquery"], exports: "jQuery" },
         },
         paths: {
-            // "css": `${node_modules}/maishu-requirejs-plugins/src/css`,
-            // "json": `${node_modules}/maishu-requirejs-plugins/src/json`,
+            "css": `${node_modules}/maishu-requirejs-plugins/src/css`,
+            "json": `${node_modules}/maishu-requirejs-plugins/src/json`,
 
-            // "react": `${node_modules}/react/umd/react.development`,
-            // "react-dom": `${node_modules}/react-dom/umd/react-dom.development`,
+            "react": `${node_modules}/react/umd/react.development`,
+            "react-dom": `${node_modules}/react-dom/umd/react-dom.development`,
 
-            // "maishu-chitu": `${node_modules}/maishu-chitu/dist/index.min`,
-            // "maishu-chitu-react": `${node_modules}/maishu-chitu-react/dist/index.min`,
-            // "maishu-chitu-service": `${node_modules}/maishu-chitu-service/dist/index.min`,
-            // "maishu-dilu-react": `${node_modules}/maishu-dilu-react/dist/index.min`,
-            // "maishu-data-page": `${node_modules}/maishu-data-page/dist/index.min`,
-            // "maishu-image-components": `${node_modules}/maishu-image-components/dist/index`,
-            // "maishu-jueying": `${node_modules}/maishu-jueying/dist/index.min`,
-            // "maishu-jueying-core": `${node_modules}/maishu-jueying-core/dist/index`,
-            // "maishu-toolkit": `${node_modules}/maishu-toolkit/dist/index`,
-            // "maishu-ui-toolkit": `${node_modules}/maishu-ui-toolkit/dist/index`,
-            // "maishu-wuzhui": `${node_modules}/maishu-wuzhui/dist/index`,
-            // "maishu-wuzhui-helper": `${node_modules}/maishu-wuzhui-helper/dist/index`,
-            // "maishu-dilu": `${node_modules}/maishu-dilu/dist/index`,
-            // "maishu-router": `${node_modules}/maishu-router/dist/index`,
+            "maishu-chitu": `${node_modules}/maishu-chitu/dist/index.min`,
+            "maishu-chitu-react": `${node_modules}/maishu-chitu-react/dist/index.min`,
+            "maishu-chitu-service": `${node_modules}/maishu-chitu-service/dist/index.min`,
+            "maishu-dilu-react": `${node_modules}/maishu-dilu-react/dist/index.min`,
+            "maishu-data-page": `${node_modules}/maishu-data-page/dist/index.min`,
+            "maishu-image-components": `${node_modules}/maishu-image-components/dist/index.min`,
+            "maishu-jueying": `${node_modules}/maishu-jueying/dist/index.min`,
+            "maishu-jueying-core": `${node_modules}/maishu-jueying-core/dist/index`,
+            "maishu-toolkit": `${node_modules}/maishu-toolkit/dist/index`,
+            "maishu-ui-toolkit": `${node_modules}/maishu-ui-toolkit/dist/index`,
+            "maishu-wuzhui": `${node_modules}/maishu-wuzhui/dist/index`,
+            "maishu-wuzhui-helper": `${node_modules}/maishu-wuzhui-helper/dist/index`,
+            "maishu-dilu": `${node_modules}/maishu-dilu/dist/index`,
+            "maishu-router": `${node_modules}/maishu-router/dist/index`,
 
             "devices": `content/devices.css-1.2/assets/devices.min.css`,
             "jquery": `${node_modules}/jquery/dist/jquery.min`,

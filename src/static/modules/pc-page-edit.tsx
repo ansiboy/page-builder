@@ -43,7 +43,7 @@ export default class PCPageEdit extends React.Component<Props, State> {
     editorPanel: EditorPanel;
     validator: FormValidator;
     pageDesigner: PageDesigner;
-    private localService;
+    private localService: LocalService;
 
     // themeName: string;
 
@@ -91,7 +91,7 @@ export default class PCPageEdit extends React.Component<Props, State> {
 
 
         let themeName = await this.getThemeName();
-        this.localService.componentStationConfig("designtime", themeName).then(c => {
+        this.localService.componentStationConfig(themeName).then(c => {
             let componentInfos = c.components;
             if (c.components != null) {
                 componentInfos = componentInfos.filter(o => o.displayName != null);

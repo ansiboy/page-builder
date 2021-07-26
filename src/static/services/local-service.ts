@@ -189,13 +189,13 @@ export class LocalService extends Service {
     }
 
 
-    async componentInfos(times: "designtime" | "runtime", themeName: string) {
-        let config = await this.componentStationConfig(times, themeName);
+    async componentInfos(themeName: string) {
+        let config = await this.componentStationConfig(themeName);
         return config.components;
     }
 
     private _componentStationConfig: ComponentStationConfig;
-    async componentStationConfig(times: "designtime" | "runtime", themeName: string): Promise<ComponentStationConfig> {
+    async componentStationConfig(themeName: string): Promise<ComponentStationConfig> {
         if (!themeName)
             themeName = await this.getTheme();
 
@@ -213,9 +213,9 @@ export class LocalService extends Service {
             _componentInfos.forEach(o => {
                 if (o.path != null) {
                     o.path = pathConcat(themeName, o.path);
-                    if (times == "designtime") {
-                        o.path = o.path + ".des";
-                    }
+                    // if (times == "designtime") {
+                    //     o.path = o.path + ".des";
+                    // }
                 }
 
                 if (o.editor != null)
@@ -223,9 +223,9 @@ export class LocalService extends Service {
 
                 if (o.design != null) {
                     o.design = pathConcat(themeName, o.design);
-                    if (times == "designtime") {
-                        o.design = o.design + ".des";
-                    }
+                    // if (times == "designtime") {
+                    //     o.design = o.design + ".des";
+                    // }
                 }
 
                 if (o.layout != null)
@@ -247,7 +247,7 @@ export class LocalService extends Service {
         let context = contexts[contextName]
         if (context != null && c.requirejs?.paths != null) {
 
-  
+
             context.configure({ paths: c.requirejs.paths })
         }
 

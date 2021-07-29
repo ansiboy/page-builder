@@ -44,7 +44,7 @@ let websiteConfig: MyWebsiteConfig = {
             "maishu-chitu-service": `${node_modules}/maishu-chitu-service/dist/index.min`,
             "maishu-dilu-react": `${node_modules}/maishu-dilu-react/dist/index.min`,
             "maishu-data-page": `${node_modules}/maishu-data-page/dist/index.min`,
-            "maishu-image-components": `${node_modules}/maishu-image-components/dist/index.min`,
+            "maishu-image-components": `${node_modules}/maishu-image-components/dist/index`,
             "maishu-jueying": `${node_modules}/maishu-jueying/dist/index.min`,
             "maishu-jueying-core": `${node_modules}/maishu-jueying-core/dist/index`,
             "maishu-toolkit": `${node_modules}/maishu-toolkit/dist/index`,

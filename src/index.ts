@@ -4,11 +4,11 @@ import { getVirtualPaths } from "maishu-admin-scaffold";
 import { ConnectionOptions, createConnection } from "maishu-node-data";
 import websiteConfig from "./static/website-config";
 import { sourceVirtualPaths } from "maishu-chitu-scaffold";
-import { getDomain, StoreHtmlTransform } from "./content-transforms/store-html-transform";
+// import { getDomain, StoreHtmlTransform } from "./content-transforms/store-html-transform";
 import { pathConcat } from "maishu-toolkit";
 import * as querystring from "querystring";
 import { getMyConnection } from "./decoders";
-import { PageRecord, StoreDomain, StoreInfo, UrlRewrite } from "./entities";
+import { PageRecord, StoreDomain, StoreInfo } from "./entities";
 import { IncomingMessage } from "http";
 import { startMessage } from "./message";
 import { routers } from "./static/routers";
@@ -66,6 +66,35 @@ export async function start(settings: Settings) {
         websiteDirectory: __dirname,
         virtualPaths,
         proxy,
+        processors: {
+            JavaScriptProcessor: {
+                "\\S+.js$": {
+                    "presets": [
+                        ["@babel/preset-env", {
+                            "targets": { chrome: 58 }
+                        }]
+                    ],
+                    plugins: [
+                        ["@babel/plugin-transform-modules-amd", { noInterop: true }],
+                    ]
+                },
+
+            },
+            ignorePaths: function (path: string) {
+                let maishuOut = /\S*\/node_modules\/\S+\/out\/\S+/;
+                if (maishuOut.test(path)) {
+                    return false;
+                }
+
+                let regexes = [/\S*\/node_modules\S+/, /\S*\/lib\S+/]
+                for (let i = 0; i < regexes.length; i++) {
+                    if (regexes[i].test(path))
+                        return true;
+                }
+
+                return false;
+            },
+        }
     }
 
     let adminServer = startServer(mvcSettings, "mvc");
@@ -76,87 +105,87 @@ export async function start(settings: Settings) {
         websiteDirectory: __dirname,
         virtualPaths,
         proxy,
-        urlRewrite: (rawUrl, { req }) => {
-            return storeUrlRewrite(rawUrl, req);
-        }
+        // urlRewrite: (rawUrl, { req }) => {
+        //     return storeUrlRewrite(rawUrl, req);
+        // }
     })
-    storeServer.contentTransforms.push(new StoreHtmlTransform());
+    // storeServer.contentTransforms.push(new StoreHtmlTransform());
 }
 
-const AppName = "application-id";
-async function storeUrlRewrite(rawUrl: string, req: IncomingMessage) {
+// const AppName = "application-id";
+// async function storeUrlRewrite(rawUrl: string, req: IncomingMessage) {
 
-    //===============================================================
-    // 优化查询
-    let conn = await getMyConnection();
-    let urlRewrites = conn.getRepository(UrlRewrite);
-    let item = await urlRewrites.findOne({ newUrl: rawUrl });
-    if (item && item.originalUrl != null) {
-        rawUrl = item.originalUrl;
-    }
-    //===============================================================
+//     //===============================================================
+//     // 优化查询
+//     let conn = await getMyConnection();
+//     let urlRewrites = conn.getRepository(UrlRewrite);
+//     let item = await urlRewrites.findOne({ newUrl: rawUrl });
+//     if (item && item.originalUrl != null) {
+//         rawUrl = item.originalUrl;
+//     }
+//     //===============================================================
 
-    let queryIndex = rawUrl.indexOf("?");
-    let query: string | null = null;
-    let pathname: string = rawUrl;
-    if (queryIndex >= 0) {
-        query = rawUrl.substr(queryIndex + 1);
-        pathname = rawUrl.substr(0, queryIndex);
-    }
+//     let queryIndex = rawUrl.indexOf("?");
+//     let query: string | null = null;
+//     let pathname: string = rawUrl;
+//     if (queryIndex >= 0) {
+//         query = rawUrl.substr(queryIndex + 1);
+//         pathname = rawUrl.substr(0, queryIndex);
+//     }
 
-    let m: { [key: string]: string } | null = null;
-    if (rawUrl == "/")
-        m = { name: "home" };
-    else if (pathname == "/")
-        m = {};
+//     let m: { [key: string]: string } | null = null;
+//     if (rawUrl == "/")
+//         m = { name: "home" };
+//     else if (pathname == "/")
+//         m = {};
 
-    if (m == null) {
-        for (let i = 0; i < routers.length; i++) {
-            m = routers[i].match(pathname);
-            if (m)
-                break;
-        }
-    }
+//     if (m == null) {
+//         for (let i = 0; i < routers.length; i++) {
+//             m = routers[i].match(pathname);
+//             if (m)
+//                 break;
+//         }
+//     }
 
-    if (!m) {
-        return null;
-    }
+//     if (!m) {
+//         return null;
+//     }
 
-    if (query != null) {
-        let obj = querystring.parse(query);
-        m = Object.assign(obj || {}, m);
-    }
+//     if (query != null) {
+//         let obj = querystring.parse(query);
+//         m = Object.assign(obj || {}, m);
+//     }
 
-    if (m.filePath)
-        return pathConcat("/", m.filePath);
+//     if (m.filePath)
+//         return pathConcat("/", m.filePath);
 
-    if (m.id == null && m.name != null) {
-        let conn = await getMyConnection();
-        let storeDomains = conn.getRepository(StoreDomain);
-        let pageRecords = conn.getRepository(PageRecord);
+//     if (m.id == null && m.name != null) {
+//         let conn = await getMyConnection();
+//         let storeDomains = conn.getRepository(StoreDomain);
+//         let pageRecords = conn.getRepository(PageRecord);
 
-        let domain = getDomain(req);
-        let storeDomain = await storeDomains.findOne({ domain });
-        if (storeDomain != null) {
-            m[AppName] = storeDomain.applicationId;
-        }
+//         let domain = getDomain(req);
+//         let storeDomain = await storeDomains.findOne({ domain });
+//         if (storeDomain != null) {
+//             m[AppName] = storeDomain.applicationId;
+//         }
 
-        let appId = m[AppName];
-        if (!appId)
-            throw new Error("Application id is null or empty.");
+//         let appId = m[AppName];
+//         if (!appId)
+//             throw new Error("Application id is null or empty.");
 
-        let pageRecord = await pageRecords.findOne({ name: m.name, applicationId: appId });
-        if (pageRecord == null)
-            throw new Error(`Page record with name '${m.name}' and applicationId '${appId}' is not exists.`);
+//         let pageRecord = await pageRecords.findOne({ name: m.name, applicationId: appId });
+//         if (pageRecord == null)
+//             throw new Error(`Page record with name '${m.name}' and applicationId '${appId}' is not exists.`);
 
-        m.id = pageRecord.id;
-    }
+//         m.id = pageRecord.id;
+//     }
 
-    let q = Object.keys(m).filter(o => m[o] != null).map(o => `${o}=${m[o]}`).join('&');
-    let u = `/preview.html?${q}`;
-    return u;
+//     let q = Object.keys(m).filter(o => m[o] != null).map(o => `${o}=${m[o]}`).join('&');
+//     let u = `/preview.html?${q}`;
+//     return u;
 
-}
+// }
 
 
 

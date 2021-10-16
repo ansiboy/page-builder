@@ -1,10 +1,11 @@
-import { controller, action, routeData, ContentResult } from "maishu-node-mvc";
+import { controller, action, routeData } from "maishu-node-mvc";
 import { Connection, DataHelper, SelectArguments } from "maishu-node-data";
 import { PageRecord, StoreInfo } from "../entities";
 import { errors } from "../static/errors";
 import { guid } from "maishu-toolkit";
 import { connection, currentAppId } from "../decoders";
 import { HomeController } from "./home";
+import { ContentResult } from "maishu-nws-mvc";
 
 @controller("api/page-data")
 export class PageDataController {

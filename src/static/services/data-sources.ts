@@ -1,5 +1,5 @@
 import { DataSource } from "maishu-toolkit";
-import { HtmlSnippet, PageRecord, StoreDomain, UrlRewrite } from "../../entities";
+import { PageRecord, StoreDomain } from "../../entities";
 import { LocalService } from "../services/local-service";
 
 let localService = new LocalService();
@@ -35,41 +35,41 @@ let storeDomainDataSource = new DataSource<StoreDomain>({
     }
 })
 
-let urlRewriteDataSource = new DataSource<UrlRewrite>({
-    primaryKeys: ["id"],
-    select: async (args) => {
-        return localService.urlRewriteList(args);
-    },
-    insert: async (item) => {
-        return localService.urlRewriteInsert(item);
-    },
-    update: async (item) => {
-        return localService.urlRewriteUpdate(item);
-    },
-    delete: async (item) => {
-        return localService.urlRewriteDelete(item);
-    }
-})
+// let urlRewriteDataSource = new DataSource<UrlRewrite>({
+//     primaryKeys: ["id"],
+//     select: async (args) => {
+//         return localService.urlRewriteList(args);
+//     },
+//     insert: async (item) => {
+//         return localService.urlRewriteInsert(item);
+//     },
+//     update: async (item) => {
+//         return localService.urlRewriteUpdate(item);
+//     },
+//     delete: async (item) => {
+//         return localService.urlRewriteDelete(item);
+//     }
+// })
 
-let htmlSnippetDataSource = new DataSource<HtmlSnippet>({
-    primaryKeys: ["id"],
-    select: async (args) => {
-        return localService.htmlSnippetList(args);
-    },
-    insert: async (item) => {
-        return localService.htmlSnippetInsert(item);
-    },
-    update: async (item) => {
-        return localService.htmlSnippetUpdate(item);
-    },
-    delete: async (item) => {
-        return localService.htmlSnippetDelete(item);
-    }
-})
+// let htmlSnippetDataSource = new DataSource<HtmlSnippet>({
+//     primaryKeys: ["id"],
+//     select: async (args) => {
+//         return localService.htmlSnippetList(args);
+//     },
+//     insert: async (item) => {
+//         return localService.htmlSnippetInsert(item);
+//     },
+//     update: async (item) => {
+//         return localService.htmlSnippetUpdate(item);
+//     },
+//     delete: async (item) => {
+//         return localService.htmlSnippetDelete(item);
+//     }
+// })
 
 export let dataSources = {
     pageRecords: pageDataDataSource,
     storeDomain: storeDomainDataSource,
-    urlRewrite: urlRewriteDataSource,
-    htmlSnippet: htmlSnippetDataSource,
+    // urlRewrite: urlRewriteDataSource,
+    // htmlSnippet: htmlSnippetDataSource,
 }

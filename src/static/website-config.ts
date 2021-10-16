@@ -31,6 +31,7 @@ let websiteConfig: MyWebsiteConfig = {
             "node_modules/bootstrap/js/button": { deps: ["jquery"], exports: "jQuery" },
             "node_modules/bootstrap/js/dropdown": { deps: ["jquery"], exports: "jQuery" },
             "node_modules/bootstrap/dist/js/bootstrap": { deps: ["jquery"], exports: "jQuery" },
+            // "jquery-ui": { deps: ["css!jquery-ui-css"] }
         },
         paths: {
             "css": `${node_modules}/maishu-requirejs-plugins/src/css`,
@@ -49,14 +50,16 @@ let websiteConfig: MyWebsiteConfig = {
             "maishu-jueying-core": `${node_modules}/maishu-jueying-core/dist/index`,
             "maishu-toolkit": `${node_modules}/maishu-toolkit/dist/index`,
             "maishu-ui-toolkit": `${node_modules}/maishu-ui-toolkit/dist/index`,
+            "maishu-ui-toolkit/out": `${node_modules}/maishu-ui-toolkit/out`,
             "maishu-wuzhui": `${node_modules}/maishu-wuzhui/dist/index`,
             "maishu-wuzhui-helper": `${node_modules}/maishu-wuzhui-helper/dist/index`,
             "maishu-dilu": `${node_modules}/maishu-dilu/dist/index`,
             "maishu-router": `${node_modules}/maishu-router/dist/index`,
 
             "devices": `content/devices.css-1.2/assets/devices.min.css`,
-            "jquery": `${node_modules}/jquery/dist/jquery.min`,
+            "jquery": `https://www.unpkg.com/jquery@3.6.0/dist/jquery.min`,
             "jquery-ui": `content/jquery-ui-1.12.1/jquery-ui.min`,
+            // "jquery-ui-css": `https://unpkg.com/jqueryui@1.11.1/jquery-ui`,
             "js-md5": `${node_modules}/js-md5/build/md5.min`,
 
             "url-pattern": `${node_modules}/url-pattern/lib/url-pattern`,

@@ -44,7 +44,7 @@
     .editor-panel {
 
         width     : 100%;
-        border    : 1px solid #cccccc;
+        border    : none;
         background: #f5f5f5;
 
         @label-width: 80px;
@@ -87,6 +87,7 @@
         .footer {
             position: unset;
         }
+
     }
 }
 
@@ -125,8 +126,46 @@ button.btn {
 
 .component-property-panel {
 
-    width      : 350px;
-    margin-left: 10px;
+    @panel-width   : 350px;
+    @scroll-width  : 4px;
+    @header-height : 30px;
+
+    width           : @panel-width;
+    margin-left     : 10px;
+    z-index         : 100;
+    background-color: white;
+    right           : 20px;
+
+
+    &.float {
+        position  : fixed;
+        max-height: 100%;
+        overflow-y: auto;
+
+        /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+        &::-webkit-scrollbar {
+            width: @scroll-width;
+        }
+
+        /*定义滑块 内阴影+圆角*/
+        &::-webkit-scrollbar-thumb {
+            background-color: #777777;
+        }
+
+        /*定义滚动条轨道 内阴影+圆角*/
+        &::-webkit-scrollbar-track {
+            background-color: #cccccc;
+        }
+    }
+
+    .header {
+        width     : @panel-width - 2px;
+        background: rgb(245, 245, 245);
+        border    : 1px solid rgb(221, 221, 221);
+        padding   : 6px;
+        position  : fixed;
+        z-index   : 1000;
+    }
 
     .component-panel {
         z-index       : 2000;
@@ -159,6 +198,9 @@ button.btn {
     }
 
     .component-property-panel-inner {
+
+        padding-top: @header-height;
+
         &.fixed {
             position        : fixed;
             top             : 0;
@@ -166,10 +208,44 @@ button.btn {
             background-color: white;
         }
     }
+
+    border: solid 1px #ddd;
+
+    .panel {
+        border-left  : none;
+        margin-bottom: 0;
+
+        .list-group {
+            margin-bottom: 0;
+        }
+
+        .list-group-item {
+            border-left  : none;
+            border-right : none;
+            border-bottom: none;
+        }
+
+    }
 }
 
 .page-designer {
     padding-top   : 10px;
     display       : flex;
     flex-direction: row;
+
+    .page-view {
+        .ui-draggable-handle {
+            height     : 60px;
+            width      : 60px;
+            padding-top: 6px;
+
+            text-align: center;
+            border    : dotted 1px #cccccc;
+
+            i {
+                color    : black;
+                font-size: 28px;
+            }
+        }
+    }
 }

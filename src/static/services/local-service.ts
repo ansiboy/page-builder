@@ -1,6 +1,6 @@
 import { Callbacks, Service, ValueStore } from "maishu-chitu-service";
 import { DataSourceSelectArguments, DataSourceSelectResult } from "maishu-wuzhui-helper";
-import { HtmlSnippet, PageRecord, StoreDomain, UrlRewrite } from "../../entities";
+import { PageRecord, StoreDomain, } from "../../entities";
 import { pathConcat } from "maishu-toolkit";
 import { ComponentInfo } from "../model";
 import websiteConfig from "../website-config";
@@ -140,53 +140,53 @@ export class LocalService extends Service {
         return this.getByJson<string>(url);
     }
 
-    urlRewriteList(args: DataSourceSelectArguments) {
-        let url = LocalService.url("api/url-rewrite/list");
-        return this.getByJson<DataSourceSelectResult<UrlRewrite>>(url, { args });
-    }
+    // urlRewriteList(args: DataSourceSelectArguments) {
+    //     let url = LocalService.url("api/url-rewrite/list");
+    //     return this.getByJson<DataSourceSelectResult<UrlRewrite>>(url, { args });
+    // }
 
-    async urlRewriteInsert(item: UrlRewrite) {
-        let url = LocalService.url("api/url-rewrite/insert");
-        let r = await this.postByJson(url, { item });
-        Object.assign(item, r);
-        return r;
-    }
+    // async urlRewriteInsert(item: UrlRewrite) {
+    //     let url = LocalService.url("api/url-rewrite/insert");
+    //     let r = await this.postByJson(url, { item });
+    //     Object.assign(item, r);
+    //     return r;
+    // }
 
-    async urlRewriteUpdate(item: UrlRewrite) {
-        let url = LocalService.url("api/url-rewrite/update");
-        let r = await this.postByJson(url, { item });
-        Object.assign(item, r);
-        return r;
-    }
+    // async urlRewriteUpdate(item: UrlRewrite) {
+    //     let url = LocalService.url("api/url-rewrite/update");
+    //     let r = await this.postByJson(url, { item });
+    //     Object.assign(item, r);
+    //     return r;
+    // }
 
-    async urlRewriteDelete(item: UrlRewrite) {
-        let url = LocalService.url("api/url-rewrite/delete");
-        let r = await this.postByJson(url, { item });
-        return r;
-    }
+    // async urlRewriteDelete(item: UrlRewrite) {
+    //     let url = LocalService.url("api/url-rewrite/delete");
+    //     let r = await this.postByJson(url, { item });
+    //     return r;
+    // }
 
-    async htmlSnippetList(args: DataSourceSelectArguments) {
-        let url = LocalService.url("api/html-snippet/list");
-        return this.getByJson<DataSourceSelectResult<HtmlSnippet>>(url, { args });
-    }
+    // async htmlSnippetList(args: DataSourceSelectArguments) {
+    //     let url = LocalService.url("api/html-snippet/list");
+    //     return this.getByJson<DataSourceSelectResult<HtmlSnippet>>(url, { args });
+    // }
 
-    async htmlSnippetInsert(item: HtmlSnippet) {
-        let url = LocalService.url("api/html-snippet/insert");
-        return this.postByJson(url, { item });
-    }
+    // async htmlSnippetInsert(item: HtmlSnippet) {
+    //     let url = LocalService.url("api/html-snippet/insert");
+    //     return this.postByJson(url, { item });
+    // }
 
-    async htmlSnippetUpdate(item: HtmlSnippet) {
-        let url = LocalService.url("api/html-snippet/update");
-        let r = await this.postByJson(url, { item });
-        Object.assign(item, r);
-        return r;
-    }
+    // async htmlSnippetUpdate(item: HtmlSnippet) {
+    //     let url = LocalService.url("api/html-snippet/update");
+    //     let r = await this.postByJson(url, { item });
+    //     Object.assign(item, r);
+    //     return r;
+    // }
 
-    async htmlSnippetDelete(item: HtmlSnippet) {
-        let url = LocalService.url("api/html-snippet/delete");
-        let r = await this.postByJson(url, { id: item.id });
-        return r;
-    }
+    // async htmlSnippetDelete(item: HtmlSnippet) {
+    //     let url = LocalService.url("api/html-snippet/delete");
+    //     let r = await this.postByJson(url, { id: item.id });
+    //     return r;
+    // }
 
 
     async componentInfos(themeName: string) {

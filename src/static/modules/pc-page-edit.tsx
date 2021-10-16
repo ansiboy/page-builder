@@ -12,13 +12,14 @@ import { dataSources } from "../services";
 import { FormValidator, rules as r } from "maishu-dilu";
 import * as ui from "maishu-ui-toolkit";
 import { ComponentInfo } from "../model";
-import { guid } from "maishu-toolkit";
+import { Callback, guid } from "maishu-toolkit";
 import { ComponentLoader } from "../controls/component-loader";
 import websiteConfig from "../website-config";
 
 import "./content/pc-page-edit.less";
 import "../create-design-element";
 import strings from "../strings";
+import { Callbacks } from "maishu-chitu-service";
 
 interface State {
     pageRecord?: PageRecord,
@@ -39,13 +40,11 @@ interface Props extends PageProps {
 }
 
 export default class PCPageEdit extends React.Component<Props, State> {
-    // componentPanel: ComponentPanel;
     editorPanel: EditorPanel;
     validator: FormValidator;
     pageDesigner: PageDesigner;
     private localService: LocalService;
-
-    // themeName: string;
+    private componentPropertyPanel: HTMLElement;
 
     constructor(props) {
         super(props);
@@ -88,8 +87,6 @@ export default class PCPageEdit extends React.Component<Props, State> {
     }
 
     async componentDidMount() {
-
-
         let themeName = await this.getThemeName();
         this.localService.componentStationConfig(themeName).then(c => {
             let componentInfos = c.components;
@@ -135,20 +132,21 @@ export default class PCPageEdit extends React.Component<Props, State> {
     async panelInnerRef(panelInnerElement: HTMLElement) {
         if (!panelInnerElement) return;
 
-        window.addEventListener("scroll", (event) => {
-            let display = this.props.source.element.style.display;
-            if (display == "none")
-                return;
+        // window.addEventListener("scroll", (event) => {
+        //     let element = this.componentPropertyPanel;
+        //     let display = element.style.display;
+        //     if (display == "none")
+        //         return;
 
-            if (window.scrollY >= 100) {
-                this.state.componentPanel.element.style.position = "relative";
-                this.state.componentPanel.element.style.top = `${window.scrollY - 100}px`;
-            }
-            else {
-                this.state.componentPanel.element.style.position = "unset";
-                this.state.componentPanel.element.style.top = "unset";
-            }
-        });
+        //     if (window.scrollY >= 100) {
+        //         element.style.position = "relative";
+        //         element.style.top = `${window.scrollY - 100}px`;
+        //     }
+        //     else {
+        //         element.style.position = "unset";
+        //         element.style.top = "unset";
+        //     }
+        // });
     }
 
     private async getPageRecord() {
@@ -262,6 +260,13 @@ export default class PCPageEdit extends React.Component<Props, State> {
         window.open(url);
     }
 
+    componentPropertyPanelRef(e: HTMLElement) {
+        if (!e || this.componentPropertyPanel)
+            return;
+
+        this.componentPropertyPanel = e || this.componentPropertyPanel;
+    }
+
     render() {
         let { pageRecord, templateList } = this.state;
         templateList = templateList || [];
@@ -312,15 +317,17 @@ export default class PCPageEdit extends React.Component<Props, State> {
 
         return <PageDesigner pageData={pageRecord.pageData} className="page-designer"
             ref={e => this.setPageDesigner(e)}>
-
+            {/*  */}
             <DesignerContext.Consumer>
                 {() => componentPanel ? this.renderPageData(pageRecord.pageData, componentPanel, themeName, templateRecord?.pageData) : null}
             </DesignerContext.Consumer>
 
-            <div className="component-property-panel">
-                <div className="component-property-panel-inner" ref={e => this.panelInnerRef(e)}>
+            <DockPanel>
+                <ElementContainer title="页面组件">
                     <ComponentPanel ref={e => this.componentRef(e, componentInfos)} />
-                    <PageSettingsPenel parent={this} localService={this.localService} />
+                </ElementContainer>
+                <PageSettingsPenel parent={this} localService={this.localService} />
+                <ElementContainer title="属性编辑">
                     <EditorPanel className="well" customRender={(editComponents, propEditors) => {
                         let typeName = editComponents[0].type;
                         let componentEditorCustomRender = getComponentRender(typeName);
@@ -330,27 +337,29 @@ export default class PCPageEdit extends React.Component<Props, State> {
                         return componentEditorCustomRender(propEditors);
                     }}
                         ref={e => this.editorPanel = this.editorPanel || e} />
-                </div>
-            </div>
-
+                </ElementContainer>
+            </DockPanel>
         </PageDesigner>
     }
 }
 
-class PageSettingsPenel extends React.Component<{ parent: PCPageEdit, localService: LocalService; }, { parent: PCPageEdit }>{
+class PageSettingsPenel extends React.Component<{ parent: PCPageEdit, localService: LocalService, }, { parent: PCPageEdit, status: "collapse" | "expand" }>{
 
+    private static StatusName = "pc-page-edit-status";
 
     constructor(props: PageSettingsPenel["props"]) {
         super(props);
 
+        let status = localStorage.getItem(PageSettingsPenel.StatusName) as PageSettingsPenel["state"]["status"] || "expand";
         this.state = {
-            parent: props.parent
+            parent: props.parent,
+            status: status,
         };
 
     }
 
-    UNSAFE_componentWillReceiveProps(props: PageSettingsPenel["props"]) {
-        this.setState({ parent: props.parent });
+    static getDerivedStateFromProps(props: PageSettingsPenel["props"]): Partial<PageSettingsPenel["state"]> {
+        return { parent: props.parent };
     }
 
     changeTemplate(templateName: string) {
@@ -443,20 +452,30 @@ class PageSettingsPenel extends React.Component<{ parent: PCPageEdit, localServi
         this.props.parent.setState({ pageRecord });
     }
 
+    switchStatus() {
+        if (this.state.status == "expand") {
+            this.setState({ status: "collapse" });
+        }
+        else {
+            this.setState({ status: "expand" });
+        }
+    }
+
     render() {
-        let { pageRecord, templateRecord, templateList } = this.props.parent.state;
+        let { pageRecord, templateRecord, templateList, } = this.props.parent.state;
+        let { status } = this.state;
         let pageData = pageRecord.pageData;
         if (templateList == null) {
             return <div className="empty">
                 {strings.dataLoading}
             </div>
         }
-        return <div className="panel panel-default">
-            <div className="panel-heading">页面设置</div>
-            <ul className="list-group">
+        return <ElementContainer title="页面设置">
+            <ul className="list-group" style={{ display: status == "collapse" ? "none" : null }}>
                 <li className="list-group-item clearfix">
                     <div className="pull-left">
-                        页面名称</div>
+                        页面名称
+                    </div>
                     <div className="pull-right">
                         <input name="name" className="form-control input-sm" style={{ width: 180 }} value={pageRecord.name || "No Name"}
                             onChange={(e) => {
@@ -553,7 +572,126 @@ class PageSettingsPenel extends React.Component<{ parent: PCPageEdit, localServi
                     </div>
                 </li>
             </ul>
-        </div>
+        </ElementContainer>
 
+    }
+}
+
+class ElementContainer extends React.Component<{ title: string }, { status: "collapse" | "expand" }> {
+
+    constructor(props: any) {
+        super(props);
+
+        this.state = { status: "expand" }
+    }
+
+    switchStatus() {
+        if (this.state.status == "expand") {
+            this.setState({ status: "collapse" });
+        }
+        else {
+            this.setState({ status: "expand" });
+        }
+    }
+
+    render() {
+        let { title } = this.props;
+        let { status } = this.state;
+        return <div className="panel panel-default">
+            <div className="panel-heading" style={{ cursor: "pointer" }}
+                onClick={() => this.switchStatus()}>
+                {title}
+                <div className="pull-right">
+                    <i className={`glyphicon glyphicon-triangle-${status == "expand" ? "bottom" : "right"}`} />
+                </div>
+            </div>
+            <div style={{ display: status == "expand" ? null : "none" }}>
+                {this.props.children}
+            </div>
+        </div>
+    }
+}
+
+
+/** 可停靠面板，实现面板的停靠，移动 */
+class DockPanel extends React.Component<{}, { float: boolean }> {
+
+    private componentPropertyPanel: HTMLElement;
+    private sizeChanged = Callbacks<{ width: number, height: number }>();
+    private headerElement: HTMLElement;
+
+    constructor(props) {
+        super(props);
+
+        this.state = { float: true };
+
+        this.sizeChanged.add(args => {
+            this.headerElement.style.width = `${args.width - 2}px`;
+        })
+    }
+
+    componentPropertyPanelRef(e: HTMLElement) {
+        if (!e || this.componentPropertyPanel)
+            return;
+
+        let { float } = this.state;
+        this.componentPropertyPanel = e || this.componentPropertyPanel;
+        $(this.componentPropertyPanel)
+            .draggable({ disabled: !float, handle: ".header" })
+            .resizable({
+                resize: (event, ui) => {
+                    console.log(ui.size);
+                    let width = ui.size.width;
+                    let height = ui.size.height;
+                    this.sizeChanged.fire({ width, height });
+                }
+            })
+
+        window.addEventListener("scroll", () => {
+            let rect = this.componentPropertyPanel.getBoundingClientRect();
+            console.log(`top:${rect.top}`);
+            if (rect.top < 0) {
+                // this.componentPropertyPanel.style.top = `${window.screenTop}px`;
+                // this.componentPropertyPanel.style.transform = `translateY(${0 - rect.top}px)`;
+            }
+        })
+
+        //======================================================
+        // 阻止事件冒泡
+        // e.onclick = (ev) => {
+        //     ev.preventDefault();
+        //     ev.stopPropagation();
+        // }
+        //======================================================
+    }
+
+    switchFloat() {
+        let float = !this.state.float;
+        this.setState({ float });
+
+        if (float) {
+            $(this.componentPropertyPanel).draggable("enable");
+        }
+        else
+            $(this.componentPropertyPanel).draggable("disable");
+
+    }
+
+    async panelInnerRef(panelInnerElement: HTMLElement) {
+        if (!panelInnerElement) return;
+    }
+
+    render() {
+        let { float } = this.state;
+        return <div className={float ? "component-property-panel float" : "component-property-panel"}
+            ref={e => this.componentPropertyPanelRef(e)}>
+            <div className="clearfix header" ref={e => this.headerElement = e || this.headerElement}>
+                <i className={`fa fa-thumb-tack pull-right ${float ? "fa-rotate-90" : ""}`} style={{ cursor: "pointer" }}
+                    onClick={() => this.switchFloat()} />
+            </div>
+            <div className="component-property-panel-inner" ref={e => this.panelInnerRef(e)}>
+                {this.props.children}
+            </div>
+        </div>
     }
 }

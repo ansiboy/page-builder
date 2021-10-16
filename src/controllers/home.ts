@@ -4,7 +4,7 @@ import { connection, currentAppId } from "../decoders";
 import { Connection, } from "maishu-node-data";
 import { errors } from "../static/errors";
 import { PageRecord, StoreInfo } from "../entities";
-import websiteConfig, { themeHost } from "../static/website-config";
+import { themeHost } from "../static/website-config";
 import { Service } from "maishu-chitu-service";
 
 @controller("api/home")
@@ -65,7 +65,7 @@ export class HomeController {
 
     @action("themes")
     async themes() {
-        let url = `http://${themeHost}/themes`;
+        let url = `http://${themeHost}/api/themes`;
         let service = new Service();
         let themes = await service.get<string[]>(url);
         return themes;

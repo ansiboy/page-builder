@@ -83,66 +83,66 @@ export class StoreDomain {
     createDateTime: Date;
 }
 
-@Entity("url_rewrite")
-export class UrlRewrite {
-    @PrimaryColumn({ type: "char", length: 36 })
-    id: string;
+// @Entity("url_rewrite")
+// export class UrlRewrite {
+//     @PrimaryColumn({ type: "char", length: 36 })
+//     id: string;
 
-    @Column({ type: "varchar", length: 200 })
-    originalUrl: string;
+//     @Column({ type: "varchar", length: 200 })
+//     originalUrl: string;
 
-    @Column({ type: "varchar", length: 200 })
-    newUrl: string;
+//     @Column({ type: "varchar", length: 200 })
+//     newUrl: string;
 
-    @Column({ type: "datetime" })
-    createDateTime: Date;
+//     @Column({ type: "datetime" })
+//     createDateTime: Date;
 
-    @Column({ type: "char", length: 36 })
-    applicationId: string;
-}
+//     @Column({ type: "char", length: 36 })
+//     applicationId: string;
+// }
 
-/**
- * HTML 片段，用于向 HTML 页面添加 HTML 代码片段
- */
-@Entity("html_snippet")
-export class HtmlSnippet {
+// /**
+//  * HTML 片段，用于向 HTML 页面添加 HTML 代码片段
+//  */
+// @Entity("html_snippet")
+// export class HtmlSnippet {
 
-    @PrimaryColumn({ type: "char", length: 36 })
-    id: string;
+//     @PrimaryColumn({ type: "char", length: 36 })
+//     id: string;
 
-    @Column({ type: "varchar", length: 50 })
-    url: string;
+//     @Column({ type: "varchar", length: 50 })
+//     url: string;
 
-    @Column({ type: "text" })
-    code: string;
+//     @Column({ type: "text" })
+//     code: string;
 
-    @Column({ type: "varchar", length: 20 })
-    target: "head" | "body";
+//     @Column({ type: "varchar", length: 20 })
+//     target: "head" | "body";
 
-    @Column({ type: "char", length: 36 })
-    applicationId: string;
+//     @Column({ type: "char", length: 36 })
+//     applicationId: string;
 
-    @Column({ type: "date" })
-    createDateTime: Date;
+//     @Column({ type: "date" })
+//     createDateTime: Date;
 
-    /** 替换，css 选择器 */
-    @Column({ type: "varchar", length: 50, nullable: true })
-    replacement?: string;
+//     /** 替换，css 选择器 */
+//     @Column({ type: "varchar", length: 50, nullable: true })
+//     replacement?: string;
 
-    @Column({
-        type: "bit", nullable: true,
-        transformer: {
-            to(value) {
-                return value == true ? 1 : 0;
-            },
-            from(value) {
-                if (Buffer.isBuffer(value))
-                    value = value[0];
+//     @Column({
+//         type: "bit", nullable: true,
+//         transformer: {
+//             to(value) {
+//                 return value == true ? 1 : 0;
+//             },
+//             from(value) {
+//                 if (Buffer.isBuffer(value))
+//                     value = value[0];
 
-                return value == 1;
-            }
-        },
-    })
-    isRegex?: boolean;
+//                 return value == 1;
+//             }
+//         },
+//     })
+//     isRegex?: boolean;
 
-}
+// }

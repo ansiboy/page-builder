@@ -1,0 +1,1829 @@
+swagger: "2.0"
+info:
+  description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
+  version: "1.0.0"
+  title: "Swagger Petstore"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "127.0.0.1:2880"
+basePath: "/"
+tags:
+- name: "address"
+  description: 后台地址管理
+- name: "member"
+  description: 后台会员接口
+- name: "statistics"
+  description: 后台统计接口
+- name: "shell"
+  description: 手机壳
+- name: "order"
+  description: "后台订单管理接口"
+- name: "product"
+  description: "后台商品接口"
+- name: "pet"
+  description: "Everything about your Pets"
+  externalDocs:
+    description: "Find out more"
+    url: "http://swagger.io"
+- name: "store"
+  description: "Access to Petstore orders"
+- name: "user"
+  description: "Operations about user"
+  externalDocs:
+    description: "Find out more about our store"
+    url: "http://swagger.io"
+
+schemes:
+- "http"
+paths:
+  /admin-api/site/data/color/list/:
+    get:
+      tags: [shell]
+      summary: 获取颜色列表
+      responses:
+        "200":
+          description: "颜色列表"
+          
+          
+  /admin-api/site/data/color/insert/:
+    post:
+      tags: [shell]
+      summary: 添加颜色
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "body"
+        name: model,
+        schema:
+          type: object
+          properties:
+            item:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+      
+      responses:
+        "200":
+          description: ""
+  /admin-api/site/data/color/update/:
+    post:
+      tags: [shell]
+      summary: 更改颜色
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "body"
+        name: model,
+        schema:
+          type: object
+          properties:
+            item:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+      
+      responses:
+        "200":
+          description: ""        
+  /admin-api/site/data/color/delete/:
+    post:
+      tags: [shell]
+      summary: 删除颜色
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "body"
+        name: model
+        schema:
+          type: object
+          properties:
+            id:
+              type: string
+            
+      responses:
+        "200":
+          description: ""
+          
+  /admin-api/site/data/brand/list/:
+    get:
+      tags: [shell]
+      summary: 获取品牌列表
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+
+      responses:
+        "200":
+          description: ""
+          
+  /admin-api/site/data/brand/insert/:
+    post:
+      tags: [shell]
+      summary: 添加品牌
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "body"
+        name: model
+        schema:
+          type: object
+          properties:
+            item:
+              type: object
+              properties:
+                name:
+                  type: string
+                models:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        "200":
+          description: ""
+  
+  /admin-api/site/data/brand/update/:
+    post:
+      tags: [shell]
+      summary: 更新品牌
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "body"
+        name: model
+        schema:
+          type: object
+          properties:
+            item: 
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+                models:
+                  type: array
+                  items:
+                    type: string
+    
+      responses:
+          "200":
+            description: ""      
+        
+  /admin-api/site/data/brand/delete/:
+    post:
+      tags: [shell]
+      summary: 删除品牌
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "body"
+        name: model
+        schema:
+          type: object
+          properties:
+            id:
+              type: string
+            
+      responses:
+        "200":
+          description: ""
+    
+  /admin-api/site/data/home-picture/insert/:      
+    post:
+      tags: [shell]
+      summary: 添加首页图片
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "body"
+        name: model
+        schema:
+          type: object
+          properties:
+            item:
+              type: object
+              properties:
+                image-id:
+                  type: string
+
+      responses:
+        "200":
+          description: ""
+          
+  /admin-api/site/data/home-picture/update/:      
+    post:
+      tags: [shell]
+      summary: 添加首页图片
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "body"
+        name: model
+        schema:
+          type: object
+          properties:
+            item:
+              type: object
+              properties:
+                name:
+                  type: string
+                models:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        "200":
+          description: ""
+          
+  /admin-api/site/data/home-picture/delete/:  
+    post:
+      tags: [shell]
+      summary: 删除首页图片
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "body"
+        name: model
+        schema:
+          type: object
+          properties:
+            id:
+              type: string
+            
+      responses:
+        "200":
+          description: ""
+  
+  /admin-api/site/data/home-product/insert/:      
+    post:
+      tags: [shell]
+      summary: 添加首页商品
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "body"
+        name: model
+        schema:
+          type: object
+          properties:
+            item:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 标题
+                description:
+                  type: string
+                  description: 描述
+                brand-id:
+                  type: string
+                  description: 品牌编号
+                model:
+                  type: string
+                  description: 型号
+                product-id:
+                  type: string
+                  description: 手机壳商品编号
+      responses:
+        "200":
+          description: ""
+  
+  /admin-api/site/data/home-product/update/:      
+    post:
+      tags: [shell]
+      summary: 更新首页商品
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "body"
+        name: model
+        schema:
+          type: object
+          properties:
+            item:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: 标题
+                description:
+                  type: string
+                  description: 描述
+                product-id:
+                  type: string
+                  description: 手机壳商品编号
+      responses:
+        "200":
+          description: ""
+          
+  /admin-api/site/data/home-product/delete/:   
+    post:
+      tags: [shell]
+      summary: 删除首页商品
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "body"
+        name: model
+        schema:
+          type: object
+          properties:
+            id:
+              type: string
+            
+      responses:
+        "200":
+          description: ""
+  
+  
+  /AdminShop/Order/OrderCount:
+    get:
+      tags: 
+      - "order"
+      summary: 获取指定时间段的订单数量
+      consumes:
+        - "application/x-www-form-urlencoded"
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "query"
+        name: "beginDate"
+        type: "string"
+        description: 时间段的开始日期（包括该日期）
+        required: true
+      - in: "query"
+        name: "endDate"
+        type: "string"
+        description: 时间段的结束日期（不包括该日期）
+        required: true
+      - in: "query"
+        name: "status"
+        type: "string"
+        description: "可选，如果设置了该值，则仅包含该状态的订单"
+      responses:
+        "200": 
+          description: "返回订单数量"
+  /AdminShop/Product/ProductCount:
+    get:
+      tags: ["product"]
+      summary: 获取商品数量
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "query"
+        name: offShelve
+        type: boolean
+        description: 可选，true 为已下架商品，false 为在售商品
+      - in: "query"
+        name: includeVariant
+        type: boolean
+        description: 是否包含变体商品，可选，默认为 false，不包含变体商品
+      responses:
+        "200":
+          description: "返回商品数量"
+  /AdminShop/Product/GetProductProblems:
+    get:
+      tags: ["product"]
+      summary: 获取商品问答
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: query
+        name: args
+        type: string
+      responses:
+        "200":
+          description: 返回商品问答数据集
+  /AdminShop/Product/AddProductProblem:
+    post:
+      tags: ["product"]
+      summary: 添加商品问答
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "body"
+        name: problem
+        schema:
+          $ref: "#/definitions/ProductProblem" 
+      responses:
+        200:
+          description: ""
+          schema:
+            properties:
+              id:
+                type: string
+  /AdminShop/Product/UpdateProductProblem:
+    post:
+      tags: ["product"]
+      summary: 跟新商品问答
+      consumes:
+        - "application/x-www-form-urlencoded"
+        - "application/json"
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "formData"
+        name: "id"
+        type: string
+      - in: "formData"
+        name: productId
+        type: string
+        description: 商品编号
+      - in: formData
+        name: ask
+        type: string
+      - in: formData
+        name: anwser
+        type: string
+      responses:
+        200:
+          description: ""
+  /AdminShop/Product/DeleteProductComment:
+    post:
+      tags: ["product"]
+      summary: 删除商品评论
+      consumes:
+        - "application/x-www-form-urlencoded"
+        - "application/json"
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: formData
+        name: id
+        type: string
+        description: 评论编号
+      responses:
+        200:
+          description: ""
+  /AdminShop/Product/AddProductComment:
+    post:
+      tags: ["product"]
+      summary: 添加商品评论
+      consumes:
+        - "application/x-www-form-urlencoded"
+        - "application/json"
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "body"
+        name: comment
+        schema:
+          type: object
+          properties:
+            Id: 
+              type: string
+      responses:
+        200:
+          description: ""
+          
+  /UserShop/Product/FavorProduct:
+    post:
+      tags: ["product"]
+      summary: 收藏商品
+      consumes:
+        - "application/x-www-form-urlencoded"
+        - "application/json"
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "formData"
+        name: productId
+        type: string
+        required: true
+      responses:
+        200:
+          description: ""          
+          schema:
+            $ref: "#/definitions/FavorProduct"
+                
+  /UserShop/Product/UnFavorProduct:
+    post:
+      tags: ["product"]
+      summary: 取消收藏商品
+      consumes:
+        - "application/x-www-form-urlencoded"
+        - "application/json"
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "formData"
+        name: productId
+        type: string
+        required: true
+      responses:
+        200:
+          description: ""          
+          schema:
+            $ref: "#/definitions/FavorProduct"
+  /AdminStatistics/Order/TotalAmount:
+    get:
+      tags: ["statistics"]
+      summary: 获取店铺的总销售额
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      responses:
+        200:
+          description: 返回该店铺的总销售额
+          schema:
+            type: number
+            
+  /AdminShop/Member/UpdateMemberLevel:
+    post: 
+      tags: ["member"]
+      summary: 更新指定会员的会员等级
+      consumes:
+        - "application/x-www-form-urlencoded"
+        - "application/json"
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "formData"
+        name: "userId"
+        type: string
+        description: "指定的会员编号"
+        required: true
+      - in: "formData"
+        name: "level"
+        type: number
+        description: 会员级别
+      responses:
+        200:
+          description: "返回错误对象"
+          schema: 
+            $ref: "#/definitions/ErrorObject"
+            
+  /AdminStatistics/Order/UserConsumptions:
+    get:
+      tags: ["statistics"]
+      summary: 获取多个会员的消费数据(会员管理)
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "query"
+        name: "userIds"
+        type: "string"
+        required: true
+      responses:
+        200:
+          description: "返回用户的消费数据"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/UserConsumption"
+            
+  /AdminShop/Address/GetReceiptInfos:
+    get:
+      tags: ["address"]
+      summary: 获取会员地址列表
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: query
+        name: userId
+        type: string
+        required: true
+      responses:
+        200:
+          description: ""
+          schema:
+            type: array
+            items: 
+              $ref: "#/definitions/ReceiptInfo"
+  /AdminStatistics/Order/OrderDateStatistics:
+    get:
+      tags: ["statistics"]
+      summary: "获取店铺指定时间段的订单数据"
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "query"
+        name: "beginDate"
+        type: "string"
+        required: true
+        description: "时间段的开始时间（包括该天数据）"
+      - in: query
+        name: endDate
+        type: string
+        required: true
+        description: "时间段的结束时间（不包括该天数据）"
+      responses:
+        200:
+          description: ""
+  /AdminStatistics/Order/HistoryTotalOrders:
+    get:
+      tags: ["statistics"]
+      summary: "获取已统计的订单总数(销售可视化)"
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      responses:
+        200:
+          description: ""
+          schema: 
+            type: number
+          
+  /AdminStatistics/User/DayUsers:
+    get:
+      tags: ["statistics"]
+      summary: "获取指定时间段内，每天的注册用户数(销售可视化)"
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "query"
+        name: "beginDate"
+        type: "string"
+        required: true
+        description: "时间段的开始时间（包括该天数据）"
+      - in: query
+        name: endDate
+        type: string
+        required: true
+        description: "时间段的结束时间（不包括该天数据）"
+      responses:
+        200:
+          description: ""
+          schema:
+            type: array
+            items:
+              properties:
+                Count: 
+                  type: number
+                  description: 当天注册用户数
+                Date:
+                  type: string
+                  description: 统计日期
+  
+  /AdminStatistics/User/HistoryTotalUsers:
+    get:
+      tags: ["statistics"]
+      summary: "获取已统计的用户总数,(销售可视化)"
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      responses:
+        200:
+          description: ""
+          schema:
+            type: number
+  
+  /AdminStatistics/Order/SalesByMonth:
+    get:
+      tags: ["statistics"]
+      summary: "获取指定时间段每月的销售额,(销售可视化)"
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: query
+        name: beginDate
+        type: string
+        description: "开始时间，日期必须为 1 号，数据包括该月"
+      - in: query
+        name: endDate
+        type: string
+        description: "结束时间，日期必须为 1 号，数据不包括该月"
+      responses:
+        200:
+          description: ""
+          schema:
+            type: array
+            items: 
+              properties:
+                Amount: 
+                  type: number
+                Date:
+                  type: string
+                  
+  /AdminStatistics/Product/TopSales:
+    get:
+      tags: ["statistics"]
+      summary: "统计每款产品的销售,(销售可视化)"
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "body"
+        name: "args"
+        schema:
+          $ref : "#/definitions/DataSourceSelectArguments"
+      responses:
+          200:
+            description: "返回排名商品结果"
+            schema:
+              properties:
+                TotalRowCount: 
+                  type: number
+                DataItems:
+                  type: array
+                  items: 
+                    properties:
+                      ProductId: 
+                        type: string
+                      ProductName: 
+                        type: string
+                      Count: 
+                        type: number
+                      Ranking: 
+                        type: number
+                      Amount:
+                        type: number
+                        
+  /AdminStatistics/Product/DayCustomerBuy:
+    get:
+      tags: ["statistics"]
+      summary: "获取当天小时的客单价,(销售可视化)"
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      - in: "query"
+        name: "date"
+        type: "string"
+        required: true
+      responses:
+        200:
+          description: "返回指定日期每小时的客单价"
+          schema:
+            type: "array"
+            items:
+              properties:
+                AvgAmount:
+                  type: number
+                  description: 客单价
+                Hour:
+                  type: number
+                  description: 客户付款时间的小时
+                  
+  /AdminStatistics/Product/DayOrders:
+    get:
+      tags: ["statistics"]
+      summary: "获取指定当天每成交的订单,(销售可视化)"
+      parameters:
+      - in: "header"
+        name: "application-id"
+        type: "string"
+        required: true
+        default: "7bbfa36c-8115-47ad-8d47-9e52b58e7efd"
+      - in: "header"
+        name: "token"
+        type: "string"
+        required: true
+        default: "897d6d56-8593-014c-c853-74480fc09540"
+      responses:
+        200:
+          description: "返回指定日期每小时的成交的订单"
+          schema:
+            type: "array"
+            items:
+              properties:
+                Count:
+                  type: number
+                  description: 订单数
+                Hour:
+                  type: number
+                  description: 订单付款时间的小时
+                  
+                    
+                  
+  /pet:
+    post:
+      tags:
+      - "pet"
+      summary: "Add a new pet to the store"
+      description: ""
+      operationId: "addPet"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Pet object that needs to be added to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/Pet"
+      responses:
+        "405":
+          description: "Invalid input"
+      security:
+      - petstore_auth:
+        - "write:pets"
+        - "read:pets"
+    put:
+      tags:
+      - "pet"
+      summary: "Update an existing pet"
+      description: ""
+      operationId: "updatePet"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Pet object that needs to be added to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/Pet"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Pet not found"
+        "405":
+          description: "Validation exception"
+      security:
+      - petstore_auth:
+        - "write:pets"
+        - "read:pets"
+  /pet/findByStatus:
+    get:
+      tags:
+      - "pet"
+      summary: "Finds Pets by status"
+      description: "Multiple status values can be provided with comma separated strings"
+      operationId: "findPetsByStatus"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "status"
+        in: "query"
+        description: "Status values that need to be considered for filter"
+        required: true
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "available"
+          - "pending"
+          - "sold"
+          default: "available"
+        collectionFormat: "multi"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Pet"
+        "400":
+          description: "Invalid status value"
+      security:
+      - petstore_auth:
+        - "write:pets"
+        - "read:pets"
+  /pet/findByTags:
+    get:
+      tags:
+      - "pet"
+      summary: "Finds Pets by tags"
+      description: "Muliple tags can be provided with comma separated strings. Use         tag1, tag2, tag3 for testing."
+      operationId: "findPetsByTags"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "tags"
+        in: "query"
+        description: "Tags to filter by"
+        required: true
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Pet"
+        "400":
+          description: "Invalid tag value"
+      security:
+      - petstore_auth:
+        - "write:pets"
+        - "read:pets"
+      deprecated: true
+  /pet/{petId}:
+    get:
+      tags:
+      - "pet"
+      summary: "Find pet by ID"
+      description: "Returns a single pet"
+      operationId: "getPetById"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "petId"
+        in: "path"
+        description: "ID of pet to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Pet"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Pet not found"
+      security:
+      - api_key: []
+    post:
+      tags:
+      - "pet"
+      summary: "Updates a pet in the store with form data"
+      description: ""
+      operationId: "updatePetWithForm"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "petId"
+        in: "path"
+        description: "ID of pet that needs to be updated"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "name"
+        in: "formData"
+        description: "Updated name of the pet"
+        required: false
+        type: "string"
+      - name: "status"
+        in: "formData"
+        description: "Updated status of the pet"
+        required: false
+        type: "string"
+      responses:
+        "405":
+          description: "Invalid input"
+      security:
+      - petstore_auth:
+        - "write:pets"
+        - "read:pets"
+    delete:
+      tags:
+      - "pet"
+      summary: "Deletes a pet"
+      description: ""
+      operationId: "deletePet"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "api_key"
+        in: "header"
+        required: false
+        type: "string"
+      - name: "petId"
+        in: "path"
+        description: "Pet id to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Pet not found"
+      security:
+      - petstore_auth:
+        - "write:pets"
+        - "read:pets"
+  /pet/{petId}/uploadImage:
+    post:
+      tags:
+      - "pet"
+      summary: "uploads an image"
+      description: ""
+      operationId: "uploadFile"
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "petId"
+        in: "path"
+        description: "ID of pet to update"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "additionalMetadata"
+        in: "formData"
+        description: "Additional data to pass to server"
+        required: false
+        type: "string"
+      - name: "file"
+        in: "formData"
+        description: "file to upload"
+        required: false
+        type: "file"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+      security:
+      - petstore_auth:
+        - "write:pets"
+        - "read:pets"
+  /store/inventory:
+    get:
+      tags:
+      - "store"
+      summary: "Returns pet inventories by status"
+      description: "Returns a map of status codes to quantities"
+      operationId: "getInventory"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "object"
+            additionalProperties:
+              type: "integer"
+              format: "int32"
+      security:
+      - api_key: []
+  /store/order:
+    post:
+      tags:
+      - "store"
+      summary: "Place an order for a pet"
+      description: ""
+      operationId: "placeOrder"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "order placed for purchasing the pet"
+        required: true
+        schema:
+          $ref: "#/definitions/Order"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Order"
+        "400":
+          description: "Invalid Order"
+  /store/order/{orderId}:
+    get:
+      tags:
+      - "store"
+      summary: "Find purchase order by ID"
+      description: "For valid response try integer IDs with value >= 1 and <= 10.         Other values will generated exceptions"
+      operationId: "getOrderById"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "orderId"
+        in: "path"
+        description: "ID of pet that needs to be fetched"
+        required: true
+        type: "integer"
+        maximum: 10.0
+        minimum: 1.0
+        format: "int64"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Order"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Order not found"
+    delete:
+      tags:
+      - "store"
+      summary: "Delete purchase order by ID"
+      description: "For valid response try integer IDs with positive integer value.         Negative or non-integer values will generate API errors"
+      operationId: "deleteOrder"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "orderId"
+        in: "path"
+        description: "ID of the order that needs to be deleted"
+        required: true
+        type: "integer"
+        minimum: 1.0
+        format: "int64"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Order not found"
+  /user:
+    post:
+      tags:
+      - "user"
+      summary: "Create user"
+      description: "This can only be done by the logged in user."
+      operationId: "createUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        default:
+          description: "successful operation"
+  /user/createWithArray:
+    post:
+      tags:
+      - "user"
+      summary: "Creates list of users with given input array"
+      description: ""
+      operationId: "createUsersWithArrayInput"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of user object"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/User"
+      responses:
+        default:
+          description: "successful operation"
+  /user/createWithList:
+    post:
+      tags:
+      - "user"
+      summary: "Creates list of users with given input array"
+      description: ""
+      operationId: "createUsersWithListInput"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of user object"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/User"
+      responses:
+        default:
+          description: "successful operation"
+  /user/login:
+    get:
+      tags:
+      - "user"
+      summary: "Logs user into the system"
+      description: ""
+      operationId: "loginUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "The user name for login"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "query"
+        description: "The password for login in clear text"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "string"
+          headers:
+            X-Rate-Limit:
+              type: "integer"
+              format: "int32"
+              description: "calls per hour allowed by the user"
+            X-Expires-After:
+              type: "string"
+              format: "date-time"
+              description: "date in UTC when token expires"
+        "400":
+          description: "Invalid username/password supplied"
+  /user/logout:
+    get:
+      tags:
+      - "user"
+      summary: "Logs out current logged in user session"
+      description: ""
+      operationId: "logoutUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters: []
+      responses:
+        default:
+          description: "successful operation"
+  /user/{username}:
+    get:
+      tags:
+      - "user"
+      summary: "Get user by user name"
+      description: ""
+      operationId: "getUserByName"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "The name that needs to be fetched. Use user1 for testing. "
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
+        "400":
+          description: "Invalid username supplied"
+        "404":
+          description: "User not found"
+    put:
+      tags:
+      - "user"
+      summary: "Updated user"
+      description: "This can only be done by the logged in user."
+      operationId: "updateUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "name that need to be updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        "400":
+          description: "Invalid user supplied"
+        "404":
+          description: "User not found"
+    delete:
+      tags:
+      - "user"
+      summary: "Delete user"
+      description: "This can only be done by the logged in user."
+      operationId: "deleteUser"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "The name that needs to be deleted"
+        required: true
+        type: "string"
+      responses:
+        "400":
+          description: "Invalid username supplied"
+        "404":
+          description: "User not found"
+securityDefinitions:
+  petstore_auth:
+    type: "oauth2"
+    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
+    flow: "implicit"
+    scopes:
+      write:pets: "modify pets in your account"
+      read:pets: "read your pets"
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+definitions:
+  DataSourceSelectArguments:
+    type: object
+    properties:
+      StartRowIndex: 
+        type: number
+      MaximumRows: 
+        type: number
+      SortExpression: 
+        type: string
+      Selection:
+        type: string
+      Filter:
+        type: string
+      
+  ReceiptInfo:
+    type: object
+    properties:
+      Id:
+        type: string
+      Address:
+        type: string
+      PostalCode:
+        type: string
+        description: 邮编
+      Mobile:
+        type: string
+        description: 手机
+      MemberId:
+        type: string
+        description: 会员编号
+      CountryName:
+        type: string
+        description: 国家
+      ProvinceName:
+        type: string
+        description: 省
+        
+  UserConsumption:
+    type: object
+    description: 用户消费数据
+    properties:
+      Id:
+        type: string
+        description: 用户编号
+      CreateDateTime:
+        type: string
+      ApplicationId:
+        type: string
+      TotalAmount:
+        type: number
+        description: 累计消费
+      AvgAmount:
+        type: number
+        description: 客单价
+      OrdersCount:
+        type: number
+        description: 客单量
+      LastestOrderDate:
+        type: string
+        description: 最近消费时间
+  ErrorObject:
+    type: object
+    properties:
+      Code:
+        type: string
+        
+  FavorProduct:
+    type: object
+    properties:
+      Id: 
+        type: string
+      UserId:
+        type: string
+      ImageUrl:
+        type: string
+      ProductId:
+        type: string
+      ProductName:
+        type: string
+  ProductProblem:
+    type: object
+    properties:
+      ProductId:
+        type: "string"
+        description: 商品编号
+      GroupId:
+        type: "string"
+        description: 商品主编码
+      Ask:
+        type: string
+        description: 提问内容
+      Answers:
+        type: string
+        description: 回答
+      Email:
+        type: string
+        description: 用户邮箱
+      Name:
+        type: string
+        description: 用户姓名
+  Order:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      petId:
+        type: "integer"
+        format: "int64"
+      quantity:
+        type: "integer"
+        format: "int32"
+      shipDate:
+        type: "string"
+        format: "date-time"
+      status:
+        type: "string"
+        description: "Order Status"
+        enum:
+        - "placed"
+        - "approved"
+        - "delivered"
+      complete:
+        type: "boolean"
+        default: false
+    xml:
+      name: "Order"
+  Category:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+    xml:
+      name: "Category"
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      phone:
+        type: "string"
+      userStatus:
+        type: "integer"
+        format: "int32"
+        description: "User Status"
+    xml:
+      name: "User"
+  Tag:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+    xml:
+      name: "Tag"
+  Pet:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      category:
+        $ref: "#/definitions/Category"
+      name:
+        type: "string"
+        example: "doggie"
+      photoUrls:
+        type: "array"
+        xml:
+          name: "photoUrl"
+          wrapped: true
+        items:
+          type: "string"
+      tags:
+        type: "array"
+        xml:
+          name: "tag"
+          wrapped: true
+        items:
+          $ref: "#/definitions/Tag"
+      status:
+        type: "string"
+        description: "pet status in the store"
+        enum:
+        - "available"
+        - "pending"
+        - "sold"
+    xml:
+      name: "Pet"
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      type:
+        type: "string"
+      message:
+        type: "string"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

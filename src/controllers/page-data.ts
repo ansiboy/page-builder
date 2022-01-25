@@ -6,8 +6,9 @@ import { guid } from "maishu-toolkit";
 import { connection, currentAppId } from "../decoders";
 import { HomeController } from "./home";
 import { ContentResult } from "maishu-nws-mvc";
+import { ControllerRoot } from "../config";
 
-@controller("api/page-data")
+@controller(`${ControllerRoot}page-data`)
 export class PageDataController {
     @action()
     async list(@connection conn: Connection, @routeData { args }: { args: SelectArguments }, @currentAppId appId: string) {

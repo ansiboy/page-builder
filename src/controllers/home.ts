@@ -6,8 +6,9 @@ import { errors } from "../static/errors";
 import { PageRecord, StoreInfo } from "../entities";
 import { themeHost } from "../static/website-config";
 import { Service } from "maishu-chitu-service";
+import { ControllerRoot } from "../config";
 
-@controller("api/home")
+@controller(`${ControllerRoot}home`)
 export class HomeController {
 
     @action("menu-items")

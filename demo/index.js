@@ -12,7 +12,7 @@ start({
         database: "taro-builder",
         entities: ["../out/entities.js"],
         synchronize: false,
-        host: "127.0.0.1",
+        host: "shop-db",
         port: 3306
             //host: "finememo.com", port: 3306
     },

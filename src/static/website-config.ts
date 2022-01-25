@@ -1,3 +1,4 @@
+// import { ControllerRoot } from "../config";
 import { WebsiteConfig } from "maishu-admin-scaffold/static/website-config";
 
 //==========================================================================
@@ -8,7 +9,7 @@ let storePort = 5218;
 
 type MyWebsiteConfig = WebsiteConfig & {
     componentStations: { aixpi: string, flone: string, generic: string, "gemwon-pc": string },
-    componentShare: string, storePort: number
+    componentShare: string, storePort: number, controllerRoot: string
 };
 
 export let libVirtualPath = "lib";
@@ -88,6 +89,7 @@ let websiteConfig: MyWebsiteConfig = {
     ],
     // mode: "production",
     mode: "development",
+    controllerRoot: "admin-api/",
 
 };
 export default websiteConfig;

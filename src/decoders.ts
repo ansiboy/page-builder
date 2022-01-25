@@ -1,5 +1,5 @@
 import { createParameterDecorator, VirtualDirectory } from "maishu-node-mvc";
-import { getConnectionManager, createConnection, getConnection, Connection } from "maishu-node-data";
+import { getConnectionManager, createConnection, getConnection, Connection, DataHelper } from "maishu-node-data";
 import { ConnectionOptions } from "maishu-node-data";
 import * as querystring from "querystring";
 import { StoreDomain } from "./entities";
@@ -47,3 +47,4 @@ export function getMyConnection() {
         return resolve(connection);
     });
 }
+

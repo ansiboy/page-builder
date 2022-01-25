@@ -597,9 +597,17 @@ class ElementContainer extends React.Component<{ title: string }, { status: "col
     render() {
         let { title } = this.props;
         let { status } = this.state;
-        return <div className="panel panel-default">
+        return <div className="panel panel-default" onClick={e => {
+
+        }}>
             <div className="panel-heading" style={{ cursor: "pointer" }}
-                onClick={() => this.switchStatus()}>
+                onClick={(e) => {
+    
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    this.switchStatus();
+                }}>
                 {title}
                 <div className="pull-right">
                     <i className={`glyphicon glyphicon-triangle-${status == "expand" ? "bottom" : "right"}`} />

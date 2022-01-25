@@ -1,3 +1,4 @@
+import { ControllerRoot } from "../config";
 import { Connection, DataHelper } from "maishu-node-data";
 import { action, controller, routeData } from "maishu-nws-mvc";
 import { guid } from "maishu-toolkit";
@@ -5,7 +6,7 @@ import { connection, currentAppId } from "../decoders";
 import { StoreDomain } from "../entities";
 import { errors } from "../static/errors";
 
-@controller("api/store-domain")
+@controller(`${ControllerRoot}store-domain`)
 export class StoreDomainController {
     @action()
     async list(@connection conn: Connection, @currentAppId appId) {

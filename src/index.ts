@@ -5,13 +5,7 @@ import { ConnectionOptions, createConnection } from "maishu-node-data";
 import websiteConfig from "./static/website-config";
 import { sourceVirtualPaths } from "maishu-chitu-scaffold";
 // import { getDomain, StoreHtmlTransform } from "./content-transforms/store-html-transform";
-import { pathConcat } from "maishu-toolkit";
-import * as querystring from "querystring";
-import { getMyConnection } from "./decoders";
-import { PageRecord, StoreDomain, StoreInfo } from "./entities";
-import { IncomingMessage } from "http";
 import { startMessage } from "./message";
-import { routers } from "./static/routers";
 import { AdminHtmlTransform } from "./content-transforms/admin-html-transform";
 
 interface Settings {
@@ -68,32 +62,34 @@ export async function start(settings: Settings) {
         proxy,
         processors: {
             JavaScriptProcessor: {
-                "\\S+.js$": {
-                    "presets": [
-                        ["@babel/preset-env", {
-                            "targets": { chrome: 58 }
-                        }]
-                    ],
-                    plugins: [
-                        ["@babel/plugin-transform-modules-amd", { noInterop: true }],
-                    ]
+                babel: {
+                    "\\S+.js$": {
+                        "presets": [
+                            ["@babel/preset-env", {
+                                "targets": { chrome: 58 }
+                            }]
+                        ],
+                        plugins: [
+                            ["@babel/plugin-transform-modules-amd", { noInterop: true }],
+                        ]
+                    },
+
                 },
+                ignorePaths: function (path: string) {
+                    let maishuOut = /\S*\/node_modules\/\S+\/out\/\S+/;
+                    if (maishuOut.test(path)) {
+                        return false;
+                    }
 
-            },
-            ignorePaths: function (path: string) {
-                let maishuOut = /\S*\/node_modules\/\S+\/out\/\S+/;
-                if (maishuOut.test(path)) {
+                    let regexes = [/\S*\/node_modules\S+/, /\S*\/lib\S+/]
+                    for (let i = 0; i < regexes.length; i++) {
+                        if (regexes[i].test(path))
+                            return true;
+                    }
+
                     return false;
-                }
-
-                let regexes = [/\S*\/node_modules\S+/, /\S*\/lib\S+/]
-                for (let i = 0; i < regexes.length; i++) {
-                    if (regexes[i].test(path))
-                        return true;
-                }
-
-                return false;
-            },
+                },
+            }
         }
     }
 

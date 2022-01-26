@@ -1,3 +1,5 @@
+// import type { DataStorage } from "data-storage";
+
 interface MenuItem {
     id: string,
     name: string,
@@ -6,8 +8,9 @@ interface MenuItem {
 }
 
 interface ContextData {
-    db: import("maishu-node-data").ConnectionOptions,
-    menuItem: MenuItem[],
+    // db: import("maishu-node-data").ConnectionOptions,
+    // menuItem: MenuItem[],
+    dataStorage: import("./data-storage").DataStorage
 }
 
 declare module "json!menu-items" {

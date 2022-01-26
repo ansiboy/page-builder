@@ -83,21 +83,21 @@ export class StoreDomain {
     createDateTime: Date;
 }
 
-@Entity("custom_data")
-export class CustomData {
-    @PrimaryColumn({ type: "char", length: 36 })
-    id: string;
+// @Entity("custom_data")
+// export class CustomData {
+//     @PrimaryColumn({ type: "char", length: 36 })
+//     id: string;
 
-    @Column({ type: "char", length: 36 })
-    applicationId: string;
+//     @Column({ type: "char", length: 36 })
+//     applicationId: string;
 
-    @Column({ type: "json" })
-    data: any;
+//     @Column({ type: "json" })
+//     data: any;
 
-    @Column({ type: "datetime" })
-    createDateTime: Date;
+//     @Column({ type: "datetime" })
+//     createDateTime: Date;
 
-    @Column({ type: "varchar", length: 45 })
-    type: string;
-}
+//     @Column({ type: "varchar", length: 45 })
+//     type: string;
+// }
 

@@ -9,6 +9,9 @@ import strings from "../strings";
 import { FormValidator, rules } from "maishu-dilu-react";
 import { PageHelper } from "../controls/page-helper";
 import { PageProps } from "maishu-chitu-react"
+import { errors } from "../errors";
+
+import { Props as PCPageEditProps } from "./pc-page-edit";
 
 interface State {
     item: Partial<PageRecord>,
@@ -45,13 +48,13 @@ export default class PageListPage extends React.Component<Props, State> {
                 boundField<PageRecord>({ dataField: "remark", headerText: "备注" }),
                 boundField<PageRecord>({ dataField: "themeName", headerText: "主题", sortExpression: "themeName" }),
                 boundField<PageRecord>({ dataField: "templateName", headerText: "模板", sortExpression: "templateName" }),
-                dateTimeField<PageRecord>({ dataField: "createDateTime", headerText: "创建时间" }),
+                dateTimeField<PageRecord>({ dataField: "createDateTime", headerText: "创建时间", sortExpression: "createDateTime" }),
                 customDataField<PageRecord>({
                     headerText: "操作",
                     itemStyle: { textAlign: "center", width: "150px" },
                     render: (dataItem, cellElement): void => {
                         (async () => {
-                            let editUrl = await this.editUrl(dataItem.themeName, dataItem.name);
+                            let editUrl = await this.editUrl(dataItem);
 
                             ReactDOM.render(<>
                                 <button key="btnModify" className="btn btn-purple btn-minier"
@@ -77,12 +80,13 @@ export default class PageListPage extends React.Component<Props, State> {
             ]
         })
     }
-    async editUrl(themeName: string, name: string) {
-        if (!themeName) {
-            themeName = await this.localService.getTheme();
-        }
+    async editUrl(pageRecord: PageRecord) {
+        if (!pageRecord) throw errors.argumentNull("pageRecord")
 
-        return `#/${LocalService.url(`${themeName}-page-edit?name=${name}`)}`;
+        let theme: keyof PCPageEditProps["data"] = "theme";
+        let id: keyof PCPageEditProps["data"] = "id";
+
+        return `#/${LocalService.url(`pc-page-edit?${id}=${pageRecord.id}`)}&${theme}=${pageRecord.themeName}`;
     }
     showAddDialog() {
         this.validator.clearErrors();

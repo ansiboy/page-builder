@@ -3,7 +3,7 @@ import { DataSourceSelectArguments, DataSourceSelectResult } from "maishu-wuzhui
 import { PageRecord, StoreDomain, } from "../../entities";
 import { pathConcat } from "maishu-toolkit";
 import { ComponentInfo } from "../model";
-import websiteConfig from "../website-config";
+import websiteConfig, { actions, themesRoot } from "website-config";
 import { errorHandle } from "../error-handle";
 import { errors } from "../errors";
 import { WebsiteConfig } from "maishu-chitu-scaffold/static/types";
@@ -85,33 +85,33 @@ export class LocalService extends Service {
     }
 
     pageRecordList(args: DataSourceSelectArguments) {
-        let url = LocalService.url(`${controllerRoot}/page-data/list`);
+        let url = LocalService.url(actions.pageData.list);
         return this.getByJson<DataSourceSelectResult<PageRecord>>(url, { args });
     }
     removePageRecord(id: string) {
-        let url = LocalService.url(`${controllerRoot}/page-data/remove`);
+        let url = LocalService.url(actions.pageData.remove);
         return this.postByJson(url, { id });
     }
     async addPageRecord(item: Partial<PageRecord>) {
-        let r = await this.postByJson(LocalService.url(`${controllerRoot}/page-data/add`), { item });
+        let r = await this.postByJson(LocalService.url(actions.pageData.add), { item });
         Object.assign(item, r);
         return item;
     }
     async updatePageRecord(item: Partial<PageRecord>) {
-        let r = await this.postByJson(LocalService.url(`${controllerRoot}/page-data/update`), { item });
+        let r = await this.postByJson(LocalService.url(actions.pageData.update), { item });
         Object.assign(item, r);
         return item;
     }
     async getPageRecord(id: string): Promise<PageRecord> {
         if (!id) throw errors.argumentNull("id");
 
-        let r = await this.getByJson<PageRecord>(LocalService.url(`${controllerRoot}/page-data/item`), { id });
+        let r = await this.getByJson<PageRecord>(LocalService.url(actions.pageData.item), { id });
         return r;
     }
 
     async getPageDataByName(name: string): Promise<PageRecord> {
         if (!name) throw errors.argumentNull("name");
-        let r = await this.getByJson<PageRecord>(LocalService.url(`${controllerRoot}/page-data/item`), { name });
+        let r = await this.getByJson<PageRecord>(LocalService.url(actions.pageData.item), { name });
         return r;
     }
 
@@ -212,24 +212,24 @@ export class LocalService extends Service {
             (_componentInfos as any)["pathContacted"] = true;
             _componentInfos.forEach(o => {
                 if (o.path != null) {
-                    o.path = pathConcat(themeName, o.path);
+                    o.path = pathConcat(themesRoot, themeName, o.path);
                     // if (times == "designtime") {
                     //     o.path = o.path + ".des";
                     // }
                 }
 
                 if (o.editor != null)
-                    o.editor = pathConcat(themeName, o.editor);
+                    o.editor = pathConcat(themesRoot, themeName, o.editor);
 
                 if (o.design != null) {
-                    o.design = pathConcat(themeName, o.design);
+                    o.design = pathConcat(themesRoot, themeName, o.design);
                     // if (times == "designtime") {
                     //     o.design = o.design + ".des";
                     // }
                 }
 
                 if (o.layout != null)
-                    o.layout = pathConcat(themeName, o.layout);
+                    o.layout = pathConcat(themesRoot, themeName, o.layout);
 
             })
         }
@@ -239,25 +239,23 @@ export class LocalService extends Service {
     }
 
     private async loadWebsiteConfig(themeName: string) {
-        let url = LocalService.url(`${themeName}/website-config.js`);
+        let url = LocalService.url(`${themesRoot}/${themeName}/website-config.js`);
         let c: ComponentStationConfig = await this.loadJS(url);
 
         let contexts = requirejs.exec("contexts");
         let contextName = websiteConfig.requirejs?.context || "";
         let context = contexts[contextName]
         if (context != null && c.requirejs?.paths != null) {
-
-
             context.configure({ paths: c.requirejs.paths })
         }
-
         return c;
     }
 
     async templateList(): Promise<PageRecord[]> {
-        let url = LocalService.url(`${controllerRoot}/page-data/template-list`);
-        let r = this.getByJson<PageRecord[]>(url);
-        return r;
+        // let url = LocalService.url(`${controllerRoot}/page-data/template-list`);
+        // let r = this.getByJson<PageRecord[]>(url);
+        // return r;
+        return [];
     }
 
     async loadJS<T>(jsPath: string): Promise<T> {
@@ -312,9 +310,10 @@ export class LocalService extends Service {
         return null;
     }
 
-    getThemes(): Promise<string[]> {
-        let url = LocalService.url(`${controllerRoot}/home/themes`);
-        return this.get<string[]>(url);
+    async getThemes(): Promise<string[]> {
+        // let url = LocalService.url(`${controllerRoot}/home/themes`);
+        // return this.get<string[]>(url);
+        return [];
     }
 }
 

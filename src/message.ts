@@ -25,44 +25,44 @@ interface MerchantAuditSuccessMessage {
     }
 }
 
-export function startMessage(messageHost: string,) {
+// export function startMessage(messageHost: string,) {
 
-    let extraHeaders: ManagerOptions["extraHeaders"] = {};
-    extraHeaders["client-name"] = "settlement";
+//     let extraHeaders: ManagerOptions["extraHeaders"] = {};
+//     extraHeaders["client-name"] = "settlement";
 
-    let socket = io(`http://${messageHost}/`, { extraHeaders });
-    socket.on("MerchantAuditSuccess", async function (msg: MerchantAuditSuccessMessage) {
+//     let socket = io(`http://${messageHost}/`, { extraHeaders });
+//     socket.on("MerchantAuditSuccess", async function (msg: MerchantAuditSuccessMessage) {
 
-        let conn = await getMyConnection();
-        let pageRecords = conn.getRepository(PageRecord);
+//         let conn = await getMyConnection();
+//         let pageRecords = conn.getRepository(PageRecord);
 
-        await createStoreInfo(conn, msg);
-        await createStoreDomain(conn, msg.user.data.applicationId);
+//         await createStoreInfo(conn, msg);
+//         await createStoreDomain(conn, msg.user.data.applicationId);
 
-        //=====================================================================================================
-        // 导入页面
-        let existsPageRecords = await pageRecords.find({ applicationId: msg.user.data.applicationId });
-        let defaultPageRecords = await pageRecords.find({ applicationId: config.zwAppId });
-        let toInsert: PageRecord[] = [];
+//         //=====================================================================================================
+//         // 导入页面
+//         let existsPageRecords = await pageRecords.find({ applicationId: msg.user.data.applicationId });
+//         let defaultPageRecords = await pageRecords.find({ applicationId: config.zwAppId });
+//         let toInsert: PageRecord[] = [];
 
-        defaultPageRecords.forEach(o => {
-            if (existsPageRecords.filter(c => c.name == o.name).length > 0) {
-                return;
-            }
+//         defaultPageRecords.forEach(o => {
+//             if (existsPageRecords.filter(c => c.name == o.name).length > 0) {
+//                 return;
+//             }
 
-            o.applicationId = msg.user.data.applicationId;
-            o.id = guid();
-            o.createDateTime = new Date();
+//             o.applicationId = msg.user.data.applicationId;
+//             o.id = guid();
+//             o.createDateTime = new Date();
 
-            toInsert.push(o);
-        })
+//             toInsert.push(o);
+//         })
 
-        await pageRecords.insert(toInsert);
-        //=====================================================================================================
+//         await pageRecords.insert(toInsert);
+//         //=====================================================================================================
 
-    });
+//     });
 
-}
+// }
 
 /** 随机生成子一个域名， 并绑定*/
 async function createStoreDomain(conn: Connection, appId: string) {

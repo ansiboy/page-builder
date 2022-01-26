@@ -1,20 +1,18 @@
-import { action, contextData, routeData } from "maishu-node-mvc";
+import { action, routeData } from "maishu-node-mvc";
 import { controller } from "maishu-nws-mvc";
 import { connection, currentAppId } from "../decoders";
 import { Connection, } from "maishu-node-data";
 import { errors } from "../static/errors";
-import { PageRecord, StoreInfo } from "../entities";
-import { themeHost } from "../static/website-config";
-import { Service } from "maishu-chitu-service";
+import { StoreInfo } from "../entities";
 import { ControllerRoot } from "../config";
 
 @controller(`${ControllerRoot}home`)
 export class HomeController {
 
-    @action("menu-items")
-    menuItems(@contextData cd: ContextData) {
-        return cd.menuItem;
-    }
+    // @action("menu-items")
+    // menuItems(@contextData cd: ContextData) {
+    //     return cd.menuItem;
+    // }
 
     @action("set-theme")
     async setTheme(@currentAppId appId: string, @connection conn: Connection, @routeData d: { themeName: string }) {
@@ -37,40 +35,41 @@ export class HomeController {
     async getTheme(@currentAppId appId: string, @connection conn: Connection) {
         if (!appId) throw errors.argumentNull("appId");
 
-        let storeInfo = await this.getStoreInfo(appId, conn);
-        return storeInfo.theme;
+        // let storeInfo = await this.getStoreInfo(appId, conn);
+        // return storeInfo.theme;
+        return [];
     }
 
-    @action("get-pages")
-    async getPages(@currentAppId appId: string, @connection conn: Connection) {
-        if (!conn) throw errors.argumentNull("conn");
+    // @action("get-pages")
+    // async getPages(@currentAppId appId: string, @connection conn: Connection) {
+    //     if (!conn) throw errors.argumentNull("conn");
 
-        let themeName = await this.getTheme(appId, conn);
-        let pageRecords = conn.getRepository(PageRecord);
-        let r = await pageRecords.find({ themeName, applicationId: appId });
-        return r;
-    }
+    //     let themeName = await this.getTheme(appId, conn);
+    //     let pageRecords = conn.getRepository(PageRecord);
+    //     let r = await pageRecords.find({ themeName, applicationId: appId });
+    //     return r;
+    // }
 
-    async getStoreInfo(appId: string, @connection conn: Connection) {
-        if (!appId) throw errors.argumentNull("appId");
-        if (!conn) throw errors.argumentNull("conn");
+    // async getStoreInfo(appId: string, @connection conn: Connection) {
+    //     if (!appId) throw errors.argumentNull("appId");
+    //     if (!conn) throw errors.argumentNull("conn");
 
-        let storeInfos = conn.getRepository(StoreInfo);
-        let storeInfo = await storeInfos.findOne(appId);
-        if (storeInfo == null) {
-            throw errors.objectNotExists("StoreInfo", appId);
-        }
+    //     let storeInfos = conn.getRepository(StoreInfo);
+    //     let storeInfo = await storeInfos.findOne(appId);
+    //     if (storeInfo == null) {
+    //         throw errors.objectNotExists("StoreInfo", appId);
+    //     }
 
-        return storeInfo;
-    }
+    //     return storeInfo;
+    // }
 
-    @action("themes")
-    async themes() {
-        let url = `http://${themeHost}/api/themes`;
-        let service = new Service();
-        let themes = await service.get<string[]>(url);
-        return themes;
-    }
+    // @action("themes")
+    // async themes() {
+    //     let url = `http://${themeHost}/api/themes`;
+    //     let service = new Service();
+    //     let themes = await service.get<string[]>(url);
+    //     return themes;
+    // }
 
 
 

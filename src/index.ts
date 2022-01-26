@@ -2,57 +2,49 @@ import * as path from "path";
 import { startServer, Settings as MVCSettings } from "maishu-node-mvc";
 import { getVirtualPaths } from "maishu-admin-scaffold";
 import { ConnectionOptions, createConnection } from "maishu-node-data";
-import websiteConfig from "./static/website-config";
-import { sourceVirtualPaths } from "maishu-chitu-scaffold";
-// import { getDomain, StoreHtmlTransform } from "./content-transforms/store-html-transform";
-import { startMessage } from "./message";
+
 import { AdminHtmlTransform } from "./content-transforms/admin-html-transform";
+import { DataStorage, DefaultDataStorage } from "./data-storage";
+
 
 interface Settings {
     port: number,
-    messageHost: string,
-    imageHost: string,
     db: ConnectionOptions,
-    menuItems?: MenuItem[],
+    // menuItems?: MenuItem[],
+    componentStations: { aixpi: string, flone: string, generic: string, "gemwon-pc": string },
+    virtualPaths?: MVCSettings["virtualPaths"],
+    dataStorage?: DataStorage,
+}
+
+const myVirtualPath = {
+    "/static/node_modules": path.join(__dirname, "../node_modules"),
+    "/static/content": path.join(__dirname, "../content"),
+    "/static/modules/content": path.join(__dirname, "../content/modules"),
+    "/static/css.js": path.join(__dirname, "../node_modules/maishu-requirejs-plugins/src/css.js")
 }
 
 export async function start(settings: Settings) {
 
-    let { imageHost, port, db } = settings;
-
+    let { port, db } = settings;
 
     await createConnection(db);
-
-    startMessage(settings.messageHost);
     let contextData: ContextData = {
-        db,
-        menuItem: settings.menuItems || []
+        dataStorage: settings.dataStorage || new DefaultDataStorage()
     };
 
     let virtualPaths = getVirtualPaths("/static", path.join(__dirname, "../src/static"));
 
-    let sv = sourceVirtualPaths(__dirname);
-    virtualPaths = Object.assign(sv, virtualPaths);
-
-    virtualPaths["/static/node_modules"] = path.join(__dirname, "../node_modules");
-    virtualPaths["/static/content"] = path.join(__dirname, "../content");
-    virtualPaths["/static/modules/content"] = path.join(__dirname, "../content/modules");
-    virtualPaths["/static/css.js"] = path.join(__dirname, "../node_modules/maishu-requirejs-plugins/src/css.js");
-
-    for (let themeName in websiteConfig.componentStations) {
-        virtualPaths[`/static/modules/${themeName}-page-edit.js`] = path.join(__dirname, "static/modules/pc-page-edit.js");
-    }
+    // let sv = sourceVirtualPaths(__dirname);
+    virtualPaths = Object.assign(virtualPaths, myVirtualPath, settings.virtualPaths || {});
 
     let proxy: MVCSettings["proxy"] = {};
-    proxy["^/ueditor/net/upload/(\\S*)"] = `http://${imageHost}/Images/upload/$1`;
-    let componentStations = websiteConfig.componentStations || {};
-    for (let c in componentStations) {
-        proxy[`^/${c}/(\\S*)`] = `${componentStations[c]}/$1`;
-        proxy[`^/site/${c}/(\\S*)`] = `${componentStations[c]}/$1`;
-    }
+    // let componentStations = settings.componentStations;
+    // for (let c in componentStations) {
+    //     proxy[`^/${c}/(\\S*)`] = `${componentStations[c]}/$1`;
+    //     proxy[`^/${wc.requirejs.context}/${c}/(\\S*)`] = `${componentStations[c]}/$1`;
+    // }
 
-    proxy[`^/share/(\\S*)`] = `${websiteConfig.componentShare}/$1`;
-    proxy[`^/image/(\\S*)`] = `${imageHost}/$1`;
+    // proxy[`^/share/(\\S*)`] = `http://${themeHost}/share/$1`;
 
     let mvcSettings: MVCSettings = {
         port,
@@ -96,15 +88,15 @@ export async function start(settings: Settings) {
     let adminServer = startServer(mvcSettings, "mvc");
     adminServer.contentTransforms.push(new AdminHtmlTransform());
 
-    let storeServer = startServer({
-        port: port + 1,
-        websiteDirectory: __dirname,
-        virtualPaths,
-        proxy,
-        // urlRewrite: (rawUrl, { req }) => {
-        //     return storeUrlRewrite(rawUrl, req);
-        // }
-    })
+    // let storeServer = startServer({
+    //     port: port + 1,
+    //     websiteDirectory: __dirname,
+    //     virtualPaths,
+    //     proxy,
+    //     // urlRewrite: (rawUrl, { req }) => {
+    //     //     return storeUrlRewrite(rawUrl, req);
+    //     // }
+    // })
     // storeServer.contentTransforms.push(new StoreHtmlTransform());
 }
 

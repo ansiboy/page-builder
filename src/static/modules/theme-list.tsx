@@ -1,7 +1,6 @@
 import { buttonOnClick } from "maishu-ui-toolkit";
 import * as  React from "react";
 import { LocalService } from "../services";
-import websiteConfig from "../website-config";
 
 let localService = new LocalService();
 
@@ -23,7 +22,7 @@ export default class extends React.Component<Props, State> {
     }
 
     render() {
-        let keys = Object.getOwnPropertyNames(websiteConfig.componentStations);
+        let keys = Object.getOwnPropertyNames({});
         return <div className="row">
             {keys.map(o =>
                 <div key={o} className="col-md-3 text-center">

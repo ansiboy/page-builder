@@ -1,5 +1,5 @@
 // import { ControllerRoot } from "../config";
-import { WebsiteConfig } from "maishu-admin-scaffold/static/website-config";
+import type { WebsiteConfig } from "maishu-admin-scaffold/static/website-config";
 
 //==========================================================================
 // 常用配置
@@ -7,9 +7,13 @@ export let themeHost = "127.0.0.1:6839";//"finememo.com/themes";//
 let storePort = 5218;
 //==========================================================================
 
+export let themesRoot = "themes";
+
+
 type MyWebsiteConfig = WebsiteConfig & {
-    componentStations: { aixpi: string, flone: string, generic: string, "gemwon-pc": string },
-    componentShare: string, storePort: number, controllerRoot: string
+    // componentStations: { aixpi: string, flone: string, generic: string, "gemwon-pc": string },
+    // componentShare: string, 
+    storePort: number, controllerRoot: string
 };
 
 export let libVirtualPath = "lib";
@@ -17,13 +21,13 @@ let node_modules = "/node_modules";
 let websiteConfig: MyWebsiteConfig = {
     //===================================================
     // 组件站点配置
-    componentStations: {
-        aixpi: `http://${themeHost}/designer/aixpi`,
-        flone: `http://${themeHost}/designer/flone`,
-        generic: `http://${themeHost}/designer/generic`,
-        "gemwon-pc": `http://${themeHost}/designer/gemwon-pc`,
-    },
-    componentShare: `http://${themeHost}/share`,
+    // componentStations: {
+    //     aixpi: `http://${themeHost}/designer/aixpi`,
+    //     flone: `http://${themeHost}/designer/flone`,
+    //     generic: `http://${themeHost}/designer/generic`,
+    //     "gemwon-pc": `http://${themeHost}/designer/gemwon-pc`,
+    // },
+    // componentShare: `http://${themeHost}/share`,
     //===================================================
     storePort: storePort,
     requirejs: {
@@ -91,5 +95,19 @@ let websiteConfig: MyWebsiteConfig = {
     mode: "development",
     controllerRoot: "admin-api/",
 
+
+
 };
 export default websiteConfig;
+
+
+export let actions = {
+    pageData: {
+        list: `/${websiteConfig.controllerRoot}page-data/list`,
+        add: `/${websiteConfig.controllerRoot}page-data/add`,
+        update: `/${websiteConfig.controllerRoot}page-data/update`,
+        remove: `/${websiteConfig.controllerRoot}page-data/remove`,
+        item: `/${websiteConfig.controllerRoot}page-data/item`,
+        temp: `/${websiteConfig.controllerRoot}page-data/temp`,
+    }
+}

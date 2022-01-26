@@ -1,5 +1,6 @@
+const path = require("path");
 const { start } = require("../out");
-
+let themeHost = "127.0.0.1:6839"; //"finememo.com/themes";//
 start({
     port: 5227,
     imageHost: "http://shop-image.gemwon.com",
@@ -8,8 +9,8 @@ start({
         type: "mysql",
         username: "root",
         password: "81263",
-        name: "taro-builder",
-        database: "taro-builder",
+        name: "page-builder",
+        database: "page-builder",
         entities: ["../out/entities.js"],
         synchronize: false,
         host: "shop-db",
@@ -30,5 +31,15 @@ start({
             path: "#theme-list",
         }
     ],
-
+    componentStations: {
+        aixpi: `http://${themeHost}/designer/aixpi`,
+        flone: `http://${themeHost}/designer/flone`,
+        generic: `http://${themeHost}/designer/generic`,
+        // "gemwon-pc": `http://${themeHost}/designer/gemwon-pc`,
+        "share": `http://${themeHost}/share`,
+    },
+    virtualPaths: {
+        // "static/gemwon-pc": path.join(__dirname, "./themes/gemwon-pc")
+        "static/themes": path.join(__dirname, "./themes")
+    }
 })

@@ -30,6 +30,10 @@ export let connection = createParameterDecorator(() => {
     return getMyConnection();
 });
 
+export let dataStorage = createParameterDecorator(async (context, routeData) => {
+    return (context.data as ContextData).dataStorage;
+})
+
 export function getMyConnection() {
     return new Promise<Connection>(async (resolve, reject) => {
         let connectionManager = getConnectionManager();

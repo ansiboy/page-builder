@@ -99,8 +99,6 @@ export function run(config: any, req) {
         if (!s.headers["application-id"] && window["application-id"])
             s.headers["application-id"] = window["application-id"];
 
-        debugger;
-
         return s;
     }
     // createService<T extends IService>(type?: ServiceConstructor<T>): T {

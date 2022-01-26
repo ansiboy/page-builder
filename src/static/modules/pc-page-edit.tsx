@@ -12,20 +12,19 @@ import { dataSources } from "../services";
 import { FormValidator, rules as r } from "maishu-dilu";
 import * as ui from "maishu-ui-toolkit";
 import { ComponentInfo } from "../model";
-import { Callback, guid } from "maishu-toolkit";
+import { guid } from "maishu-toolkit";
 import { ComponentLoader } from "../controls/component-loader";
-import websiteConfig from "../website-config";
+import websiteConfig from "website-config";
 
 import "./content/pc-page-edit.less";
 import "../create-design-element";
 import strings from "../strings";
 import { Callbacks } from "maishu-chitu-service";
+import { errors } from "../errors";
 
 interface State {
     pageRecord?: PageRecord,
     componentInfos?: ComponentInfo[],
-    // isReady: boolean,
-    // pageName: string,
     templateRecord?: PageRecord,
     templateList?: PageRecord[],
     groups?: { id: string, name: string }[],
@@ -33,10 +32,10 @@ interface State {
     componentPanel?: ComponentPanel,
 }
 
-interface Props extends PageProps {
+export interface Props extends PageProps {
     pageRecord?: PageRecord,
     customRender?: EditorPanelProps["customRender"],
-    data: { id?: string, name?: string },
+    data: { id: string, theme: string },
 }
 
 export default class PCPageEdit extends React.Component<Props, State> {
@@ -46,8 +45,11 @@ export default class PCPageEdit extends React.Component<Props, State> {
     private localService: LocalService;
     private componentPropertyPanel: HTMLElement;
 
-    constructor(props) {
+    constructor(props: Props) {
         super(props);
+
+        if (!props.data.id) throw errors.argumentNull("id");
+        if (!props.data.theme) throw errors.argumentNull("theme");
 
         this.state = {
             pageRecord: this.props.pageRecord
@@ -62,13 +64,7 @@ export default class PCPageEdit extends React.Component<Props, State> {
     }
 
     async getThemeName() {
-        let fileName = this.props.source.name.split("/").pop();
-        console.assert(fileName.endsWith("-page-edit"));
-        let themeName = fileName.substr(0, fileName.length - "-page-edit".length);
-        if (themeName == "pc")
-            themeName = await this.localService.getTheme();
-
-        return themeName;
+        return this.props.data.theme;
     }
 
     private emptyRecord(): Partial<PageRecord> {
@@ -152,16 +148,16 @@ export default class PCPageEdit extends React.Component<Props, State> {
     private async getPageRecord() {
         let s = this.localService;
         let pageRecord: PageRecord;
-        if (this.props.data.id) {
-            pageRecord = await s.getPageRecord(this.props.data.id as string);
-        }
-        else if (this.props.data.name) {
-            pageRecord = await s.getPageDataByName(this.props.data.name)
-        }
-        else {
-            pageRecord = this.emptyRecord() as PageRecord;
-            pageRecord.name = this.props.data.name;
-        }
+        // if (this.props.data.id) {
+        pageRecord = await s.getPageRecord(this.props.data.id as string);
+        // }
+        // else if (this.props.data.name) {
+        //     pageRecord = await s.getPageDataByName(this.props.data.name)
+        // }
+        // else {
+        //     pageRecord = this.emptyRecord() as PageRecord;
+        //     pageRecord.name = this.props.data.name;
+        // }
 
         if (!pageRecord)
             return null;
@@ -602,7 +598,7 @@ class ElementContainer extends React.Component<{ title: string }, { status: "col
         }}>
             <div className="panel-heading" style={{ cursor: "pointer" }}
                 onClick={(e) => {
-    
+
                     e.preventDefault();
                     e.stopPropagation();
 

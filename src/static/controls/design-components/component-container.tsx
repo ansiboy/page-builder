@@ -14,7 +14,7 @@ let DataColumn = "data-column";
 export class ComponentContainer extends BaseComponentContainer<ComponentContainerProps> {
     private containers: HTMLElement[] = [];
 
-    constructor(props) {
+    constructor(props: ComponentContainerProps) {
         super(props);
 
     }

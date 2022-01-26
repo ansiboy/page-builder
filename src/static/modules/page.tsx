@@ -14,7 +14,7 @@ interface Props {
     themeName: string,
     data: {
         id?: string,
-        name?: string,
+        // name?: string,
     }
 }
 
@@ -26,9 +26,7 @@ export default class PageView extends React.Component<Props, State> {
         this.state = { pageData: this.emptyPageData() };
         this.localService = new LocalService();
 
-        let p: Promise<PageRecord> = this.props.data.id ?
-            this.localService.getPageRecord(this.props.data.id) :
-            this.localService.getPageDataByName(this.props.data.name);
+        let p: Promise<PageRecord> = this.localService.getPageRecord(this.props.data.id);
 
         p.then(async r => {
             if (!r?.templateName) {

@@ -4,10 +4,6 @@ import * as React from "react";
 import { ComponentPanel } from "../component-panel";
 import { ComponentLoader } from "../component-loader";
 import "css!devices"
-import { contextData } from "maishu-nws-mvc";
-import { Application } from "maishu-chitu-react";
-import { IService, Service, ServiceConstructor } from "maishu-chitu-service";
-import { createRuntimeContext } from "share/app";
 
 export type ContextArguments = { page: DesignPage, designer: PageDesigner, pageData: PageData, componentPanel: ComponentPanel };
 export let DesignPageContext = React.createContext<ContextArguments>({ page: null, designer: null, pageData: null, componentPanel: null });
@@ -79,7 +75,7 @@ export class DesignPage extends React.Component<{ pageData: PageData, componentP
                 let children = pageData.children || [];
                 for (let i = 0; i < children.length; i++) {
                     let props: ComponentProps = children[i].props = children[i].props || {};
-                    props.app = createRuntimeContext(window["app"]);
+                    // props.app = createRuntimeContext(window["app"]);
                     props.themeName = this.props.themeName;
                     props.themePath = `/site/${this.props.themeName}`;
                 }

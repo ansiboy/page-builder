@@ -161,7 +161,7 @@ async function loadComponentType(typeName: string, isDesignMode: boolean, themeN
             componentTypes[typeName] = compoenntType1;
             resolve(compoenntType1);
 
-        }, err => {
+        }, (err: any) => {
             let text = typeof err == "string" ? err : err.message;
             let componentType = createInfoComponent(text);
             // return { componentType, componentInfo };
@@ -197,7 +197,7 @@ async function loadComponentLayout(componentInfo: ComponentInfo): Promise<any> {
         return Promise.resolve();
     //import { componentRenders } from "../component-renders/index";
     return new Promise((resolve, reject) => {
-        (require as any)([`${componentInfo.layout}`, "component-renders/index"], (mod, renderModule) => {
+        (require as any)([`${componentInfo.layout}`, "component-renders/index"], (mod: any, renderModule: any) => {
             let func = mod?.default || mod;
             if (typeof func != "function") {
                 console.error(`Module ${componentInfo.layout} is not a function.`)
@@ -205,7 +205,7 @@ async function loadComponentLayout(componentInfo: ComponentInfo): Promise<any> {
             }
             renderModule.setComponentRender(componentInfo.type, mod.default || mod);
             resolve(mod);
-        }, err => {
+        }, (err: any) => {
             reject(err);
         })
 

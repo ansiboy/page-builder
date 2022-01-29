@@ -50,6 +50,10 @@ class Errors extends BaseErrors {
         let msg = `Can not find domain for application '${appId}'`;
         return new Error(msg);
     }
+    componentTypeNotExists(name: string) {
+        let msg = `Component '${name}' not exists.`;
+        return new Error(msg);
+    }
 }
 
 export let errors = new Errors();

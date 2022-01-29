@@ -1,9 +1,9 @@
 import { ConnectionOptions } from "maishu-node-data";
-import w from "./static/website-config";
+import path = require("path");
 
 let db: ConnectionOptions = {
     type: "mysql", username: "root", password: "81263", name: "page-builder",
-    database: "page-builder", entities: ["./entities.js"],
+    database: "page-builder", entities: [path.join(__dirname, "./entities.js")],
     synchronize: false,
     host: "shop-db", port: 3306,
     // host: "192.168.2.94", port: 43306
@@ -16,6 +16,6 @@ export let config = {
     db,
 }
 
-export const ControllerRoot = w.controllerRoot;
+// export const ControllerRoot = w.adminApiRoot;
 
 

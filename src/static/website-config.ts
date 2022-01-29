@@ -13,7 +13,7 @@ export let themesRoot = "themes";
 type MyWebsiteConfig = WebsiteConfig & {
     // componentStations: { aixpi: string, flone: string, generic: string, "gemwon-pc": string },
     // componentShare: string, 
-    storePort: number, controllerRoot: string
+    storePort: number, adminApiRoot: string, adminPageRoot: string
 };
 
 export let libVirtualPath = "lib";
@@ -93,9 +93,8 @@ let websiteConfig: MyWebsiteConfig = {
     ],
     // mode: "production",
     mode: "development",
-    controllerRoot: "admin-api/",
-
-
+    adminApiRoot: "admin-api/",
+    adminPageRoot: "/",
 
 };
 export default websiteConfig;
@@ -103,11 +102,14 @@ export default websiteConfig;
 
 export let actions = {
     pageData: {
-        list: `/${websiteConfig.controllerRoot}page-data/list`,
-        add: `/${websiteConfig.controllerRoot}page-data/add`,
-        update: `/${websiteConfig.controllerRoot}page-data/update`,
-        remove: `/${websiteConfig.controllerRoot}page-data/remove`,
-        item: `/${websiteConfig.controllerRoot}page-data/item`,
-        temp: `/${websiteConfig.controllerRoot}page-data/temp`,
+        list: `/${websiteConfig.adminApiRoot}page-data/list`,
+        add: `/${websiteConfig.adminApiRoot}page-data/add`,
+        update: `/${websiteConfig.adminApiRoot}page-data/update`,
+        remove: `/${websiteConfig.adminApiRoot}page-data/remove`,
+        item: `/${websiteConfig.adminApiRoot}page-data/item`,
+        temp: `/${websiteConfig.adminApiRoot}page-data/temp`,
+    },
+    pages: {
+        preview: `${websiteConfig.adminPageRoot}preview/:pageDataId`
     }
 }

@@ -5,7 +5,6 @@ import { routers } from "../routers";
 import ReactDOM = require("react-dom");
 import strings from "../strings";
 import { IService, ServiceConstructor } from "maishu-chitu-service";
-import { types } from "@babel/core";
 
 
 class MyApplication extends Application {
@@ -101,15 +100,7 @@ export function run(config: any, req) {
 
         return s;
     }
-    // createService<T extends IService>(type?: ServiceConstructor<T>): T {
-    //     let s = super.createService(type);
-    //     s.headers["application-id"] = window["application-id"];
-    //     let token = localStorage["token"];
-    //     if (token) {
-    //         s.headers["token"] = token;
-    //     }
-    //     return s;
-    // }
+
 
 
     return window["app"];

@@ -10,7 +10,7 @@ interface MenuItem {
 interface ContextData {
     // db: import("maishu-node-data").ConnectionOptions,
     // menuItem: MenuItem[],
-    dataStorage: import("./data-storage").DataStorage
+    dataStorage: import("./data-storage").DataStorage,
 }
 
 declare module "json!menu-items" {

@@ -1,19 +1,19 @@
 import * as path from "path";
 import { startServer, Settings as MVCSettings } from "maishu-node-mvc";
 import { getVirtualPaths } from "maishu-admin-scaffold";
-import { ConnectionOptions, createConnection } from "maishu-node-data";
 
-import { AdminHtmlTransform } from "./content-transforms/admin-html-transform";
 import { DataStorage, DefaultDataStorage } from "./data-storage";
+import { errors } from "./static/errors";
 
 
 interface Settings {
     port: number,
-    db: ConnectionOptions,
+    // db: ConnectionOptions,
     // menuItems?: MenuItem[],
-    componentStations: { aixpi: string, flone: string, generic: string, "gemwon-pc": string },
-    virtualPaths?: MVCSettings["virtualPaths"],
+    // componentStations: { aixpi: string, flone: string, generic: string, "gemwon-pc": string },
+    // virtualPaths?: MVCSettings["virtualPaths"],
     dataStorage?: DataStorage,
+    themesPath: string,
 }
 
 const myVirtualPath = {
@@ -25,17 +25,20 @@ const myVirtualPath = {
 
 export async function start(settings: Settings) {
 
-    let { port, db } = settings;
+    if (!settings.themesPath) throw errors.argumentFieldNull("themesPath", "settings");
+    if (!path.isAbsolute(settings.themesPath)) throw new Error(`Themes path ${settings.themesPath} is not an absolute path.`);
 
-    await createConnection(db);
+    let { port } = settings;
+
+    // await createConnection(db);
     let contextData: ContextData = {
-        dataStorage: settings.dataStorage || new DefaultDataStorage()
+        dataStorage: settings.dataStorage || new DefaultDataStorage(),
     };
 
     let virtualPaths = getVirtualPaths("/static", path.join(__dirname, "../src/static"));
-
-    // let sv = sourceVirtualPaths(__dirname);
-    virtualPaths = Object.assign(virtualPaths, myVirtualPath, settings.virtualPaths || {});
+    virtualPaths = Object.assign(virtualPaths, myVirtualPath, {
+        "static/themes": settings.themesPath,
+    });
 
     let proxy: MVCSettings["proxy"] = {};
     // let componentStations = settings.componentStations;
@@ -86,7 +89,7 @@ export async function start(settings: Settings) {
     }
 
     let adminServer = startServer(mvcSettings, "mvc");
-    adminServer.contentTransforms.push(new AdminHtmlTransform());
+    // adminServer.contentTransforms.push(new AdminHtmlTransform());
 
     // let storeServer = startServer({
     //     port: port + 1,

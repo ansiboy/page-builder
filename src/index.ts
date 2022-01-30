@@ -4,6 +4,7 @@ import { getVirtualPaths } from "maishu-admin-scaffold";
 
 import { DataStorage, DefaultDataStorage } from "./data-storage";
 import { errors } from "./static/errors";
+import { config } from "./config";
 
 
 interface Settings {
@@ -30,25 +31,16 @@ export async function start(settings: Settings) {
 
     let { port } = settings;
 
-    // await createConnection(db);
     let contextData: ContextData = {
         dataStorage: settings.dataStorage || new DefaultDataStorage(),
+        themesPath: settings.themesPath,
     };
 
     let virtualPaths = getVirtualPaths("/static", path.join(__dirname, "../src/static"));
-    virtualPaths = Object.assign(virtualPaths, myVirtualPath, {
-        "static/themes": settings.themesPath,
-    });
+    virtualPaths = Object.assign(virtualPaths, myVirtualPath);
+    virtualPaths[config.themesVirtualPath] = settings.themesPath;
 
     let proxy: MVCSettings["proxy"] = {};
-    // let componentStations = settings.componentStations;
-    // for (let c in componentStations) {
-    //     proxy[`^/${c}/(\\S*)`] = `${componentStations[c]}/$1`;
-    //     proxy[`^/${wc.requirejs.context}/${c}/(\\S*)`] = `${componentStations[c]}/$1`;
-    // }
-
-    // proxy[`^/share/(\\S*)`] = `http://${themeHost}/share/$1`;
-
     let mvcSettings: MVCSettings = {
         port,
         contextData,

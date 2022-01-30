@@ -8,9 +8,9 @@ interface MenuItem {
 }
 
 interface ContextData {
-    // db: import("maishu-node-data").ConnectionOptions,
-    // menuItem: MenuItem[],
     dataStorage: import("./data-storage").DataStorage,
+    // 主题文件夹的物理路径
+    themesPath: string,
 }
 
 declare module "json!menu-items" {

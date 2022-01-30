@@ -13,7 +13,7 @@ export let themesRoot = "themes";
 type MyWebsiteConfig = WebsiteConfig & {
     // componentStations: { aixpi: string, flone: string, generic: string, "gemwon-pc": string },
     // componentShare: string, 
-    storePort: number, adminApiRoot: string, adminPageRoot: string
+    storePort: number, adminApiRoot: string, adminPageRoot: string, userApiRoot: string,
 };
 
 export let libVirtualPath = "lib";
@@ -95,12 +95,14 @@ let websiteConfig: MyWebsiteConfig = {
     mode: "development",
     adminApiRoot: "admin-api/",
     adminPageRoot: "/",
+    userApiRoot: "user-api/"
 
 };
 export default websiteConfig;
 
 
-export let actions = {
+/** 管理端 actions */
+export let adminActions = {
     pageData: {
         list: `/${websiteConfig.adminApiRoot}page-data/list`,
         add: `/${websiteConfig.adminApiRoot}page-data/add`,
@@ -112,4 +114,9 @@ export let actions = {
     pages: {
         preview: `${websiteConfig.adminPageRoot}preview/:pageDataId`
     }
+}
+
+/** 用户端 actions */
+export let userActions = {
+    getComponentDatas: `/${websiteConfig.userApiRoot}/getComponentDatas`
 }

@@ -4,17 +4,17 @@ import { PageRecord } from "../entities";
 import { errors } from "../static/errors";
 import { dataStorage } from "../decoders";
 import { DataStorage } from "data-storage";
-import { actions, default as w } from "../static/website-config";
+import { adminActions, default as w } from "../static/website-config";
 
 @controller(`${w.adminApiRoot}page-data`)
 export class PageDataController {
-    @action(actions.pageData.list)
+    @action(adminActions.pageData.list)
     async list(@dataStorage storage: DataStorage, @routeData { args }: { args: SelectArguments }, @serverContext context: ServerContext) {
         let r = storage.list(args, context.req);
         return r;
     }
 
-    @action(actions.pageData.add)
+    @action(adminActions.pageData.add)
     async add(@dataStorage storage: DataStorage, @routeData { item }: { item: PageRecord }, @serverContext context: ServerContext) {
         if (item == null) throw errors.routeDataFieldNull("item");
         if (item.pageData == null) throw errors.argumentFieldNull("pageData", "item");
@@ -23,7 +23,7 @@ export class PageDataController {
         return storage.add(item, context.req);
     }
 
-    @action(actions.pageData.update)
+    @action(adminActions.pageData.update)
     async update(@dataStorage storage: DataStorage, @routeData { item }: { item: PageRecord }, @serverContext context: ServerContext) {
         if (item == null) throw errors.routeDataFieldNull("item");
         if (item.pageData == null) throw errors.argumentFieldNull("pageData", "item");
@@ -32,13 +32,13 @@ export class PageDataController {
         return storage.update(item, context.req);
     }
 
-    @action(actions.pageData.remove)
+    @action(adminActions.pageData.remove)
     async remove(@dataStorage storage: DataStorage, @routeData { id }: { id: string }, @serverContext context: ServerContext) {
         if (!id) throw errors.argumentNull("id");
         await storage.remove(id, context.req);
     }
 
-    @action(actions.pageData.item)
+    @action(adminActions.pageData.item)
     async item(@dataStorage storage: DataStorage, @routeData { name, id }: { name: string, id: string }, @serverContext context: ServerContext) {
         if (name == null && id == null)
             throw new Error("One of name or id of route data field can not be null.")
@@ -47,7 +47,7 @@ export class PageDataController {
         return item;
     }
 
-    @action(actions.pageData.temp)
+    @action(adminActions.pageData.temp)
     temp() {
         return "test"
     }

@@ -11,5 +11,6 @@ export interface ComponentInfo {
     icon?: string;
     introduce?: string;
     group?: string;
-    data?: ComponentData
+    data?: ComponentData,
+    renderSide?: "both" | "server" | "client"
 }

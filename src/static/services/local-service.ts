@@ -3,7 +3,7 @@ import { DataSourceSelectArguments, DataSourceSelectResult } from "maishu-wuzhui
 import { PageRecord, } from "../../entities";
 import { pathConcat } from "maishu-toolkit";
 import { ComponentInfo } from "../model";
-import websiteConfig, { actions, themesRoot } from "website-config";
+import websiteConfig, { adminActions as actions, themesRoot } from "website-config";
 import { errors } from "../errors";
 import { WebsiteConfig } from "maishu-chitu-scaffold/static/types";
 

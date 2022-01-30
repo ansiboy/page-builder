@@ -14,6 +14,7 @@ export let config = {
     mainDomain: "maishu.com",
     defaultThemeName: "generic",
     db,
+    themesVirtualPath: "static/themes",
 }
 
 // export const ControllerRoot = w.adminApiRoot;

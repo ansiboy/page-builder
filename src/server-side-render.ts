@@ -2,6 +2,10 @@ import { ComponentData, componentTypes, PageBody, PageData, PageFooter, PageHead
 import * as path from "path";
 import * as fs from "fs";
 
+import { Errors as BaseErrors } from "maishu-toolkit";
+import { ComponentInfo } from "./static/model";
+import { renderToString } from "react-dom/server";
+
 export type LoadData<Props, T> = (props: Props) => Promise<Partial<T>>;
 export type WebsiteConfig = { components: ComponentInfo[] };
 
@@ -87,9 +91,7 @@ export class ServerSideRender {
     }
 }
 
-import { Errors as BaseErrors } from "maishu-toolkit";
-import { ComponentInfo } from "static/model";
-import { renderToString } from "react-dom/server";
+
 
 class Errors extends BaseErrors {
     fileNotExists(filePath: string) {

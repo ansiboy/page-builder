@@ -7,13 +7,14 @@ export let themeHost = "127.0.0.1:6839";//"finememo.com/themes";//
 let storePort = 5218;
 //==========================================================================
 
-export let themesRoot = "themes";
+// export let themesRoot = "themes";
 
 
 type MyWebsiteConfig = WebsiteConfig & {
     // componentStations: { aixpi: string, flone: string, generic: string, "gemwon-pc": string },
     // componentShare: string, 
     storePort: number, adminApiRoot: string, adminPageRoot: string, userApiRoot: string,
+    themesDirectoryName: string,
 };
 
 export let libVirtualPath = "lib";
@@ -95,7 +96,8 @@ let websiteConfig: MyWebsiteConfig = {
     mode: "development",
     adminApiRoot: "admin-api/",
     adminPageRoot: "/",
-    userApiRoot: "user-api/"
+    userApiRoot: "user-api/",
+    themesDirectoryName: "themes"
 
 };
 export default websiteConfig;

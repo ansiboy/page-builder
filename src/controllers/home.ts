@@ -1,17 +1,20 @@
 import { action, RequestResult, routeData, ServerContext, serverContext, controller } from "maishu-node-mvc";
 import { dataStorage } from "../decoders";
 import { errors } from "../static/errors";
-
 import { adminActions, default as w } from "../static/website-config";
 import { DataStorage } from "data-storage";
-import { PageRecord } from "entities";
-import * as fs from "fs";
-import * as path from "path";
 import { JSDOM } from "jsdom";
 import { config } from "../config";
 import { ServerSideRender } from "../server-side-render";
+
+import * as fs from "fs";
+import * as path from "path";
+
+import type { PageRecord } from "entities";
 import type { PageData } from "maishu-jueying-core";
 import type { ComponentInfo } from "static/model";
+import { moduleCSS } from "../node-require";
+import { pathConcat } from "maishu-toolkit";
 
 export type WebsiteConfig = { components: ComponentInfo[] };
 export type LoadData<Props, T> = (props: Props) => Promise<Partial<T>>;
@@ -38,8 +41,7 @@ export class HomeController {
         }
 
         let websiteConfigModule = require(websiteConfigPath);
-        let websiteConfig = websiteConfigModule.default || websiteConfigModule;
-
+        let websiteConfig: WebsiteConfig = websiteConfigModule.default || websiteConfigModule;
         try {
             let r = await ServerSideRender.renderPage(pageData, websiteConfig, themePhysicalPath);
 
@@ -52,8 +54,12 @@ export class HomeController {
             jsdom.window.document.body.innerHTML = r.html;
 
             this.appendClientVariables(jsdom.window.document, pageRecord, websiteConfig);
+            this.appendComponentCss(jsdom.window.document, pageRecord, websiteConfig, themePhysicalPath);
+
 
             let html = `<!DOCTYPE html>\r\n${jsdom.window.document.body.parentElement.outerHTML}`;
+
+
 
             let c: RequestResult = { content: html, headers: { "content-type": "text/html" }, statusCode: 200 };
             return c;
@@ -74,6 +80,43 @@ export class HomeController {
         script = script + `window["websiteConfig"] = ${JSON.stringify(websiteConfig)};\r\n`;
         script = script + `themeName = '${pageRecord.themeName}';\r\n`;
         scriptElement.innerHTML = script;
+    }
+
+    private appendComponentCss(document: Document, pageRecord: PageRecord, websiteConfig: WebsiteConfig, themePhysicalPath: string) {
+        let pageData = pageRecord.pageData;
+        if (!pageData || !pageData.children)
+            return;
+
+        pageData.children.forEach(c => {
+            let relativePath = websiteConfig.components.filter(o => o.type == c.type)[0]?.path;
+            if (!relativePath)
+                return;
+
+            let componentPhysicalPath = path.join(themePhysicalPath, relativePath);
+            if (!componentPhysicalPath.endsWith(".js"))
+                componentPhysicalPath = componentPhysicalPath + ".js";
+
+            let cssPaths = moduleCSS[componentPhysicalPath];
+            if (!cssPaths)
+                return;
+
+            cssPaths.forEach(cssPath => {
+                if (!cssPath.endsWith(".css"))
+                    cssPath = cssPath + ".css";
+
+                var link = document.createElement("link");
+                link.rel = "stylesheet";
+                link.type = "text/css";
+                link.href = pathConcat(`/${w.themesDirectoryName}`, cssPath);
+                document.head.appendChild(link);
+            })
+
+
+
+
+        })
+
+
     }
 
 

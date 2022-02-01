@@ -2,7 +2,8 @@ import { Application, IService, ServiceConstructor } from "maishu-chitu";
 import { guid } from "maishu-toolkit";
 import * as React from "react";
 import { errorHandle } from "./error-handle";
-export const CreateDesignElement = "createDesignElement";
+import { componentReactFactory } from "./website-config";
+
 export let createDesignElement = function (type: any, props?: any, ...children: any[]) {
 
     props = Object.assign({}, props || {});
@@ -139,9 +140,9 @@ class Cookie {
 }
 
 
-(window as any)[CreateDesignElement] = createDesignElement;
+(window as any)[componentReactFactory] = createDesignElement;
 
 window["createRuntimeElement"] = function (type: any, props?: any, ...children: any[]) {
     return React.createElement(type, props, ...children);
 };
-window["componentElement"] = createDesignElement;
+window[componentReactFactory] = createDesignElement;

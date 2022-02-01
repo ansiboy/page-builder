@@ -1,6 +1,6 @@
 import { PageBody, PageBodyProps, PageHeader, PageHeaderProps, PageFooter, PageFooterProps, registerComponent } from "maishu-jueying-core";
 import * as React from "react";
-import { ComponentContainer } from "./component-container";
+import { DesignComponentContainer } from "./component-container";
 import { DesignPageContext } from "./design-page";
 
 export class DesignPageBody extends React.Component<PageBodyProps & { enable?: boolean }> {
@@ -11,7 +11,7 @@ export class DesignPageBody extends React.Component<PageBodyProps & { enable?: b
                 if (args.pageData == null)
                     return null;
 
-                return <ComponentContainer className={PageBody.className} {...this.props} style={style} enable={this.props.enable} />
+                return <DesignComponentContainer className={PageBody.className} {...this.props} style={style} enable={this.props.enable} />
             }}
         </DesignPageContext.Consumer>
     }

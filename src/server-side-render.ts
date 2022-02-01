@@ -1,13 +1,15 @@
-import { ComponentData, componentTypes, PageBody, PageData, PageFooter, PageHeader, parseComponentData } from "maishu-jueying-core";
+import { ComponentData, componentTypes, Page, PageData, parseComponentData } from "maishu-jueying-core";
 import * as path from "path";
 import * as fs from "fs";
 
 import { Errors as BaseErrors } from "maishu-toolkit";
 import { ComponentInfo } from "./static/model";
 import { renderToString } from "react-dom/server";
+import React = require("react");
 
 export type LoadData<Props, T> = (props: Props) => Promise<Partial<T>>;
 export type WebsiteConfig = { components: ComponentInfo[] };
+const dataIdName = "data-id";
 
 export class ServerSideRender {
 
@@ -16,33 +18,21 @@ export class ServerSideRender {
         this.loadComponentTypes(pageData, websiteConfig, themePhysicalPath);
         let componentDatas = await this.loadComponentData(pageData);
 
-        let headerChildren = (pageData.children || []).filter(o => o.parentId == PageHeader.id);
-        let bodyChildren = (pageData.children || []).filter(o => o.parentId == PageBody.id);
-        let footerChildren = (pageData.children || []).filter(o => o.parentId == PageFooter.id);
+        var stack: ComponentData[] = [pageData];
+        let item = stack.shift();
+        while (item != null) {
+            if (item.type == Page.typeName) {
+                item.props.pageData = pageData;
+            }
+            var children = (item.children || []).filter(o => typeof o != "string") as ComponentData[];
+            stack.push(...children);
+            item = stack.shift();
+        }
 
-        let headerHtml = this.renderComponentDatas(headerChildren, websiteConfig);
-        let bodyHtml = this.renderComponentDatas(bodyChildren, websiteConfig);
-        let footerHtml = this.renderComponentDatas(footerChildren, websiteConfig);
-
-        let html = `<div class="header">${headerHtml}</div>
-        <div class="body">${bodyHtml}</div>
-        <div class="footer">${footerHtml}</div>`;
+        let element = parseComponentData(pageData);
+        var html = renderToString(element);
 
         return { html, componentDatas };
-    }
-
-
-    private static renderComponentDatas(componentDatas: ComponentData[], websiteConfig: WebsiteConfig): string {
-        let componentInfos = websiteConfig.components || [];
-        var htmls = componentDatas
-            .map(o => ({
-                id: o.id, element: parseComponentData(o),
-                renderSite: componentInfos.filter(c => c.type == o.type)[0]?.renderSide
-            }))
-            .map(o => ({ id: o.id, html: o.renderSite != "client" ? renderToString(o.element) : "" }))
-            .map(o => `<div id=${o.id}>${o.html}</div>`);
-
-        return htmls.join("");
     }
 
     private static loadComponentTypes(pageData: PageData, websiteConfig: WebsiteConfig, themePhysicalPath: string) {
@@ -51,16 +41,26 @@ export class ServerSideRender {
         let componentTypeNames = pageData.children.map(p => p.type);
 
         componentInfos.forEach(c => {
-            if (componentTypeNames.indexOf(c.type) < 0)
+            if (componentTypeNames.indexOf(c.type) < 0 || componentTypes[c.type])
                 return;
+
+            if (!c.path) {
+                throw new Error(`Path of component '${c.type}' is null.`);
+            }
 
             let componentPath = path.join(themePhysicalPath, `${c.path}.js`);
             if (!fs.existsSync(componentPath))
                 throw errors.fileNotExists(componentPath);
 
             let componentTypeModule = require(componentPath);
-            let componentType = componentTypeModule.default || componentTypeModule;
-
+            let componentType: React.ComponentClass = componentTypeModule.default || componentTypeModule;
+            let render = componentType.prototype.render as Function;
+            if (render == null) {
+                throw new Error(`Component '${c.type}' has none render method, path is '${c.path}'.`);
+            }
+            componentType.prototype.render = function () {
+                return React.createElement("div", { id: this.props[dataIdName] || "" }, render.apply(this, arguments));
+            }
             componentTypes[c.type] = componentType;
         })
     }
@@ -84,6 +84,7 @@ export class ServerSideRender {
         let componentDatas = await Promise.all(loadDataPromises)
         for (let i = 0; i < componentInfos.length; i++) {
             componentInfos[i].props.data = componentInfos[i].props.data || {};
+            componentInfos[i].props[dataIdName] = componentInfos[i].id;
             Object.assign(componentInfos[i].props.data, componentDatas[i] || {});
         }
 

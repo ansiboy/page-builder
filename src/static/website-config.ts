@@ -63,7 +63,8 @@ let websiteConfig: MyWebsiteConfig = {
             "maishu-router": `${node_modules}/maishu-router/dist/index`,
 
             "devices": `content/devices.css-1.2/assets/devices.min.css`,
-            "jquery": `https://www.unpkg.com/jquery@3.6.0/dist/jquery.min`,
+            // "jquery": `https://www.unpkg.com/jquery@3.6.0/dist/jquery.min`,
+            "jquery": `${node_modules}/jquery/dist/jquery.min`,
             "jquery-ui": `content/jquery-ui-1.12.1/jquery-ui.min`,
             // "jquery-ui-css": `https://unpkg.com/jqueryui@1.11.1/jquery-ui`,
             "js-md5": `${node_modules}/js-md5/build/md5.min`,
@@ -97,11 +98,12 @@ let websiteConfig: MyWebsiteConfig = {
     adminApiRoot: "admin-api/",
     adminPageRoot: "/",
     userApiRoot: "user-api/",
-    themesDirectoryName: "themes"
+    themesDirectoryName: "themes",
 
 };
 export default websiteConfig;
-
+// export const CreateDesignElement = "createDesignElement";
+export const componentReactFactory = "componentElement";
 
 /** 管理端 actions */
 export let adminActions = {

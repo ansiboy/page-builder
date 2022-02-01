@@ -1,5 +1,6 @@
 import { ConnectionOptions } from "maishu-node-data";
 import path = require("path");
+import w from "./static/website-config";
 
 let db: ConnectionOptions = {
     type: "mysql", username: "root", password: "81263", name: "page-builder",
@@ -14,7 +15,7 @@ export let config = {
     mainDomain: "maishu.com",
     defaultThemeName: "generic",
     db,
-    themesVirtualPath: "static/themes",
+    themesVirtualPath: `static/${w.themesDirectoryName}`,
 }
 
 // export const ControllerRoot = w.adminApiRoot;

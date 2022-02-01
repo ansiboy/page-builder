@@ -1,5 +1,5 @@
 import { PageDesigner, DesignerContext } from "maishu-jueying";
-import { ComponentData, PageData, parseComponentData } from "maishu-jueying-core";
+import { ComponentData, PageData, parseComponentData, registerComponent, ComponentContainer } from "maishu-jueying-core";
 import { guid } from "maishu-toolkit";
 import { DesignPageContext, ContextArguments } from "./design-page";
 import { ComponentContainer as BaseComponentContainer, ComponentContainerProps as BaseComponentContainerProps } from "maishu-jueying-core";
@@ -11,7 +11,7 @@ export type ComponentContainerProps = BaseComponentContainerProps & {
 
 let DataColumn = "data-column";
 
-export class ComponentContainer extends BaseComponentContainer<ComponentContainerProps> {
+export class DesignComponentContainer extends BaseComponentContainer<ComponentContainerProps> {
     private containers: HTMLElement[] = [];
 
     constructor(props: ComponentContainerProps) {
@@ -178,4 +178,6 @@ export class ComponentContainer extends BaseComponentContainer<ComponentContaine
     }
 }
 
-ComponentContainer.contextType = DesignerContext
+DesignComponentContainer.contextType = DesignerContext;
+
+registerComponent("ComponentContainer", DesignComponentContainer)

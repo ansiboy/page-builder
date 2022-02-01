@@ -6,25 +6,26 @@ import * as React from "react";
 import { guid } from "maishu-toolkit";
 import { Callback } from "maishu-toolkit";
 import strings from "../strings";
+import { ComponentInfo } from "../model";
 
 let localRequirejs = require as any as typeof requirejs;
 
-/** 组件描述信息 */
-export interface ComponentInfo {
-    /** 组件类型名称 */
-    type: string;
-    /** 组件显示名称 */
-    displayName?: string;
-    /** 组件图标 */
-    icon?: string;
-    /** 组件介绍 */
-    introduce?: string;
-    /** 组件路经 */
-    path: string;
-    design?: string;
-    editor?: string;
-    layout?: string;
-}
+// /** 组件描述信息 */
+// export interface ComponentInfo {
+//     /** 组件类型名称 */
+//     type: string;
+//     /** 组件显示名称 */
+//     displayName?: string;
+//     /** 组件图标 */
+//     icon?: string;
+//     /** 组件介绍 */
+//     introduce?: string;
+//     /** 组件路经 */
+//     path?: string;
+//     design?: string;
+//     editor?: string;
+//     layout?: string;
+// }
 
 export interface DataComponent<Props> {
     loadProps: (props: Props) => Promise<Partial<Props>>

@@ -3,7 +3,7 @@ import { DataSourceSelectArguments, DataSourceSelectResult } from "maishu-wuzhui
 import { PageRecord, } from "../../entities";
 import { pathConcat } from "maishu-toolkit";
 import { ComponentInfo } from "../model";
-import websiteConfig, { adminActions as actions, themesRoot } from "website-config";
+import websiteConfig, { adminActions as actions, } from "website-config";
 import { errors } from "../errors";
 import { WebsiteConfig } from "maishu-chitu-scaffold/static/types";
 
@@ -20,6 +20,8 @@ function getApplicationId() {
 
     return null;
 }
+
+let themesRoot = websiteConfig.themesDirectoryName;
 
 
 export class LocalService extends Service {
@@ -259,7 +261,7 @@ export class LocalService extends Service {
     async getPages(): Promise<PageRecord[]> {
         let url = LocalService.url(`${controllerRoot}/home/get-pages`);
         let pageRecords = await this.getByJson<PageRecord[]>(url);
-        return pageRecords;
+        return pageRecords || [];
     }
 
     static themeChanged = Callbacks<{ themeName: string }>();

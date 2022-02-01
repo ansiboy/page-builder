@@ -1,18 +1,16 @@
 import * as path from "path";
-import { startServer, Settings as MVCSettings } from "maishu-node-mvc";
+import { startServer, Settings as MVCSettings, JavaScriptProcessor, RequestProcessor } from "maishu-node-mvc";
 import { getVirtualPaths } from "maishu-admin-scaffold";
 
 import { DataStorage, DefaultDataStorage } from "./data-storage";
 import { errors } from "./static/errors";
 import { config } from "./config";
-
+import { ThemePhysicalPathName } from "./node-require";
+import { JavaScriptProcessorWrapper } from "./request-processors/java-script-processor";
+import w, { componentReactFactory } from "./static/website-config";
 
 interface Settings {
     port: number,
-    // db: ConnectionOptions,
-    // menuItems?: MenuItem[],
-    // componentStations: { aixpi: string, flone: string, generic: string, "gemwon-pc": string },
-    // virtualPaths?: MVCSettings["virtualPaths"],
     dataStorage?: DataStorage,
     themesPath: string,
 }
@@ -21,8 +19,9 @@ const myVirtualPath = {
     "/static/node_modules": path.join(__dirname, "../node_modules"),
     "/static/content": path.join(__dirname, "../content"),
     "/static/modules/content": path.join(__dirname, "../content/modules"),
-    "/static/css.js": path.join(__dirname, "../node_modules/maishu-requirejs-plugins/src/css.js")
 }
+
+export { LoadData, ServerSideRender } from "./server-side-render";
 
 export async function start(settings: Settings) {
 
@@ -35,6 +34,8 @@ export async function start(settings: Settings) {
         dataStorage: settings.dataStorage || new DefaultDataStorage(),
         themesPath: settings.themesPath,
     };
+
+    global[ThemePhysicalPathName] = settings.themesPath;
 
     let virtualPaths = getVirtualPaths("/static", path.join(__dirname, "../src/static"));
     virtualPaths = Object.assign(virtualPaths, myVirtualPath);
@@ -76,23 +77,25 @@ export async function start(settings: Settings) {
 
                     return false;
                 },
+            },
+            StaticFile: {
+                contentTypes: {
+                    ".map": "text"
+                }
             }
-        }
+        },
+
     }
 
-    let adminServer = startServer(mvcSettings, "mvc");
-    // adminServer.contentTransforms.push(new AdminHtmlTransform());
+    let s = startServer(mvcSettings, "mvc");
+    let javaScriptProcessor = s.requestProcessors.find(JavaScriptProcessor);
+    console.assert(javaScriptProcessor != null);
+    console.assert((javaScriptProcessor as RequestProcessor).priority != null);
 
-    // let storeServer = startServer({
-    //     port: port + 1,
-    //     websiteDirectory: __dirname,
-    //     virtualPaths,
-    //     proxy,
-    //     // urlRewrite: (rawUrl, { req }) => {
-    //     //     return storeUrlRewrite(rawUrl, req);
-    //     // }
-    // })
-    // storeServer.contentTransforms.push(new StoreHtmlTransform());
+    let jsw = new JavaScriptProcessorWrapper(w.themesDirectoryName, componentReactFactory);
+    jsw.priority = (javaScriptProcessor as RequestProcessor).priority - 1;
+    s.requestProcessors.add(jsw);
+    // s.contentTransforms.push
 }
 
 // const AppName = "application-id";

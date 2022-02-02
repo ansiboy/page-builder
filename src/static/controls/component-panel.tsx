@@ -2,7 +2,7 @@ import * as React from "react";
 import { classNames } from "maishu-jueying";
 import * as $ from "jquery";
 import "jquery-ui";
-import { ComponentInfo } from "../model";
+import type { ComponentInfo } from "./component-loader";
 
 interface ComponentToolbarProps extends React.ClassAttributes<ComponentPanel> {
     style?: React.CSSProperties,
@@ -21,7 +21,7 @@ export class ComponentPanel extends React.Component<ComponentToolbarProps, Compo
     private COMPONENT_DATA = "component-data";
     private targetElements: Element[] = [];
 
-    constructor(props) {
+    constructor(props: ComponentToolbarProps) {
         super(props)
         this.state = { components: [], group: commonGroup }
     }

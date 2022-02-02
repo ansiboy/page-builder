@@ -11,9 +11,8 @@ import { getComponentRender } from "../component-renders/index";
 import { dataSources } from "../services";
 import { FormValidator, rules as r } from "maishu-dilu";
 import * as ui from "maishu-ui-toolkit";
-import { ComponentInfo } from "../model";
 import { guid } from "maishu-toolkit";
-import { ComponentLoader } from "../controls/component-loader";
+import { ComponentInfo, ComponentLoader } from "../controls/component-loader";
 import websiteConfig from "website-config";
 
 import "./content/pc-page-edit.less";
@@ -90,7 +89,7 @@ export default class PCPageEdit extends React.Component<Props, State> {
                 componentInfos = componentInfos.filter(o => o.displayName != null);
                 this.setState({ componentInfos });
                 componentInfos.forEach(c => {
-                    c.data = c.data || { id: guid(), type: c.type, props: {} };
+                    c.data = c.data || { type: c.type, props: {} } as ComponentData;
                 })
 
 

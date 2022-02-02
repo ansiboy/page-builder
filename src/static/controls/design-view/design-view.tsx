@@ -6,8 +6,8 @@ import { PageData } from "maishu-jueying-core";
 import { DesignPage } from "../design-components/index";
 import "../design-components/index";
 import { PageHelper } from "../page-helper";
-import { ComponentInfo } from "../../model";
 import { guid } from "maishu-toolkit";
+import { ComponentInfo } from "../component-loader";
 
 interface Props {
     // app: Application,

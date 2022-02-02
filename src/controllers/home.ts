@@ -12,9 +12,9 @@ import * as path from "path";
 
 import type { PageRecord } from "entities";
 import type { PageData } from "maishu-jueying-core";
-import type { ComponentInfo } from "static/model";
 import { moduleCSS } from "../node-require";
 import { pathConcat } from "maishu-toolkit";
+import type { ComponentInfo } from "static/controls/component-loader";
 
 export type WebsiteConfig = { components: ComponentInfo[] };
 export type LoadData<Props, T> = (props: Props) => Promise<Partial<T>>;

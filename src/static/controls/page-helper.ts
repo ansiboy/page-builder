@@ -1,7 +1,8 @@
 import {
-    ComponentData, Page, PageBody, PageHeader, PageHeaderProps,
-    PageFooter, PageFooterProps, PageData, PageBodyProps
+    Page, PageBody, PageHeader, PageHeaderProps,
+    PageFooter, PageFooterProps, PageBodyProps
 } from "maishu-jueying-core";
+import { PageData, ComponentData } from "../model";
 import { guid } from "maishu-toolkit";
 import { errors } from "../errors";
 import { ComponentContainerProps } from "../controls/design-components/component-container";

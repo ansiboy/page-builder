@@ -1,5 +1,6 @@
 import { PageDesigner, DesignerContext } from "maishu-jueying";
-import { ComponentData, PageData, parseComponentData, registerComponent, ComponentContainer } from "maishu-jueying-core";
+import { parseComponentData, registerComponent, ComponentContainer } from "maishu-jueying-core";
+import { ComponentData, PageData } from "../../model";
 import { guid } from "maishu-toolkit";
 import { DesignPageContext, ContextArguments } from "./design-page";
 import { ComponentContainer as BaseComponentContainer, ComponentContainerProps as BaseComponentContainerProps } from "maishu-jueying-core";
@@ -16,8 +17,8 @@ export class DesignComponentContainer extends BaseComponentContainer<ComponentCo
 
     constructor(props: ComponentContainerProps) {
         super(props);
-
     }
+
     private enableDrapDrop(containerElement: HTMLElement, designer: PageDesigner) {
         let pageData = designer.pageData;
         console.assert(containerElement != null);
@@ -63,7 +64,7 @@ export class DesignComponentContainer extends BaseComponentContainer<ComponentCo
                 componentData.id = componentData.id || guid();
                 componentData.parentId = this.props.id;
                 componentData.props = {
-                    // id: componentData.id,
+                    id: componentData.id,
                     column
                 }
                 let elementIndex: number = 0;
@@ -79,17 +80,18 @@ export class DesignComponentContainer extends BaseComponentContainer<ComponentCo
                 let isLatest = elementIndex == ui.helper.parent().children().length - 1;
 
                 if (isFirst) {
-                    designer.appendComponent(pageData.id, componentData, 0);
+                    designer.appendComponent(componentData, 0);
                 }
                 else if (isLatest) {
-                    designer.appendComponent(pageData.id, componentData);
+                    designer.appendComponent(componentData);
                 }
                 else {
                     let nextComponentDataId = ui.helper.parent().children()[elementIndex + 1].getAttribute("data-component-id");
                     let componentIds = pageData.children.map((o: ComponentData) => o.id);
                     let nextComponentDataIndex = componentIds.indexOf(nextComponentDataId);
                     console.assert(nextComponentDataId != null);
-                    designer.appendComponent(pageData.id, componentData, nextComponentDataIndex);
+                    componentData.parentId = pageData.id;
+                    designer.appendComponent(componentData, nextComponentDataIndex);
                 }
 
                 designer.selectComponent(componentData.id);
@@ -161,7 +163,7 @@ export class DesignComponentContainer extends BaseComponentContainer<ComponentCo
                     onClick={() => {
                         args.designer.selectComponent(o.id)
                     }}>
-                    {parseComponentData(o)}</li>)
+                    {parseComponentData(o, pageData)}</li>)
             }
         </ul>
     }

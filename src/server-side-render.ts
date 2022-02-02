@@ -3,9 +3,9 @@ import * as path from "path";
 import * as fs from "fs";
 
 import { Errors as BaseErrors } from "maishu-toolkit";
-import { ComponentInfo } from "./static/model";
 import { renderToString } from "react-dom/server";
 import React = require("react");
+import type { ComponentInfo } from "static/controls/component-loader";
 
 export type LoadData<Props, T> = (props: Props) => Promise<Partial<T>>;
 export type WebsiteConfig = { components: ComponentInfo[] };
@@ -24,16 +24,27 @@ export class ServerSideRender {
             if (item.type == Page.typeName) {
                 item.props.pageData = pageData;
             }
-            var children = (item.children || []).filter(o => typeof o != "string") as ComponentData[];
+            var children = pageData.children.filter(o => o.parentId == item.id);//(item.children || []).filter(o => typeof o != "string") as ComponentData[];
             stack.push(...children);
             item = stack.shift();
         }
 
-        let element = parseComponentData(pageData);
+        let element = this.parsePageData(pageData);
         var html = renderToString(element);
 
         return { html, componentDatas };
     }
+
+    static parsePageData(pageData: PageData) {
+        let type = componentTypes[pageData.type];
+        if (type == null) {
+            throw errors.componentTypeNotExists(pageData.type);
+        }
+
+        let children = pageData.children.map(c => parseComponentData(c, pageData));
+        return React.createElement(type, pageData.props, ...children);
+    }
+
 
     private static loadComponentTypes(pageData: PageData, websiteConfig: WebsiteConfig, themePhysicalPath: string) {
 
@@ -54,12 +65,25 @@ export class ServerSideRender {
 
             let componentTypeModule = require(componentPath);
             let componentType: React.ComponentClass = componentTypeModule.default || componentTypeModule;
-            let render = componentType.prototype.render as Function;
-            if (render == null) {
-                throw new Error(`Component '${c.type}' has none render method, path is '${c.path}'.`);
+            if (componentType.prototype.isReactComponent) {
+                let render = componentType.prototype.render as Function;
+                if (render == null) {
+                    throw new Error(`Component '${c.type}' has none render method, path is '${c.path}'.`);
+                }
+                componentType.prototype.render = function () {
+                    return React.createElement("div", { id: this.props[dataIdName] || "" }, render.apply(this, arguments));
+                }
             }
-            componentType.prototype.render = function () {
-                return React.createElement("div", { id: this.props[dataIdName] || "" }, render.apply(this, arguments));
+            else if (typeof componentType == "function") {
+                let c = componentType;
+                componentType = class extends React.Component<any> {
+                    render(): React.ReactNode {
+                        return React.createElement("div", { id: this.props[dataIdName] || "" }, React.createElement<any>(c, this.props));
+                    }
+                }
+            }
+            else {
+                throw new Error(`Component '${c.type}' is not a react component.`)
             }
             componentTypes[c.type] = componentType;
         })

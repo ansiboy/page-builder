@@ -1,31 +1,35 @@
-import { registerComponent, PageData, componentTypes, ComponentData } from "maishu-jueying-core";
-
+import { registerComponent, componentTypes } from "maishu-jueying-core";
+import { PageData, } from "../model";
 import { errors } from "../errors";
 import { LocalService } from "../services";
 import * as React from "react";
 import { guid } from "maishu-toolkit";
 import { Callback } from "maishu-toolkit";
 import strings from "../strings";
-import { ComponentInfo } from "../model";
+import { ComponentData } from "../model";
 
 let localRequirejs = require as any as typeof requirejs;
 
 // /** 组件描述信息 */
-// export interface ComponentInfo {
-//     /** 组件类型名称 */
-//     type: string;
-//     /** 组件显示名称 */
-//     displayName?: string;
-//     /** 组件图标 */
-//     icon?: string;
-//     /** 组件介绍 */
-//     introduce?: string;
-//     /** 组件路经 */
-//     path?: string;
-//     design?: string;
-//     editor?: string;
-//     layout?: string;
-// }
+export interface ComponentInfo {
+    /** 组件类型名称 */
+    type: string;
+    /** 组件显示名称 */
+    displayName?: string;
+    /** 组件图标 */
+    icon?: string;
+    /** 组件介绍 */
+    introduce?: string;
+    /** 组件路经 */
+    path?: string;
+    design?: string;
+    editor?: string;
+    layout?: string;
+    data?: ComponentData;
+    renderSide?: "both" | "server" | "client";
+    sortNumber?: number;
+    group?: string;
+}
 
 export interface DataComponent<Props> {
     loadProps: (props: Props) => Promise<Partial<Props>>
@@ -153,6 +157,15 @@ async function loadComponentType(typeName: string, isDesignMode: boolean, themeN
             let compoenntType1: React.ComponentClass<any> = mod[typeName] || mod["default"];
             if (compoenntType1 == null)
                 throw errors.moduleNotExport(path, typeName);
+
+            if (compoenntType1.prototype.isReactComponent == undefined && typeof compoenntType1 == "function") {
+                let c = compoenntType1;
+                compoenntType1 = class extends React.Component {
+                    render(): React.ReactNode {
+                        return React.createElement("div", {}, React.createElement(c, this.props));
+                    }
+                }
+            }
 
             let d = compoenntType1 as any as DataComponent<any>;
             if (typeof d.loadData == "function") {

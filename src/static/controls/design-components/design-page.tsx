@@ -1,9 +1,10 @@
-import { Page, PageData, registerComponent } from "maishu-jueying-core";
+import { Page, registerComponent } from "maishu-jueying-core";
 import { DesignerContext, PageDesigner } from "maishu-jueying";
 import * as React from "react";
 import { ComponentPanel } from "../component-panel";
 import { ComponentLoader } from "../component-loader";
 import "css!devices"
+import { PageData } from "../../model";
 
 export type ContextArguments = { page: DesignPage, designer: PageDesigner, pageData: PageData, componentPanel: ComponentPanel };
 export let DesignPageContext = React.createContext<ContextArguments>({ page: null, designer: null, pageData: null, componentPanel: null });

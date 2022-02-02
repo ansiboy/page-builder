@@ -2,10 +2,10 @@ import { Callbacks, Service, ValueStore } from "maishu-chitu-service";
 import { DataSourceSelectArguments, DataSourceSelectResult } from "maishu-wuzhui-helper";
 import { PageRecord, } from "../../entities";
 import { pathConcat } from "maishu-toolkit";
-import { ComponentInfo } from "../model";
 import websiteConfig, { adminActions as actions, } from "website-config";
 import { errors } from "../errors";
 import { WebsiteConfig } from "maishu-chitu-scaffold/static/types";
+import type { ComponentInfo } from "static/controls/component-loader";
 
 let appId = getApplicationId();
 if (appId)

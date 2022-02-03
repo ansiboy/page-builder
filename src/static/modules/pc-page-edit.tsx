@@ -7,7 +7,6 @@ import { PageHelper } from "../controls/page-helper";
 import { DesignerContext, EditorPanel, EditorPanelProps, PageDesigner } from "maishu-jueying";
 import { ComponentPanel } from "../controls/component-panel";
 import { DesignPage } from "../controls/design-components/index";
-import { getComponentRender } from "../component-renders/index";
 import { dataSources } from "../services";
 import { FormValidator, rules as r } from "maishu-dilu";
 import * as ui from "maishu-ui-toolkit";
@@ -20,6 +19,7 @@ import "../create-design-element";
 import strings from "../strings";
 import { Callbacks } from "maishu-chitu-service";
 import { errors } from "../errors";
+import ComponentRenders from "../component-renders";
 
 interface State {
     pageRecord?: PageRecord,
@@ -325,7 +325,7 @@ export default class PCPageEdit extends React.Component<Props, State> {
                 <ElementContainer title="属性编辑">
                     <EditorPanel className="well" customRender={(editComponents, propEditors) => {
                         let typeName = editComponents[0].type;
-                        let componentEditorCustomRender = getComponentRender(typeName);
+                        let componentEditorCustomRender = ComponentRenders.getComponentRender(typeName);
                         if (!componentEditorCustomRender)
                             return null;
 

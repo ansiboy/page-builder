@@ -1,3 +1,4 @@
+let node_modules = "node_modules";
 var requirejsConfig = {
     "paths": {
         "css": "node_modules/maishu-requirejs-plugins/src/css",
@@ -14,6 +15,8 @@ var requirejsConfig = {
         "maishu-ui-toolkit": "node_modules/maishu-ui-toolkit/dist/index.min",
         "maishu-wuzhui": "node_modules/maishu-wuzhui/dist/index.min",
         "maishu-wuzhui-helper": "node_modules/maishu-wuzhui-helper/dist/index.min",
+        "bootstrap-css": `${node_modules}/bootstrap/dist/css/bootstrap.css`,
+        "font-awesome": `${node_modules}/font-awesome/css/font-awesome.css`
     }
 }
 

@@ -4,7 +4,7 @@ import { PageRecord, } from "../../entities";
 import { pathConcat } from "maishu-toolkit";
 import websiteConfig, { adminActions as actions, } from "website-config";
 import { errors } from "../errors";
-import { WebsiteConfig } from "maishu-chitu-scaffold/static/types";
+// import { WebsiteConfig } from "maishu-chitu-scaffold/static/types";
 import type { ComponentInfo } from "static/controls/component-loader";
 
 let appId = getApplicationId();
@@ -27,19 +27,21 @@ let themesRoot = websiteConfig.themesDirectoryName;
 export class LocalService extends Service {
 
     static url(path: string) {
-        let contexts = requirejs.exec("contexts");
-        let contextName = websiteConfig.requirejs?.context || "";
-        if (!contextName)
-            throw new Error("Context of website config is empty.");
+        // let contexts = requirejs.exec("contexts");
+        // let contextName = websiteConfig.requirejs?.context || "";
+        // if (!contextName)
+        //     throw new Error("Context of website config is empty.");
 
-        let context = contexts[contextName];
-        let baseUrl = context?.config?.baseUrl;
-        let r: string;
-        if (!baseUrl)
-            r = path;
-        else
-            r = pathConcat(baseUrl, path);
+        // let context = contexts[contextName];
+        // let baseUrl = context?.config?.baseUrl;
+        // let r: string;
+        // if (!baseUrl)
+        //     r = path;
+        // else
+        //     r = pathConcat(baseUrl, path);
 
+        // return r;
+        let r = pathConcat("/", path);
         return r;
     }
 
@@ -289,8 +291,9 @@ export class LocalService extends Service {
     }
 }
 
-export interface ComponentStationConfig extends WebsiteConfig {
+export interface ComponentStationConfig {
     components: ComponentInfo[],
+    requirejs?: any,
     // groups: { name: string, id: string }[],
     // themes: { name: string, path: string, title: string, image: string, }[],
 }

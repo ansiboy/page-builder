@@ -1,5 +1,5 @@
 // import { ControllerRoot } from "../config";
-import type { WebsiteConfig } from "maishu-admin-scaffold/static/website-config";
+// import type { WebsiteConfig } from "maishu-admin-scaffold/static/website-config";
 
 //==========================================================================
 // 常用配置
@@ -9,7 +9,7 @@ let storePort = 5218;
 
 // export let themesRoot = "themes";
 
-
+type WebsiteConfig = { requirejs: any };
 type MyWebsiteConfig = WebsiteConfig & {
     // componentStations: { aixpi: string, flone: string, generic: string, "gemwon-pc": string },
     // componentShare: string, 
@@ -73,28 +73,28 @@ let websiteConfig: MyWebsiteConfig = {
             "ejs": `${node_modules}/ejs/ejs.min`,
         }
     },
-    menuItems: [
-        {
-            id: "AE3789A2-0CF0-4D81-A7C0-E2C9324A1DDD", name: "页面列表", path: "#page-list", sortNumber: 10,
-            children: [
-                { id: "3CE34AB9-7814-4FE5-85E2-ABA6AAF9C1FD", name: "页面编辑", path: "#page-edit", hidden: true }
-            ]
-        },
-        {
-            id: "7B13EC50-A398-4379-AED5-6AB3263EDB75", name: "主题", path: "#theme-list", sortNumber: 20,
-        },
-        {
-            id: "EAC315A7-D8BE-4E85-843B-0D16F3254485", name: "域名绑定", path: "#domain-binding", sortNumber: 30
-        },
-        {
-            id: "FADCEEB3-145D-4131-BCB4-BFCF7D5FE167", name: "链接改写", path: "#url-rewrite", sortNumber: 30
-        },
-        {
-            id: "D0D26AA2-066F-478A-B19C-D8FB8F660905", name: "页面代码", path: "#html-snippet", sortNumber: 40
-        },
-    ],
+    // menuItems: [
+    //     {
+    //         id: "AE3789A2-0CF0-4D81-A7C0-E2C9324A1DDD", name: "页面列表", path: "#page-list", sortNumber: 10,
+    //         children: [
+    //             { id: "3CE34AB9-7814-4FE5-85E2-ABA6AAF9C1FD", name: "页面编辑", path: "#page-edit", hidden: true }
+    //         ]
+    //     },
+    //     {
+    //         id: "7B13EC50-A398-4379-AED5-6AB3263EDB75", name: "主题", path: "#theme-list", sortNumber: 20,
+    //     },
+    //     {
+    //         id: "EAC315A7-D8BE-4E85-843B-0D16F3254485", name: "域名绑定", path: "#domain-binding", sortNumber: 30
+    //     },
+    //     {
+    //         id: "FADCEEB3-145D-4131-BCB4-BFCF7D5FE167", name: "链接改写", path: "#url-rewrite", sortNumber: 30
+    //     },
+    //     {
+    //         id: "D0D26AA2-066F-478A-B19C-D8FB8F660905", name: "页面代码", path: "#html-snippet", sortNumber: 40
+    //     },
+    // ],
     // mode: "production",
-    mode: "development",
+    // mode: "development",
     adminApiRoot: "admin-api/",
     adminPageRoot: "/",
     userApiRoot: "user-api/",

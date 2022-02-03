@@ -1,6 +1,6 @@
 import * as path from "path";
 import { startServer, Settings as MVCSettings, JavaScriptProcessor, RequestProcessor } from "maishu-node-mvc";
-import { getVirtualPaths } from "maishu-admin-scaffold";
+import { getVirtualPaths } from "maishu-chitu-scaffold";
 
 import { DataStorage, DefaultDataStorage } from "./data-storage";
 import { errors } from "./static/errors";

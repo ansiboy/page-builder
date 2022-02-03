@@ -5,7 +5,7 @@ import * as fs from "fs";
 import { Errors as BaseErrors } from "maishu-toolkit";
 import { renderToString } from "react-dom/server";
 import React = require("react");
-import type { ComponentInfo } from "static/controls/component-loader";
+import type { ComponentInfo } from "./static/controls/component-loader";
 
 export type LoadData<Props, T> = (props: Props) => Promise<Partial<T>>;
 export type WebsiteConfig = { components: ComponentInfo[] };

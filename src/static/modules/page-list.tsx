@@ -86,7 +86,7 @@ export default class PageListPage extends React.Component<Props, State> {
         let theme: keyof PCPageEditProps["data"] = "theme";
         let id: keyof PCPageEditProps["data"] = "id";
 
-        return `#/${LocalService.url(`pc-page-edit?${id}=${pageRecord.id}`)}&${theme}=${pageRecord.themeName}`;
+        return `#pc-page-edit?${id}=${pageRecord.id}&${theme}=${pageRecord.themeName}`;
     }
     showAddDialog() {
         this.validator.clearErrors();

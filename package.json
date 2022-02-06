@@ -71,6 +71,7 @@
         "maishu-ui-toolkit": "^1.28.0",
         "maishu-wuzhui": "^1.21.12",
         "maishu-wuzhui-helper": "^1.9.7",
+        "node-cache": "^5.1.2",
         "node-html-parser": "^3.1.4",
         "requirejs": "^2.3.6",
         "socket.io-client": "^4.0.1"

@@ -43,7 +43,7 @@ export let adminActions = {
 
 /** 用户端 actions */
 export let userActions = {
-    getComponentDatas: `/${userApiRoot}/getComponentDatas`
+    getComponentDatas: `/${userApiRoot}componentDatas/:key`
 }
 
 

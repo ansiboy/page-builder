@@ -96,7 +96,7 @@ export class ServerSideRender {
     private static async loadComponentData(pageData: PageData): Promise<{ [id: string]: any }> {
         var r: { [id: string]: any } = {};
         var componentInfos = pageData.children || [];
-        var loadDataPromises: LoadData<any, any>[] = [];
+        var loadDataPromises: Promise<any>[] = [];
         for (let i = 0; i < componentInfos.length; i++) {
             let componentData = componentInfos[i];
             let type = componentTypes[componentData.type];
@@ -104,17 +104,22 @@ export class ServerSideRender {
                 throw errors.componentTypeNotExists(componentData.type);
             }
 
-            let loadData: LoadData<any, any> = componentLoadDatas[componentData.type];//type["loadData"] || Promise.resolve({});
+            let loadData: LoadData<any, any> = componentLoadDatas[componentData.type];// || Promise.resolve({});//type["loadData"] || Promise.resolve({});
             if (typeof loadData == "function")
-                loadDataPromises.push(loadData);
+                loadDataPromises.push(loadData(componentData.props));
+            else
+                loadDataPromises.push(Promise.resolve({}));
 
         }
 
-        let componentDatas = await Promise.all(loadDataPromises)
+        let componentDatas = await Promise.all(loadDataPromises);
         for (let i = 0; i < componentInfos.length; i++) {
             componentInfos[i].props.data = componentInfos[i].props.data || {};
             componentInfos[i].props[dataIdName] = componentInfos[i].id;
             Object.assign(componentInfos[i].props.data, componentDatas[i] || {});
+
+            if (Object.keys(componentInfos[i].props.data).length > 0)
+                r[componentInfos[i].id] = componentInfos[i].props.data;
         }
 
         return r;

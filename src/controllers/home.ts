@@ -1,7 +1,7 @@
 import { action, RequestResult, routeData, ServerContext, serverContext, controller } from "maishu-node-mvc";
 import { dataStorage } from "../decoders";
 import { errors } from "../static/errors";
-import { adminActions, default as w } from "../static/website-config";
+import { adminActions, userActions, default as w } from "../static/website-config";
 import { DataStorage } from "data-storage";
 import { JSDOM } from "jsdom";
 import { config } from "../config";
@@ -15,10 +15,14 @@ import type { PageData } from "maishu-jueying-core";
 import { moduleCSS } from "../node-require";
 import { pathConcat } from "maishu-toolkit";
 import type { ComponentInfo } from "static/controls/component-loader";
+import * as NodeCache from "node-cache";
+import { guid } from "maishu-jueying/out/common";
 
 export type WebsiteConfig = { components: ComponentInfo[] };
 export type LoadData<Props, T> = (props: Props) => Promise<Partial<T>>;
 
+const nodeCache = new NodeCache();
+const DATA_KEY = "dataKey";
 @controller()
 export class HomeController {
 
@@ -44,10 +48,12 @@ export class HomeController {
         let websiteConfig: WebsiteConfig = websiteConfigModule.default || websiteConfigModule;
         try {
             let r = await ServerSideRender.renderPage(pageData, websiteConfig, themePhysicalPath);
+            let componentDatasId = this.saveComponentDatas(r.componentDatas);
 
             let indexHtmlPath = context.rootDirectory.findFile(`${config.themesVirtualPath}/${pageRecord.themeName}/index.html`);
             if (!fs.existsSync(indexHtmlPath))
                 throw errors.fileNotExists(indexHtmlPath);
+
 
             let indexHtml = fs.readFileSync(indexHtmlPath).toString();
             var jsdom = new JSDOM(indexHtml);
@@ -55,10 +61,9 @@ export class HomeController {
 
             this.appendClientVariables(jsdom.window.document, pageRecord, websiteConfig);
             this.appendComponentCss(jsdom.window.document, pageRecord, websiteConfig, themePhysicalPath);
-
+            this.appendClientVariable(jsdom.window.document, DATA_KEY, componentDatasId);
 
             let html = `<!DOCTYPE html>\r\n${jsdom.window.document.body.parentElement.outerHTML}`;
-
 
 
             let c: RequestResult = { content: html, headers: { "content-type": "text/html" }, statusCode: 200 };
@@ -72,6 +77,50 @@ export class HomeController {
         }
     }
 
+    @action(userActions.getComponentDatas)
+    async getComponentDatas(@routeData d: { key: string }) {
+        let r = await this.loadComponentDatas(d.key);
+        return r;
+    }
+
+    async loadComponentDatas(key: string): Promise<any> {
+        let componentDatas = nodeCache.get(key);
+        if (componentDatas)
+            return componentDatas;
+
+        let filePath = path.join(__dirname, `../../temp/component-datas/${key}.json`);
+        let buffer = fs.readFileSync(filePath);
+        if (!buffer)
+            return null;
+
+        componentDatas = JSON.parse(buffer.toString());
+        return componentDatas;
+    }
+
+    saveComponentDatas(componentDatas: any): string {
+        let key: string = guid();
+        let tempPath = path.join(__dirname, "../../temp");
+        if (!fs.existsSync(tempPath)) {
+            fs.mkdirSync(tempPath);
+        }
+
+        let dataDir = path.join(tempPath, "component-datas");
+        if (!fs.existsSync(dataDir)) {
+            fs.mkdirSync(dataDir);
+        }
+
+        let filePath = path.join(dataDir, `${key}.json`);
+        fs.writeFile(filePath, JSON.stringify(componentDatas), (err) => {
+            if (err) {
+                console.warn(err);
+            }
+        });
+
+        nodeCache.set(key, componentDatas, 60);
+
+        return key;
+    }
+
     private appendClientVariables(document: Document, pageRecord: PageRecord, websiteConfig: WebsiteConfig) {
         let scriptElement = document.createElement("script");
         document.head.appendChild(scriptElement);
@@ -79,6 +128,13 @@ export class HomeController {
         script = script + `window["pageData"] = ${JSON.stringify(pageRecord.pageData)};\r\n`;
         script = script + `window["websiteConfig"] = ${JSON.stringify(websiteConfig)};\r\n`;
         script = script + `themeName = '${pageRecord.themeName}';\r\n`;
+        scriptElement.innerHTML = script;
+    }
+
+    private appendClientVariable(document: Document, name: string, value: string) {
+        let scriptElement = document.createElement("script");
+        document.head.appendChild(scriptElement);
+        let script = `window["${name}"] = "${value}";\r\n`;
         scriptElement.innerHTML = script;
     }
 

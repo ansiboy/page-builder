@@ -56,11 +56,6 @@ button.btn {
     width: unset;
 }
 
-.page-view {
-    li.selected {
-        border: solid 1px blue;
-    }
-}
 
 
 .editor-panel {
@@ -178,12 +173,15 @@ button.btn {
 }
 
 .page-designer {
-    padding-top   : 10px;
-    display       : flex;
-    flex-direction: row;
+    padding-top: 10px;
 
     .page-view {
-        width: calc(100% - @border-padding * 2);
+        position: unset;
+
+        li.selected {
+            border   : solid 1px blue;
+            // margin: 10px;
+        }
 
         .ui-draggable-handle {
             height     : 60px;

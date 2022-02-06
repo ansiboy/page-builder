@@ -1,6 +1,5 @@
 import { PageDesigner, DesignerContext } from "maishu-jueying";
-import { parseComponentData, registerComponent, ComponentContainer } from "maishu-jueying-core";
-import { ComponentData, PageData } from "../../model";
+import { parseComponentData, registerComponent, ComponentData } from "maishu-jueying-core";
 import { guid } from "maishu-toolkit";
 import { DesignPageContext, ContextArguments } from "./design-page";
 import { ComponentContainer as BaseComponentContainer, ComponentContainerProps as BaseComponentContainerProps } from "maishu-jueying-core";
@@ -9,8 +8,6 @@ import * as React from "react";
 export type ComponentContainerProps = BaseComponentContainerProps & {
     enable?: boolean
 }
-
-let DataColumn = "data-column";
 
 export class DesignComponentContainer extends BaseComponentContainer<ComponentContainerProps> {
     private containers: HTMLElement[] = [];
@@ -22,12 +19,10 @@ export class DesignComponentContainer extends BaseComponentContainer<ComponentCo
     private enableDrapDrop(containerElement: HTMLElement, designer: PageDesigner) {
         let pageData = designer.pageData;
         console.assert(containerElement != null);
-        let column = containerElement.getAttribute(DataColumn);
         $(containerElement).sortable({
             axis: "y",
             stop: () => {
 
-                // let pageData = pageView.props.pageData;
                 //==============================================================================================
                 // 对组件进行排序
                 console.assert(pageData.children != null);
@@ -44,10 +39,7 @@ export class DesignComponentContainer extends BaseComponentContainer<ComponentCo
 
                     let child = pageData.children.filter((o: ComponentData) => o.id == childId)[0] as ComponentData;
                     console.assert(child != null);
-                    let props = child.props || {};
-                    props.column = props.column || "0";
-                    if (props.column == column)
-                        childComponentDatas.push(child);
+
 
                 }
 
@@ -59,13 +51,11 @@ export class DesignComponentContainer extends BaseComponentContainer<ComponentCo
 
             },
             receive: (event, ui) => {
-                let column = event.target.getAttribute(DataColumn);
                 let componentData: ComponentData = JSON.parse(ui.helper.attr("component-data"));
                 componentData.id = componentData.id || guid();
                 componentData.parentId = this.props.id;
                 componentData.props = {
                     id: componentData.id,
-                    column
                 }
                 let elementIndex: number = 0;
                 ui.helper.parent().children().each((index, element) => {
@@ -135,15 +125,13 @@ export class DesignComponentContainer extends BaseComponentContainer<ComponentCo
         }
 
         let style = this.props.style || {};
-        // style.width = "50%"
-        // style.float = "left";
         className = className
         return <ul id={guid()} className={className} style={style}
             ref={e => {
                 if (e == null || this.containers.indexOf(e) >= 0)
                     return
 
-                e.setAttribute(DataColumn, column.toString());
+                // e.setAttribute(DataColumn, column.toString());
                 this.containers.push(e)
                 let enable = this.props.enable == null ? true : this.props.enable;
                 if (enable) {
@@ -160,8 +148,15 @@ export class DesignComponentContainer extends BaseComponentContainer<ComponentCo
                 </li>
                 : children.map(o => <li key={o.id} data-component-id={(o.id)}
                     className={o.selected ? "selected" : ""}
-                    onClick={() => {
-                        args.designer.selectComponent(o.id)
+                    onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (o.selected) {
+                            args.designer.selectComponent([])
+                        }
+                        else {
+                            args.designer.selectComponent(o.id)
+                        }
                     }}>
                     {parseComponentData(o, pageData)}</li>)
             }

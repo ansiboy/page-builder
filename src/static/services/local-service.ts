@@ -285,9 +285,9 @@ export class LocalService extends Service {
     }
 
     async getThemes(): Promise<string[]> {
-        // let url = LocalService.url(`${controllerRoot}/home/themes`);
-        // return this.get<string[]>(url);
-        return [];
+        let url = LocalService.url(websiteConfig.adminActions.api.themes);
+        return this.get<string[]>(url);
+        // return [];
     }
 }
 

@@ -1,29 +1,15 @@
-import { Page, registerComponent } from "maishu-jueying-core";
+import { Page, PageData, registerComponent } from "maishu-jueying-core";
 import { DesignerContext, PageDesigner } from "maishu-jueying";
 import * as React from "react";
 import { ComponentPanel } from "../component-panel";
 import { ComponentLoader } from "../component-loader";
 import "css!devices"
-import { PageData } from "../../model";
 
 export type ContextArguments = { page: DesignPage, designer: PageDesigner, pageData: PageData, componentPanel: ComponentPanel };
 export let DesignPageContext = React.createContext<ContextArguments>({ page: null, designer: null, pageData: null, componentPanel: null });
-window["DesignPageContext"] = DesignPageContext;
 
 interface State {
 }
-
-
-interface ComponentProps {
-    themeName: string;
-    themePath: string;
-    id: string;
-    app: RuntimeContext;
-    data: { [key: string]: string },
-    pageData: PageData
-}
-
-
 
 export class DesignPage extends React.Component<{ pageData: PageData, componentPanel: ComponentPanel, themeName: string }, State> {
     element: HTMLElement;
@@ -73,13 +59,6 @@ export class DesignPage extends React.Component<{ pageData: PageData, componentP
                     componentPanel: this.props.componentPanel
                 };
                 let pageData: PageData = this.props.pageData;
-                let children = pageData.children || [];
-                for (let i = 0; i < children.length; i++) {
-                    let props: ComponentProps = children[i].props = children[i].props || {};
-                    // props.app = createRuntimeContext(window["app"]);
-                    props.themeName = this.props.themeName;
-                    props.themePath = `/site/${this.props.themeName}`;
-                }
                 return <DesignPageContext.Provider value={value}>
                     <Page {...{ pageData }} />
                 </DesignPageContext.Provider>

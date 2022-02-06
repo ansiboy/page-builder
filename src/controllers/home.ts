@@ -19,7 +19,7 @@ import type { ComponentInfo } from "static/controls/component-loader";
 export type WebsiteConfig = { components: ComponentInfo[] };
 export type LoadData<Props, T> = (props: Props) => Promise<Partial<T>>;
 
-@controller(`${w.adminPageRoot}home`)
+@controller()
 export class HomeController {
 
     @action(adminActions.pages.preview)
@@ -119,5 +119,8 @@ export class HomeController {
 
     }
 
-
+    @action(adminActions.api.themes)
+    themes() {
+        return ["topic"];
+    }
 }

@@ -10,6 +10,9 @@ import type { ComponentInfo } from "./static/controls/component-loader";
 export type LoadData<Props, T> = (props: Props) => Promise<Partial<T>>;
 export type WebsiteConfig = { components: ComponentInfo[] };
 const dataIdName = "data-id";
+let componentLoadDatas: { [componentType: string]: LoadData<any, any> } = {};
+
+export const LOAD_DATA = "loadData";
 
 export class ServerSideRender {
 
@@ -24,7 +27,7 @@ export class ServerSideRender {
             if (item.type == Page.typeName) {
                 item.props.pageData = pageData;
             }
-            var children = pageData.children.filter(o => o.parentId == item.id);//(item.children || []).filter(o => typeof o != "string") as ComponentData[];
+            var children = pageData.children.filter(o => o.parentId == item.id);
             stack.push(...children);
             item = stack.shift();
         }
@@ -86,6 +89,7 @@ export class ServerSideRender {
                 throw new Error(`Component '${c.type}' is not a react component.`)
             }
             componentTypes[c.type] = componentType;
+            componentLoadDatas[c.type] = componentTypeModule[LOAD_DATA] || componentType[LOAD_DATA];
         })
     }
 
@@ -100,8 +104,9 @@ export class ServerSideRender {
                 throw errors.componentTypeNotExists(componentData.type);
             }
 
-            let loadData: LoadData<any, any> = type["loadData"] || Promise.resolve({});
-            loadDataPromises.push(loadData);
+            let loadData: LoadData<any, any> = componentLoadDatas[componentData.type];//type["loadData"] || Promise.resolve({});
+            if (typeof loadData == "function")
+                loadDataPromises.push(loadData);
 
         }
 

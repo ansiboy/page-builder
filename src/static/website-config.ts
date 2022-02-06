@@ -1,23 +1,52 @@
-// import { ControllerRoot } from "../config";
-// import type { WebsiteConfig } from "maishu-admin-scaffold/static/website-config";
-
-//==========================================================================
-// 常用配置
-export let themeHost = "127.0.0.1:6839";//"finememo.com/themes";//
-let storePort = 5218;
-//==========================================================================
-
-// export let themesRoot = "themes";
-
 type WebsiteConfig = { requirejs: any };
 type MyWebsiteConfig = WebsiteConfig & {
     // componentStations: { aixpi: string, flone: string, generic: string, "gemwon-pc": string },
     // componentShare: string, 
-    storePort: number, adminApiRoot: string, adminPageRoot: string, userApiRoot: string,
-    themesDirectoryName: string,
+    // storePort: number, 
+    adminApiRoot: string, adminPageRoot: string, userApiRoot: string,
+    themesDirectoryName: string, adminActions: typeof adminActions,
 };
 
+
+//==========================================================================
+// 常用配置
+// export let themeHost = "127.0.0.1:6839";//"finememo.com/themes";//
+// let storePort = 5218;
+//==========================================================================
+
+// export let themesRoot = "themes";
+
+
 export let libVirtualPath = "lib";
+
+const adminApiRoot = "admin-api/";
+const adminPageRoot = "/";
+const userApiRoot = "user-api/";
+
+/** 管理端 actions */
+export let adminActions = {
+    pageData: {
+        list: `/${adminApiRoot}page-data/list`,
+        add: `/${adminApiRoot}page-data/add`,
+        update: `/${adminApiRoot}page-data/update`,
+        remove: `/${adminApiRoot}page-data/remove`,
+        item: `/${adminApiRoot}page-data/item`,
+        temp: `/${adminApiRoot}page-data/temp`,
+    },
+    api: {
+        themes: `/${adminApiRoot}themes`
+    },
+    pages: {
+        preview: `${adminPageRoot}preview/:pageDataId`
+    }
+}
+
+/** 用户端 actions */
+export let userActions = {
+    getComponentDatas: `/${userApiRoot}/getComponentDatas`
+}
+
+
 let node_modules = "/node_modules";
 let websiteConfig: MyWebsiteConfig = {
     //===================================================
@@ -30,7 +59,7 @@ let websiteConfig: MyWebsiteConfig = {
     // },
     // componentShare: `http://${themeHost}/share`,
     //===================================================
-    storePort: storePort,
+    // storePort: storePort,
     requirejs: {
         context: "site",
         shim: {
@@ -52,7 +81,7 @@ let websiteConfig: MyWebsiteConfig = {
             "maishu-dilu-react": `${node_modules}/maishu-dilu-react/dist/index.min`,
             "maishu-data-page": `${node_modules}/maishu-data-page/dist/index.min`,
             "maishu-image-components": `${node_modules}/maishu-image-components/dist/index`,
-            "maishu-jueying": `${node_modules}/maishu-jueying/dist/index.min`,
+            "maishu-jueying": `${node_modules}/maishu-jueying/dist/index`,
             "maishu-jueying-core": `${node_modules}/maishu-jueying-core/dist/index`,
             "maishu-toolkit": `${node_modules}/maishu-toolkit/dist/index`,
             "maishu-ui-toolkit": `${node_modules}/maishu-ui-toolkit/dist/index`,
@@ -71,56 +100,15 @@ let websiteConfig: MyWebsiteConfig = {
 
             "url-pattern": `${node_modules}/url-pattern/lib/url-pattern`,
             "ejs": `${node_modules}/ejs/ejs.min`,
-        }
+        },
     },
-    // menuItems: [
-    //     {
-    //         id: "AE3789A2-0CF0-4D81-A7C0-E2C9324A1DDD", name: "页面列表", path: "#page-list", sortNumber: 10,
-    //         children: [
-    //             { id: "3CE34AB9-7814-4FE5-85E2-ABA6AAF9C1FD", name: "页面编辑", path: "#page-edit", hidden: true }
-    //         ]
-    //     },
-    //     {
-    //         id: "7B13EC50-A398-4379-AED5-6AB3263EDB75", name: "主题", path: "#theme-list", sortNumber: 20,
-    //     },
-    //     {
-    //         id: "EAC315A7-D8BE-4E85-843B-0D16F3254485", name: "域名绑定", path: "#domain-binding", sortNumber: 30
-    //     },
-    //     {
-    //         id: "FADCEEB3-145D-4131-BCB4-BFCF7D5FE167", name: "链接改写", path: "#url-rewrite", sortNumber: 30
-    //     },
-    //     {
-    //         id: "D0D26AA2-066F-478A-B19C-D8FB8F660905", name: "页面代码", path: "#html-snippet", sortNumber: 40
-    //     },
-    // ],
-    // mode: "production",
-    // mode: "development",
-    adminApiRoot: "admin-api/",
-    adminPageRoot: "/",
-    userApiRoot: "user-api/",
+    adminApiRoot,
+    adminPageRoot,
+    userApiRoot,
     themesDirectoryName: "themes",
+    adminActions,
 
 };
 export default websiteConfig;
-// export const CreateDesignElement = "createDesignElement";
 export const componentReactFactory = "componentElement";
 
-/** 管理端 actions */
-export let adminActions = {
-    pageData: {
-        list: `/${websiteConfig.adminApiRoot}page-data/list`,
-        add: `/${websiteConfig.adminApiRoot}page-data/add`,
-        update: `/${websiteConfig.adminApiRoot}page-data/update`,
-        remove: `/${websiteConfig.adminApiRoot}page-data/remove`,
-        item: `/${websiteConfig.adminApiRoot}page-data/item`,
-        temp: `/${websiteConfig.adminApiRoot}page-data/temp`,
-    },
-    pages: {
-        preview: `${websiteConfig.adminPageRoot}preview/:pageDataId`
-    }
-}
-
-/** 用户端 actions */
-export let userActions = {
-    getComponentDatas: `/${websiteConfig.userApiRoot}/getComponentDatas`
-}

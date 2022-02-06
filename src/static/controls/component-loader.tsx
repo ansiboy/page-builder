@@ -1,13 +1,13 @@
-import { registerComponent, componentTypes } from "maishu-jueying-core";
-import { PageData, } from "../model";
+import { registerComponent, componentTypes, ComponentData, PageData } from "maishu-jueying-core";
 import { errors } from "../errors";
 import { LocalService } from "../services";
 import * as React from "react";
 import { guid } from "maishu-toolkit";
 import { Callback } from "maishu-toolkit";
 import strings from "../strings";
-import { ComponentData } from "../model";
 import type ComponentRenders from "../component-renders";
+import { LoadData } from "maishu-chitu-react";
+import type { Props } from "../modules/pc-page-edit";
 
 let localRequirejs = require as any as typeof requirejs;
 
@@ -154,23 +154,24 @@ async function loadComponentType(typeName: string, isDesignMode: boolean, themeN
     let path = isDesignMode ? componentInfo.design || componentInfo.path : componentInfo.path;
 
     let componentType = await new Promise<React.ComponentClass<any>>((resolve, reject) => {
-        localRequirejs([`${path}`], (mod) => {
+        localRequirejs([`${path}`], (mod: any) => {
             let compoenntType1: React.ComponentClass<any> = mod[typeName] || mod["default"];
             if (compoenntType1 == null)
                 throw errors.moduleNotExport(path, typeName);
 
-            if (compoenntType1.prototype.isReactComponent == undefined && typeof compoenntType1 == "function") {
-                let c = compoenntType1;
-                compoenntType1 = class extends React.Component {
-                    render(): React.ReactNode {
-                        return React.createElement("div", {}, React.createElement(c, this.props));
-                    }
-                }
-            }
+            // if (compoenntType1.prototype.isReactComponent == undefined && typeof compoenntType1 == "function") {
+            //     let c = compoenntType1;
+            //     compoenntType1 = class extends React.Component {
+            //         render(): React.ReactNode {
+            //             return React.createElement("div", {}, React.createElement(c, this.props));
+            //         }
+            //     }
+            // }
 
             let d = compoenntType1 as any as DataComponent<any>;
-            if (typeof d.loadData == "function") {
-                compoenntType1 = createComponent(d.loadData, compoenntType1)
+            let loadData = mod.loadData || d.loadData;
+            if (typeof loadData == "function") {
+                compoenntType1 = createComponent(loadData, compoenntType1)
             }
 
             componentTypes[typeName] = compoenntType1;
@@ -261,7 +262,7 @@ export function createInfoComponent(text: string) {
 
 }
 
-export function createComponent(loadData: (props: any) => Promise<any>, originalCompoenntType) {
+export function createComponent(loadData: LoadData<Props, any>, originalCompoenntType) {
 
     return class extends React.Component<any, { data?: any }> {
         constructor(props: any) {

@@ -4,7 +4,7 @@ import { PageRecord } from "../../entities";
 import { LocalService } from "../services";
 import { ComponentData, PageData, PageHeader } from "maishu-jueying-core";
 import { PageHelper } from "../controls/page-helper";
-import { DesignerContext, EditorPanel, EditorPanelProps, PageDesigner } from "maishu-jueying";
+import { DesignerContext, EditorPanel, EditorPanelProps, PageDataMaintain, PageDesigner, ComponentDataContext } from "maishu-jueying";
 import { ComponentPanel } from "../controls/component-panel";
 import { DesignPage } from "../controls/design-components/index";
 import { dataSources } from "../services";
@@ -246,12 +246,12 @@ export default class PCPageEdit extends React.Component<Props, State> {
     async preview(pageRecord: PageRecord) {
         let domain = await this.localService.defaultStoreDomain();
         let url: string;
-        if (websiteConfig.storePort == 80) {
-            url = `${location.protocol}//${domain}/${pageRecord.name}`;
-        }
-        else {
-            url = `${location.protocol}//${domain}:5218/${pageRecord.name}`;
-        }
+        // if (websiteConfig.storePort == 80) {
+        //     url = `${location.protocol}//${domain}/${pageRecord.name}`;
+        // }
+        // else {
+        //     url = `${location.protocol}//${domain}:5218/${pageRecord.name}`;
+        // }
         window.open(url);
     }
 
@@ -310,12 +310,11 @@ export default class PCPageEdit extends React.Component<Props, State> {
         if (pageRecord === null)
             return <div className="empty">加载页面失败</div>
 
-        return <PageDesigner pageData={pageRecord.pageData} className="page-designer"
+        return <PageDataMaintain pageData={pageRecord.pageData} className="page-designer"
             ref={e => this.setPageDesigner(e)}>
-            {/*  */}
-            <DesignerContext.Consumer>
+            <ComponentDataContext.Consumer>
                 {() => componentPanel ? this.renderPageData(pageRecord.pageData, componentPanel, themeName, templateRecord?.pageData) : null}
-            </DesignerContext.Consumer>
+            </ComponentDataContext.Consumer>
 
             <DockPanel>
                 <ElementContainer title="页面组件">
@@ -334,7 +333,7 @@ export default class PCPageEdit extends React.Component<Props, State> {
                         ref={e => this.editorPanel = this.editorPanel || e} />
                 </ElementContainer>
             </DockPanel>
-        </PageDesigner>
+        </PageDataMaintain>
     }
 }
 

@@ -5,6 +5,8 @@ import { DesignPageContext, ContextArguments } from "./design-page";
 import { ComponentContainer as BaseComponentContainer, ComponentContainerProps as BaseComponentContainerProps } from "maishu-jueying-core";
 import * as React from "react";
 
+const DATA_COMPONENT_ID = "data-component-id"
+
 export type ComponentContainerProps = BaseComponentContainerProps & {
     enable?: boolean
 }
@@ -25,28 +27,10 @@ export class DesignComponentContainer extends BaseComponentContainer<ComponentCo
 
                 //==============================================================================================
                 // 对组件进行排序
-                console.assert(pageData.children != null);
-
-                let childComponentDatas: ComponentData[] = [];
-                let elements = containerElement.querySelectorAll("li");
-                for (let i = 0; i < elements.length; i++) {
-
-                    let childId = elements[i].getAttribute("data-component-id");
-                    if (!childId)
-                        continue;
-
-                    console.assert(childId != null);
-
-                    let child = pageData.children.filter((o: ComponentData) => o.id == childId)[0] as ComponentData;
-                    console.assert(child != null);
-
-
-                }
-
-                let childIds = childComponentDatas.map(o => o.id);
-                pageData.children = pageData.children.filter((o: ComponentData) => childIds.indexOf(o.id) < 0);
-
-                pageData.children.push(...childComponentDatas);
+                var componentIds = $(containerElement).find("li").map((i, e) => e.getAttribute(DATA_COMPONENT_ID)).toArray();
+                var componentDatas = componentIds.map(id => pageData.children.filter(o => o.id == id)[0]);
+                pageData.children = pageData.children.filter(o => componentIds.indexOf(o.id) < 0);
+                pageData.children.push(...componentDatas);
                 //==============================================================================================
 
             },
@@ -57,17 +41,26 @@ export class DesignComponentContainer extends BaseComponentContainer<ComponentCo
                 componentData.props = {
                     id: componentData.id,
                 }
-                let elementIndex: number = 0;
+                let newComponentIndex: number = 0;
+                let preComponentId: string | undefined = undefined;
                 ui.helper.parent().children().each((index, element) => {
                     if (element == ui.helper[0]) {
-                        elementIndex = index;
+                        // elementIndex = index;
                         return false;
                     }
+                    preComponentId = element.getAttribute(DATA_COMPONENT_ID)
                 })
 
+                if (preComponentId) {
+                    var c = designer.findComponentData(preComponentId);
+                    console.assert(c != null);
+                    let preIndex = pageData.children.indexOf(c);
+                    newComponentIndex = preIndex + 1;
+                }
 
-                let isFirst = elementIndex == 0;
-                let isLatest = elementIndex == ui.helper.parent().children().length - 1;
+
+                let isFirst = newComponentIndex == 0;
+                let isLatest = newComponentIndex >= pageData.children.length;
 
                 if (isFirst) {
                     designer.appendComponent(componentData, 0);
@@ -76,12 +69,7 @@ export class DesignComponentContainer extends BaseComponentContainer<ComponentCo
                     designer.appendComponent(componentData);
                 }
                 else {
-                    let nextComponentDataId = ui.helper.parent().children()[elementIndex + 1].getAttribute("data-component-id");
-                    let componentIds = pageData.children.map((o: ComponentData) => o.id);
-                    let nextComponentDataIndex = componentIds.indexOf(nextComponentDataId);
-                    console.assert(nextComponentDataId != null);
-                    componentData.parentId = pageData.id;
-                    designer.appendComponent(componentData, nextComponentDataIndex);
+                    designer.appendComponent(componentData, newComponentIndex);
                 }
 
                 designer.selectComponent(componentData.id);

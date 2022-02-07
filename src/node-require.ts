@@ -1,6 +1,8 @@
 import assert = require("assert");
 import * as path from "path";
 import * as fs from "fs";
+import { VirtualDirectory } from "maishu-node-web-server";
+import { pathConcat } from "maishu-toolkit";
 
 type Module = {
     id: string,
@@ -12,8 +14,8 @@ type Module = {
 }
 
 
-export const ThemePhysicalPathName = "themePhysicalPath";
-
+export const THEME_PHYSICAL_PATH = "themePhysicalPath";
+export const WEBSITE_DIRECTORY = "websiteDirectory";
 export let moduleCSS: { [moduleId: string]: string[] } = {};
 
 
@@ -27,11 +29,18 @@ module.constructor.prototype.require = function (filePath: string) {
         let cssFilePhysicalPath: string;
         if (path.isAbsolute(filePath)) {
             cssFilePhysicalPath = filePath;
+
+            let websiteDirectory = global[WEBSITE_DIRECTORY] as VirtualDirectory;
+            console.assert(websiteDirectory != null);
+            cssFilePhysicalPath = websiteDirectory.findFile(pathConcat("static", filePath));
+            if (cssFilePhysicalPath == null)
+                throw new Error(`Path '${filePath}' is not exists in the website directory.`);
         }
         else {
             let filename = self.filename;
             let dirname = path.dirname(filename);
             cssFilePhysicalPath = path.join(dirname, filePath);
+
         }
 
         if (!fs.existsSync(cssFilePhysicalPath))
@@ -39,7 +48,7 @@ module.constructor.prototype.require = function (filePath: string) {
 
         console.assert(self.parent != null, `Module '${filePath}' parent is null.`);
 
-        let themePhysicalPath = (global as any)[ThemePhysicalPathName];
+        let themePhysicalPath = (global as any)[THEME_PHYSICAL_PATH];
         if (!themePhysicalPath) throw new Error('Theme physical path is null.');
 
         var cssRelativePath = path.relative(themePhysicalPath, cssFilePhysicalPath);

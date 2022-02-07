@@ -197,7 +197,6 @@ export default class PCPageEdit extends React.Component<Props, State> {
     }
 
     async save(): Promise<any> {
-        let { } = this.state;
 
         if (!this.validator.check())
             return Promise.reject();
@@ -215,7 +214,7 @@ export default class PCPageEdit extends React.Component<Props, State> {
             await dataSources.pageRecords.insert(pageRecord);
         }
         else {
-            await dataSources.pageRecords.update(pageRecord);
+            await dataSources.pageRecords.executeUpdate(pageRecord);
         }
     }
 

@@ -8,7 +8,7 @@ import React = require("react");
 import type { ComponentInfo } from "./static/controls/component-loader";
 
 export type LoadData<Props, T> = (props: Props) => Promise<Partial<T>>;
-export type WebsiteConfig = { components: ComponentInfo[] };
+export type WebsiteConfig = { components: ComponentInfo[], requirejs?: any };
 const dataIdName = "data-id";
 let componentLoadDatas: { [componentType: string]: LoadData<any, any> } = {};
 

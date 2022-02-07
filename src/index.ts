@@ -5,7 +5,7 @@ import { getVirtualPaths } from "maishu-chitu-scaffold";
 import { DataStorage, DefaultDataStorage } from "./data-storage";
 import { errors } from "./static/errors";
 import { config } from "./config";
-import { ThemePhysicalPathName } from "./node-require";
+import { THEME_PHYSICAL_PATH, WEBSITE_DIRECTORY } from "./node-require";
 import { JavaScriptProcessorWrapper } from "./request-processors/java-script-processor";
 import w, { componentReactFactory } from "./static/website-config";
 
@@ -35,7 +35,7 @@ export async function start(settings: Settings) {
         themesPath: settings.themesPath,
     };
 
-    global[ThemePhysicalPathName] = settings.themesPath;
+    global[THEME_PHYSICAL_PATH] = settings.themesPath;
 
     let virtualPaths = getVirtualPaths("/static", path.join(__dirname, "../src/static"));
     virtualPaths = Object.assign(virtualPaths, myVirtualPath);
@@ -88,6 +88,7 @@ export async function start(settings: Settings) {
     }
 
     let s = startServer(mvcSettings, "mvc");
+    global[WEBSITE_DIRECTORY] = s.websiteDirectory;
     let javaScriptProcessor = s.requestProcessors.find(JavaScriptProcessor);
     console.assert(javaScriptProcessor != null);
     console.assert((javaScriptProcessor as RequestProcessor).priority != null);
@@ -95,83 +96,9 @@ export async function start(settings: Settings) {
     let jsw = new JavaScriptProcessorWrapper(w.themesDirectoryName, componentReactFactory);
     jsw.priority = (javaScriptProcessor as RequestProcessor).priority - 1;
     s.requestProcessors.add(jsw);
-    // s.contentTransforms.push
+
 }
 
-// const AppName = "application-id";
-// async function storeUrlRewrite(rawUrl: string, req: IncomingMessage) {
-
-//     //===============================================================
-//     // 优化查询
-//     let conn = await getMyConnection();
-//     let urlRewrites = conn.getRepository(UrlRewrite);
-//     let item = await urlRewrites.findOne({ newUrl: rawUrl });
-//     if (item && item.originalUrl != null) {
-//         rawUrl = item.originalUrl;
-//     }
-//     //===============================================================
-
-//     let queryIndex = rawUrl.indexOf("?");
-//     let query: string | null = null;
-//     let pathname: string = rawUrl;
-//     if (queryIndex >= 0) {
-//         query = rawUrl.substr(queryIndex + 1);
-//         pathname = rawUrl.substr(0, queryIndex);
-//     }
-
-//     let m: { [key: string]: string } | null = null;
-//     if (rawUrl == "/")
-//         m = { name: "home" };
-//     else if (pathname == "/")
-//         m = {};
-
-//     if (m == null) {
-//         for (let i = 0; i < routers.length; i++) {
-//             m = routers[i].match(pathname);
-//             if (m)
-//                 break;
-//         }
-//     }
-
-//     if (!m) {
-//         return null;
-//     }
-
-//     if (query != null) {
-//         let obj = querystring.parse(query);
-//         m = Object.assign(obj || {}, m);
-//     }
-
-//     if (m.filePath)
-//         return pathConcat("/", m.filePath);
-
-//     if (m.id == null && m.name != null) {
-//         let conn = await getMyConnection();
-//         let storeDomains = conn.getRepository(StoreDomain);
-//         let pageRecords = conn.getRepository(PageRecord);
-
-//         let domain = getDomain(req);
-//         let storeDomain = await storeDomains.findOne({ domain });
-//         if (storeDomain != null) {
-//             m[AppName] = storeDomain.applicationId;
-//         }
-
-//         let appId = m[AppName];
-//         if (!appId)
-//             throw new Error("Application id is null or empty.");
-
-//         let pageRecord = await pageRecords.findOne({ name: m.name, applicationId: appId });
-//         if (pageRecord == null)
-//             throw new Error(`Page record with name '${m.name}' and applicationId '${appId}' is not exists.`);
-
-//         m.id = pageRecord.id;
-//     }
-
-//     let q = Object.keys(m).filter(o => m[o] != null).map(o => `${o}=${m[o]}`).join('&');
-//     let u = `/preview.html?${q}`;
-//     return u;
-
-// }
 
 
 

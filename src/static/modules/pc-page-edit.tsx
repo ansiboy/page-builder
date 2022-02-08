@@ -20,6 +20,7 @@ import strings from "../strings";
 import { Callbacks } from "maishu-chitu-service";
 import { errors } from "../errors";
 import ComponentRenders from "../component-renders";
+import init from "static/init";
 
 interface State {
     pageRecord?: PageRecord,
@@ -315,7 +316,7 @@ export default class PCPageEdit extends React.Component<Props, State> {
                 {() => componentPanel ? this.renderPageData(pageRecord.pageData, componentPanel, themeName, templateRecord?.pageData) : null}
             </ComponentDataContext.Consumer>
 
-            <DockPanel>
+            <DockPanel >
                 <ElementContainer title="页面组件">
                     <ComponentPanel ref={e => this.componentRef(e, componentInfos)} />
                 </ElementContainer>
@@ -621,10 +622,10 @@ class DockPanel extends React.Component<{}, { float: boolean }> {
     private sizeChanged = Callbacks<{ width: number, height: number }>();
     private headerElement: HTMLElement;
 
-    constructor(props) {
+    constructor(props: DockPanel["props"]) {
         super(props);
 
-        this.state = { float: true };
+        this.state = { float: false };
 
         this.sizeChanged.add(args => {
             this.headerElement.style.width = `${args.width - 2}px`;
@@ -632,50 +633,41 @@ class DockPanel extends React.Component<{}, { float: boolean }> {
     }
 
     componentPropertyPanelRef(e: HTMLElement) {
-        if (!e || this.componentPropertyPanel)
-            return;
-
         let { float } = this.state;
         this.componentPropertyPanel = e || this.componentPropertyPanel;
-        $(this.componentPropertyPanel)
-            .draggable({ disabled: !float, handle: ".header" })
-            .resizable({
-                resize: (event, ui) => {
-                    console.log(ui.size);
-                    let width = ui.size.width;
-                    let height = ui.size.height;
-                    this.sizeChanged.fire({ width, height });
-                }
-            })
+        let isInit = (this.componentPropertyPanel.getAttribute("init") || "") != "";
+        if (float) {
+            if (!isInit) {
+                this.componentPropertyPanel.setAttribute("init", "true");
+                $(this.componentPropertyPanel)
+                    .draggable({ disabled: !float, handle: ".header" })
+                    .resizable({
+                        resize: (event, ui) => {
+                            console.log(ui.size);
+                            let width = ui.size.width;
+                            let height = ui.size.height;
+                            this.sizeChanged.fire({ width, height });
+                        }
+                    })
 
-        window.addEventListener("scroll", () => {
-            let rect = this.componentPropertyPanel.getBoundingClientRect();
-            console.log(`top:${rect.top}`);
-            if (rect.top < 0) {
-                // this.componentPropertyPanel.style.top = `${window.screenTop}px`;
-                // this.componentPropertyPanel.style.transform = `translateY(${0 - rect.top}px)`;
+                return;
             }
-        })
+            $(this.componentPropertyPanel).draggable("enable");
+        }
+        else {
+            if (!isInit)
+                return;
 
-        //======================================================
-        // 阻止事件冒泡
-        // e.onclick = (ev) => {
-        //     ev.preventDefault();
-        //     ev.stopPropagation();
-        // }
-        //======================================================
+            $(this.componentPropertyPanel).draggable("disable");
+            this.componentPropertyPanel.style.removeProperty("position");
+            this.componentPropertyPanel.style.removeProperty("top");
+            this.componentPropertyPanel.style.removeProperty("left");
+        }
     }
 
     switchFloat() {
         let float = !this.state.float;
         this.setState({ float });
-
-        if (float) {
-            $(this.componentPropertyPanel).draggable("enable");
-        }
-        else
-            $(this.componentPropertyPanel).draggable("disable");
-
     }
 
     async panelInnerRef(panelInnerElement: HTMLElement) {

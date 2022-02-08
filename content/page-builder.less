@@ -1,4 +1,5 @@
 @border-padding: 15px;
+@panel-width   : 350px;
 
 .component-panel {
     display      : flex;
@@ -70,15 +71,15 @@ button.btn {
 
 .component-property-panel {
 
-    @panel-width   : 350px;
+
     @scroll-width  : 4px;
     @header-height : 30px;
 
-    width           : @panel-width;
-    margin-left     : 10px;
-    z-index         : 100;
-    background-color: white;
-    right           : 20px;
+    width              : @panel-width;
+    // margin-left     : 10px;
+    z-index            : 100;
+    background-color   : white;
+    right              : 20px;
 
 
     &.float {
@@ -177,10 +178,11 @@ button.btn {
 
     .page-view {
         position: unset;
+        width   : calc(100% - @panel-width - 10px);
+        float   : right;
 
         li.selected {
-            border   : solid 1px blue;
-            // margin: 10px;
+            border: solid 1px blue;
         }
 
         .ui-draggable-handle {

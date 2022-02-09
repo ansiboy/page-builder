@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "allowJs": false,
+        "noEmit": false,
+        "jsx": "react",
+        "strict": true,
+        "strictPropertyInitialization": false,
+        "target": "esnext",
+        "module": "commonjs",
+        "esModuleInterop": true,
+    }
+}

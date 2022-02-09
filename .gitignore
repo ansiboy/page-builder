@@ -3,5 +3,4 @@ out
 dist
 temp*
 *.zip
-demo
 package-lock.json

@@ -1,0 +1,9 @@
+{
+    "name": "page-builder-demo",
+    "devDependencies": {
+        "@babel/types": "^7.16.8"
+    },
+    "dependencies": {
+        "maishu-router": "^1.4.10"
+    }
+}

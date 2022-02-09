@@ -27,6 +27,20 @@ let w: WebsiteConfig = {
         editor: "./editors/single-product/index",
     },
     {
+        displayName: "单排商品",
+        icon: "fa fa-text-width",
+        type: typeNames.RowProducts,
+        path: "./components/row-products/index",
+        editor: "./editors/row-product/index",
+    },
+    {
+        displayName: "图文列表",
+        icon: "fa fa-text-width",
+        type: typeNames.ImageTextList,
+        path: "./components/image-text-list/index",
+        editor: "./editors/image-text-list/index",
+    },
+    {
         displayName: "HTML",
         icon: "fa fa-text-width",
         type: typeNames.HtmlView,

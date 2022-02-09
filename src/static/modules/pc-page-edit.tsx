@@ -266,7 +266,7 @@ export default class PCPageEdit extends React.Component<Props, State> {
         let { pageRecord, templateList } = this.state;
         templateList = templateList || [];
         return <>
-            <div>
+            <div className="pc-page-edit">
                 <ul className="nav nav-tabs">
                     <li className="pull-right">
                         <button className="btn btn-sm btn-primary"
@@ -292,9 +292,10 @@ export default class PCPageEdit extends React.Component<Props, State> {
 
                 </ul>
                 <div>
+                    {this.renderMain()}
                 </div>
+
             </div>
-            {this.renderMain()}
         </>
     }
 

@@ -2,7 +2,7 @@ import { Application, IService, ServiceConstructor } from "maishu-chitu";
 import "css!bootstrap-css";
 import "css!font-awesome";
 import "/content/admin_style_default.less";
-import "/content/page-builder.less";
+// import "/content/page-builder.less";
 
 export default function (app: Application) {
 

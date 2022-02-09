@@ -1,0 +1,234 @@
+@import "../variable.less";
+
+@tabs-height  : 40px;
+@panel-width  : 350px;
+@header-height: 30px;
+
+
+.pc-page-edit {
+
+    :focus {
+        outline     : none;
+        border-color: unset;
+        box-shadow  : unset;
+    }
+
+    .nav-tabs {
+        height: @tabs-height;
+
+    }
+
+    .page-view {
+        width     : calc(100% - 390px);
+        position  : absolute;
+        height    : calc(100% - @tabs-height - 30px);
+        min-height: 200px;
+        right     : @page-padding;
+        overflow-y: auto;
+
+        .body {
+            overflow-y: unset;
+            overflow-x: unset;
+            height    : unset;
+        }
+
+        &::-webkit-scrollbar-track-piece {
+            background-color: #fff;
+        }
+
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #999;
+        }
+
+    }
+
+
+    .editor-panel.well {
+        padding: unset;
+    }
+
+    .component-panel {
+        display      : flex;
+        flex-wrap    : wrap;
+        margin-bottom: 4px;
+        margin-top   : 0px;
+
+        li {
+            border      : solid 1px rgb(204, 204, 204);
+            width       : 62px;
+            height      : 62px;
+            margin-right: 4px;
+            text-align  : center;
+            z-index     : 200;
+            font-size   : 12px;
+
+            i {
+                font-size: 28px;
+                color    : black;
+            }
+
+        }
+
+        .empty {
+            text-align: center;
+            width     : 100%;
+            border    : solid 1px #cccccc;
+        }
+    }
+
+
+    .component-property-panel {
+
+        position: absolute;
+        height  : calc(100% - @tabs-height - 30px);
+        left    : @page-padding;
+
+        @scroll-width : 4px;
+
+        width              : @panel-width;
+        // margin-left     : 10px;
+        z-index            : 100;
+        background-color   : white;
+
+
+        &.float {
+            position  : fixed;
+            max-height: 100%;
+            overflow-y: auto;
+
+            /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+            &::-webkit-scrollbar {
+                width: @scroll-width;
+            }
+
+            /*定义滑块 内阴影+圆角*/
+            &::-webkit-scrollbar-thumb {
+                background-color: #777777;
+            }
+
+            /*定义滚动条轨道 内阴影+圆角*/
+            &::-webkit-scrollbar-track {
+                background-color: #cccccc;
+            }
+        }
+
+        .header {
+            width     : @panel-width - 2px;
+            background: rgb(245, 245, 245);
+            border    : 1px solid rgb(221, 221, 221);
+            padding   : 6px;
+            position  : fixed;
+            z-index   : 1000;
+        }
+
+        .component-panel {
+            z-index       : 2000;
+            display       : flex;
+            flex-direction: row;
+            flex-wrap     : wrap;
+            max-height    : 200px;
+            overflow-y    : auto;
+
+            li {
+                padding      : unset;
+                padding-top  : 10px;
+                margin-bottom: 6px;
+            }
+
+            /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+            &::-webkit-scrollbar {
+                width: 4px;
+            }
+
+            /*定义滑块 内阴影+圆角*/
+            &::-webkit-scrollbar-thumb {
+                background-color: #777777;
+            }
+
+            /*定义滚动条轨道 内阴影+圆角*/
+            &::-webkit-scrollbar-track {
+                background-color: #cccccc;
+            }
+        }
+
+        .component-property-panel-inner {
+
+            padding-top: @header-height;
+
+            &.fixed {
+                position        : fixed;
+                top             : 0;
+                z-index         : 2000;
+                background-color: white;
+            }
+        }
+
+        border: solid 1px #ddd;
+
+        .panel {
+            border-left  : none;
+            margin-bottom: 0;
+
+            .list-group {
+                margin-bottom: 0;
+            }
+
+            .list-group-item {
+                border-left  : none;
+                border-right : none;
+                border-bottom: none;
+            }
+
+        }
+    }
+
+    .page-designer {
+        padding-top: 10px;
+
+        .page-view {
+            // position: unset;
+            // width   : calc(100% - @panel-width - 10px);
+            // float   : right;
+
+            li.selected {
+                border: solid 1px blue;
+            }
+
+            .ui-draggable-handle {
+                height     : 60px;
+                width      : 60px;
+                padding-top: 6px;
+
+                text-align: center;
+                border    : dotted 1px #cccccc;
+
+                i {
+                    color    : black;
+                    font-size: 28px;
+                }
+            }
+
+            .header {
+                position: unset;
+            }
+
+            .footer {
+                position: unset;
+            }
+        }
+
+        .editor-panel {
+            width: unset;
+
+            &.well {
+                padding: 0;
+            }
+        }
+    }
+
+
+}

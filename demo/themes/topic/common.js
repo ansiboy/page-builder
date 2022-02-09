@@ -13,4 +13,6 @@ exports.typeNames = {
     HtmlView: common_1.typeNames.HtmlView,
     SingleProduct: "SingleProduct",
     Carousel: "Carousel",
+    RowProducts: "RowProducts",
+    ImageTextList: "ImageTextList",
 };

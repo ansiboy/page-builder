@@ -20,8 +20,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(require("react"));
-/** 单排商品 */
-function RowProducts() {
-    return React.createElement("div", null, "\u5355\u6392\u5546\u54C1");
+function ImageTextList() {
+    return React.createElement("div", null, "\u56FE\u6587\u5217\u8868");
 }
-exports.default = RowProducts;
+exports.default = ImageTextList;

@@ -1,6 +1,7 @@
 import type { CarouselItem, Props as CarouselProps } from "./components/carousel/index";
 import type { Props as SingleProductProps } from "./components/single-product/index";
 import { typeNames as baseTypeNames } from "../common";
+
 type SingleProductDefaultProps = Pick<SingleProductProps, "imageSize" | "imageTextMargin" | "buttonText" | "imagePosition">;
 let carousel: Pick<CarouselProps, "autoplay"> = { autoplay: true };
 let singleProduct: SingleProductDefaultProps = {
@@ -15,4 +16,6 @@ export const typeNames = {
     HtmlView: baseTypeNames.HtmlView,
     SingleProduct: "SingleProduct",
     Carousel: "Carousel",
+    RowProducts: "RowProducts",
+    ImageTextList: "ImageTextList",
 }

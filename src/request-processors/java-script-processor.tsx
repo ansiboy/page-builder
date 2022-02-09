@@ -13,7 +13,11 @@ export class JavaScriptProcessorWrapper implements RequestProcessor {
     }
 
     execute(ctx: RequestContext): RequestResult | Promise<RequestResult> {
-        if (!ctx.virtualPath.startsWith(`/${this.themesDirectoryName}`) || !ctx.virtualPath.endsWith(".js"))
+
+
+
+        let componentFileRegex = new RegExp(`/${this.themesDirectoryName}/\\S+/components/\\S+`);
+        if (!componentFileRegex.test(ctx.virtualPath) || !ctx.virtualPath.endsWith(".js"))
             return null;
 
         let pathWidthoutExt: string = ctx.virtualPath;

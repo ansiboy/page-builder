@@ -13,5 +13,14 @@ w.requirejs.paths = Object.assign({
 }, w.requirejs.paths);
 
 requirejs.config(w.requirejs);
+let contexts = requirejs.exec("contexts");
+let context = contexts["_"];
+let load: (id: string, url: string) => void = context.load;
+context.load = function (id: string, url: string) {
+    if (url[0] == "/" && !url.endsWith(".js"))
+        url = url + ".js";
 
-requirejs(["./index"])
+    load.apply(this, [id, url]);
+}
+
+requirejs(["./index"]);

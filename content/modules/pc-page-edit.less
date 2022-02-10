@@ -83,9 +83,22 @@
 
     .component-property-panel {
 
-        position: absolute;
-        height  : calc(100% - @tabs-height - 30px);
-        left    : @page-padding;
+        // position  : absolute;
+        height       : calc(100% - @tabs-height - 30px);
+        overflow-y   : auto;
+        // left      : @page-padding;
+
+        &::-webkit-scrollbar-track-piece {
+            background-color: #fff;
+        }
+
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #999;
+        }
 
         @scroll-width : 4px;
 
@@ -117,7 +130,7 @@
         }
 
         .header {
-            width     : @panel-width - 2px;
+            width     : @panel-width - 10px;
             background: rgb(245, 245, 245);
             border    : 1px solid rgb(221, 221, 221);
             padding   : 6px;

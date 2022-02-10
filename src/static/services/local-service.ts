@@ -4,43 +4,15 @@ import { PageRecord, } from "../../entities";
 import { pathConcat } from "maishu-toolkit";
 import websiteConfig, { adminActions as actions, } from "website-config";
 import { errors } from "../errors";
-// import { WebsiteConfig } from "maishu-chitu-scaffold/static/types";
 import type { ComponentInfo } from "static/controls/component-loader";
 
-let appId = getApplicationId();
-if (appId)
-    Service.headers["application-id"] = appId;
 
-// let service = new Service(err => errorHandle(err));
 let controllerRoot = websiteConfig.adminApiRoot;
-function getApplicationId() {
-    if (localStorage.getItem("application-id")) {
-        return localStorage.getItem("application-id");
-    }
-
-    return null;
-}
-
 let themesRoot = websiteConfig.themesDirectoryName;
-
 
 export class LocalService extends Service {
 
     static url(path: string) {
-        // let contexts = requirejs.exec("contexts");
-        // let contextName = websiteConfig.requirejs?.context || "";
-        // if (!contextName)
-        //     throw new Error("Context of website config is empty.");
-
-        // let context = contexts[contextName];
-        // let baseUrl = context?.config?.baseUrl;
-        // let r: string;
-        // if (!baseUrl)
-        //     r = path;
-        // else
-        //     r = pathConcat(baseUrl, path);
-
-        // return r;
         let r = pathConcat("/", path);
         return r;
     }
